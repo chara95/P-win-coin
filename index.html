@@ -1,0 +1,461 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Litecoin Faucet Games</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+
+</head>
+
+<body class="font-roboto">
+
+    <div class="app-container">
+        <header class="app-header">
+            <span class="app-logo-text font-orbitron text-4xl font-bold">Win Coin</span>
+            <button id="hamburgerBtn" class="hamburger-button">
+                <i class="fas fa-bars"></i>
+            </button>
+        </header>
+
+        <div id="sidebarOverlay" class="sidebar-overlay fixed inset-0 bg-black opacity-50 z-30 hidden"></div>
+
+
+        <aside id="sidebar"
+            class="sidebar fixed top-0 left-0 h-full w-64 bg-gray-800 transition-transform duration-300 ease-in-out z-40">
+            <a href="#" data-target-screen="homeScreen" class="sidebar-link sidebar-nav-item active"> <i
+                    class="fas fa-home"></i>
+                <span>Inicio</span>
+            </a>
+            <a href="#" data-target-screen="activityScreen" class="sidebar-link sidebar-nav-item"> <i
+                    class="fas fa-list-alt"></i>
+                <span>Actividad</span>
+            </a>
+            <a href="#" data-target-screen="referralsScreen" class="sidebar-link sidebar-nav-item"> <i
+                    class="fas fa-users"></i>
+                <span>Referidos</span>
+            </a>
+            <a href="#" data-target-screen="withdrawalScreen" class="sidebar-link sidebar-nav-item"> <i
+                    class="fas fa-wallet"></i>
+                <span>Retiro</span>
+            </a>
+            <a href="#" data-target-screen="gameScreen" class="sidebar-link sidebar-nav-item"> <i
+                    class="fa-solid fa-brain"></i>
+                <span>Memory Match</span>
+            </a>
+            <a href="#" data-target-screen="clickerFaucet" class="sidebar-link sidebar-nav-item"> <i
+                    class="fa-solid fa-hand-pointer"></i>
+                <span>Clicker Faucet</span>
+            </a>
+
+            <a href="#" id="helpLink" class="sidebar-link sidebar-nav-item" data-target-screen="helpScreen">
+                <i class="fas fa-question-circle sidebar-icon"></i>
+                <span>Ayuda</span>
+            </a>
+
+            <a href="#" data-target-screen="termsScreen" class="sidebar-link sidebar-nav-item"> <i
+                    class="fas fa-file-contract"></i>
+                <span>Términos</span>
+            </a>
+            <a href="#" id="logoutBtn" class="sidebar-nav-item logout">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Salir</span>
+            </a>
+        </aside>
+
+
+        <main class="content-area relative w-full h-full">
+
+            <div id="authScreen" class="main-screen flex flex-col items-center justify-center p-4 hidden-completely">
+                <div class="glass-card p-8 w-full max-w-md text-center">
+                    <h2 class="text-3xl font-bold font-orbitron text-ltc-blue mb-6">Bienvenido</h2>
+                    <p id="authMessage" class="hidden text-ltc-error text-sm mb-4"></p>
+                    <p id="registerMessage" class="hidden text-ltc-error text-sm mb-4"></p>
+                    <div id="loginForm" class="auth-form transition-all duration-500 ease-in-out opacity-100 scale-100">
+                        <h3 class="text-2xl font-bold text-ltc-green-neon mb-6">Iniciar Sesión</h3>
+                        <button id="googleSignInBtn"
+                            class="btn btn-google w-full flex items-center justify-center space-x-2 mb-4">
+                            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                                alt="Google logo" class="w-6 h-6">
+                            <span>Continuar con Google</span>
+                        </button>
+                        <p class="text-ltc-light-gray text-sm mt-4">
+                            ¿No tienes una cuenta? <a href="#" id="goToRegisterBtn"
+                                class="text-ltc-blue hover:text-ltc-green-neon transition-colors duration-200">Regístrate
+                                aquí</a>
+                        </p>
+                    </div>
+                    <div id="registerForm"
+                        class="auth-form transition-all duration-500 ease-in-out hidden opacity-0 scale-95">
+                        <h3 class="text-2xl font-bold text-ltc-green-neon mb-6">Registrarse</h3>
+                        <button id="googleSignInBtnRegister"
+                            class="btn btn-google w-full flex items-center justify-center space-x-2 mb-4">
+                            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                                alt="Google logo" class="w-6 h-6">
+                            <span>Registrarse con Google</span>
+                        </button>
+                        <p class="text-ltc-light-gray text-sm mt-4">
+                            ¿Ya tienes una cuenta? <a href="#" id="goToLoginBtn"
+                                class="text-ltc-blue hover:text-ltc-green-neon transition-colors duration-200">Inicia
+                                Sesión</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="homeScreen" class="main-screen flex flex-col items-center justify-center p-6 hidden-completely">
+                <h2 class="text-3xl font-orbitron font-bold mb-6 text-center text-ltc-blue">Faucet Games
+                </h2>
+                <div class="balance-card w-full max-w-2xl mb-6 text-center">
+                    <h3 class="text-xl font-semibold mb-2 text-ltc-light-gray">Tu Balance Actual:</h3>
+                    <p id="userBalance" class="text-5xl font-orbitron font-bold text-ltc-green-neon">0.00000000
+                        LTC
+                    </p>
+                    <p id="homeScreenMessage" class="mt-4 text-center text-sm"></p>
+                </div>
+                <div class="daily-reward-card w-full max-w-2xl mb-8 text-center">
+                    <h3 class="text-xl font-semibold mb-2 text-ltc-blue">Recompensa Diaria</h3>
+                    <p id="dailyRewardMessage" class="text-center text-sm text-gray-400 mt-2">¡Vuelve cada 24 horas
+                        para
+                        reclamar un bonus de Litoshis!</p>
+                    <button id="claimDailyRewardButton" class="btn-primary py-3 px-6 w-full">Reclamar Recompensa
+                        Diaria</button>
+                    <p class="text-center text-sm mt-2">Próxima recompensa en: <span
+                            id="daily-reward-timer">00:00:00</span></p>
+                </div>
+            </div>
+
+            <div id="clickerFaucet" class="main-screen flex flex-col items-center justify-center p-6 hidden-completely">
+                <div id="clickerFaucetGamesContainer"
+                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl">
+                    <div class="game-card flex flex-col items-center justify-center text-center">
+                        <img src="https://placehold.co/120x120/63B5F6/ffffff?text=Clicker" alt="Memory Match Icon"
+                            class="w-32 h-32 rounded-full mb-4 object-cover border-4">
+                        <h3 class="text-2xl font-orbitron font-semibold text-white mb-2">Crypto Clicker Faucet</h3>
+                        <p id="faucetMessage" class="text-center text-sm text-gray-400 mt-2">Mensaje informativo del
+                            faucet.</p>
+                        <button id="claimFaucetButton" class="btn-primary py-3 px-6 w-full" disabled>¡Reclamar
+                            Recompensa!</button>
+                        <p class="text-center text-sm mt-2">Próximo click en <span id="faucetCooldownDisplay"></span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="advancedClickerScreen" class="main-screen hidden-completely">
+                <div id="advancedClickerGamesContainer"
+                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl">
+                    <div id="advancedClickerCard"
+                        class="game-card flex flex-col items-center justify-center text-center">
+                        <img src="https://placehold.co/120x120/63B5F6/ffffff?text=Clicker" alt="Crypto Clicker Icon"
+                            class="w-32 h-32 rounded-full mb-4 object-cover border-4">
+                        <h3 class="text-2xl font-orbitron font-semibold text-white mb-2">Crypto Clicker (Avanzado)</h3>
+                        <p class="text-ltc-light-gray text-base mb-4">Una versión más avanzada del clicker.</p>
+                        <p id="advancedClickerRewardDisplay" class="text-ltc-green-neon font-bold text-lg mb-4">
+                            Recompensa: ¡Próximamente!</p>
+                        <button id="advancedClickerButton" class=" btn-primary py-3 px-6 w-full hidden"
+                            data-game-id="cryptoClickerAdvanced">
+                            ¡Jugar ahora! </button>
+                        <p id="advancedClickerComingSoon" class="text-ltc-light-gray text-sm">(Próximamente)</p>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div id="gameScreen" class="main-screen flex flex-col items-center justify-center p-6 hidden-completely">
+                <h2 class="text-3xl font-orbitron font-bold mb-6 text-center text-ltc-blue">Memory Match</h2>
+
+                <div id="memoryGameGridContainer"
+                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl">
+
+                    <div id="activeMemoryGame"
+                        class="bg-gradient-to-br from-blue-300 to-purple-400 rounded-xl shadow-lg p-6 text-center">
+                        <p class="text-lg text-ltc-light-gray mb-4">
+                            <span id="movesDisplay" class="font-bold">Movimientos restantes: --</span>
+                        </p>
+                        <p class="text-ltc-green-neon font-bold text-lg mb-4">Encuentra los pares y prueba tu memoria.
+                            ¡200 Litoshis por partida ganada!</p>
+                        <div id="game-grid" class="grid grid-cols-4 gap-4 justify-center">
+                        </div>
+                        <button id="resetGameButton" class="btn-secondary mt-6 py-2 px-5 hidden">Volver a Jugar</button>
+                    </div>
+
+                    <div id="gameResultMessageContainer" class="w-full">
+                    </div>
+
+                </div>
+            </div>
+
+            <div id="activityScreen"
+                class="main-screen flex flex-col items-center justify-center p-6 hidden-completely">
+                <h2 class="text-3xl font-orbitron font-bold mb-6 text-center text-ltc-blue">Registro de Actividad
+                </h2>
+                <ul id="activityLogList"
+                    class="auth-card p-4 rounded-lg shadow-md border border-ltc-blue overflow-y-auto max-h-[70vh] w-full max-w-3xl">
+                </ul>
+            </div>
+
+            <div id="referralsScreen"
+                class="main-screen flex flex-col items-center justify-center p-6 hidden-completely">
+                <h2 class="text-3xl font-orbitron font-bold mb-6 text-center text-ltc-blue">Programa de Referidos
+                </h2>
+                <div class="auth-card w-full max-w-2xl mb-8">
+                    <h3 class="text-xl font-semibold mb-2 text-ltc-light-gray">Tu Código de Referido:</h3>
+                    <p class="text-ltc-light-gray text-sm mb-4">Comparte este código con tus amigos para que ambos
+                        ganen
+                        una recompensa al registrarse y aplicarlo.</p>
+                    <input type="text" id="userReferralCodeDisplay"
+                        class="form-input w-full text-center font-bold text-lg mb-4 cursor-text select-all" readonly
+                        value="Cargando...">
+                    <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                        <button id="copyReferralLinkBtn" class="btn-primary py-2 px-5 flex items-center justify-center">
+                            <i class="fas fa-copy mr-2"></i> Copiar Enlace
+                        </button>
+                        <button id="shareReferralLinkBtn" class="btn-share py-2 px-5 flex items-center justify-center">
+                            <i class="fas fa-share-alt mr-2"></i> Compartir
+                        </button>
+                    </div><br>
+
+
+                    <h3 class="text-xl font-semibold mb-4 text-gray-200">Aplicar Código de Referido:</h3>
+                    <p class="text-gray-300 mb-4">¿Alguien te refirió? Ingresa su código para obtener una recompensa
+                        de inicio.</p>
+                    <input type="text" id="applyReferralCodeInput" placeholder="CÓDIGO DEL REFERENTE"
+                        class="form-input w-full mb-4 uppercase">
+                    <button id="applyReferralCodeBtn" class="btn-primary w-full py-3">Aplicar Código</button>
+                    <p id="referralAppliedStatusText" class="text-green-400 mt-2 hidden"></p>
+                    <p id="referralMessageDisplay" class="text-red-400 mt-2 hidden"></p>
+
+
+
+
+                    <div id="referredStatusSection" class="hidden-completely">
+                        <h3 class="text-xl font-semibold mb-2 text-ltc-light-gray">Ya Has Sido Referido:</h3>
+                        <p class="text-ltc-light-gray text-sm mb-2">Fuiste referido por el código: <strong
+                                id="referredByCodeDisplay" class="font-bold text-ltc-green-neon"></strong></p>
+                        <p class="text-ltc-light-gray text-sm">Recibiste una recompensa de: <strong
+                                id="referralRewardAmountDisplay" class="font-bold text-ltc-green-neon"></strong></p>
+                    </div>
+                    <p id="referralMessageDisplay" class="mt-4 text-center message hidden"></p>
+                </div>
+
+                <div class="mt-8 bg-gray-800 p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-semibold text-center mb-4 text-white">Tus Referidos:</h3>
+                    <ul id="referredUsersList" class="space-y-2">
+                        <li class="text-gray-400 text-center">Cargando referidos...</li>
+                    </ul>
+                </div>
+            </div>
+
+
+
+
+            <div id="withdrawalScreen"
+                class="main-screen flex flex-col items-center justify-center p-6 hidden-completely">
+                <h2 class="text-3xl font-orbitron font-bold mb-6 text-center text-ltc-blue">Retiro de Fondos</h2>
+                <div class="auth-card w-full max-w-xl">
+                    <p class="text-ltc-light-gray text-lg mb-2">Correo electrónico de FaucetPay: <br>
+                        <span id="displayEmail" class="font-bold text-white">no configurado</span>
+                    </p>
+                    <button id="editEmailBtn" class="btn-secondary py-2 px-4 text-sm">
+                        Cambiar Correo
+                    </button>
+                    <div id="emailInputSection" class="mt-4 hidden flex-col">
+                        <label for="emailInput" class="text-ltc-light-gray text-sm mb-1">Nuevo correo electrónico de
+                            FaucetPay:</label>
+                        <input type="email" id="emailInput" placeholder="tu-correo@example.com" class="form-input mb-2">
+                        <button id="saveEmailBtn" class="btn-primary py-2 px-4 text-sm">
+                            Guardar Correo
+                        </button>
+                    </div>
+                    <p id="emailStatusMessage" class="mt-4 hidden text-center message"></p>
+                    <h3 class="text-xl font-semibold mt-6 mb-3 text-ltc-light-gray">Solicitar Retiro</h3>
+                    <p class="text-white mb-2">Balance disponible:
+                        <span id="withdrawalBalanceDisplay" class="font-bold text-ltc-green-neon">0.00000000
+                            LTC</span>
+                    </p>
+                    <p class="text-ltc-light-gray text-sm mb-4">Comisión por retiro: 0.00001000 LTC</p>
+                    <label for="withdrawalAmountSelect" class="text-ltc-light-gray text-sm mb-1">Selecciona monto de
+                        retiro (LTC):</label>
+                    <select id="withdrawalAmountSelect" class="form-input w-full mb-4">
+                        <option value="">Selecciona un monto</option>
+                        <option value="1000">0.00001 LTC (10000 satoshis)</option>
+                        <option value="5000">0.00005 LTC (50000 satoshis)</option>
+                        <option value="10000">0.0001 LTC (100000 satoshis)</option>
+                        <option value="50000">0.0005 LTC (500000 satoshis)</option>
+                        <option value="100000">0.001 LTC (1000000 satoshis)</option>
+                    </select>
+
+                    <button id="requestWithdrawalBtn" class="btn-primary w-full py-3">
+                        Solicitar Retiro
+                    </button>
+                </div>
+            </div>
+
+            <div id="termsScreen" class="main-screen flex flex-col items-center justify-center p-6 hidden-completely">
+                <h2 class="text-3xl font-orbitron font-bold mb-6 text-center text-ltc-blue">Términos y Condiciones
+                </h2>
+                <div class="auth-card w-full max-w-3xl">
+                    <p class="text-ltc-light-gray text-center mb-4">
+                        Para ver nuestros Términos y Condiciones completos, por favor, visita el siguiente enlace,
+                        que
+                        se abrirá en una nueva pestaña:
+                    </p>
+                    <div class="text-center">
+                        <a href="https://www.ejemplo.com/terminos" target="_blank"
+                            class="text-ltc-green-neon hover:underline font-bold text-lg">
+                            Leer Términos y Condiciones
+                        </a>
+                    </div>
+                    <p class="text-ltc-light-gray text-sm text-center mt-6">
+                        Este contenido es solo un marcador de posición. El enlace real se abrirá externamente para
+                        cumplir con las políticas.
+                    </p>
+                </div>
+            </div>
+
+
+
+
+
+            <section id="helpScreen"
+                class="screen hidden-completely bg-gray-900 text-white min-h-screen p-4 sm:p-6 lg:p-8">
+                <div class="container mx-auto max-w-4xl">
+                    <h2 class="text-3xl sm:text-4xl font-bold mb-6 text-ltc-green-neon text-center">Centro de Ayuda y
+                        Preguntas Frecuentes</h2>
+
+                    <div class="space-y-6">
+                        <div class="bg-gray-800 rounded-lg p-6 shadow-lg">
+                            <h3 class="text-2xl font-semibold mb-4 text-white">Preguntas Frecuentes (FAQ)</h3>
+                            <div class="space-y-4">
+
+                                <div>
+                                    <button
+                                        class="faq-question w-full text-left text-lg font-medium text-ltc-yellow py-2 flex justify-between items-center">
+                                        <span>¿Cómo gano Litoshis en esta aplicación?</span>
+                                        <i class="fas fa-chevron-down text-sm"></i>
+                                    </button>
+                                    <div class="faq-answer mt-2 text-gray-300 hidden">
+                                        <p>Puedes ganar Litoshis reclamando del faucet cada cierto tiempo, jugando a los
+                                            minijuegos disponibles y participando en nuestro programa de referidos.</p>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <button
+                                        class="faq-question w-full text-left text-lg font-medium text-ltc-yellow py-2 flex justify-between items-center">
+                                        <span>¿Cuál es la cantidad mínima para retirar?</span>
+                                        <i class="fas fa-chevron-down text-sm"></i>
+                                    </button>
+                                    <div class="faq-answer mt-2 text-gray-300 hidden">
+                                        <p>La cantidad mínima de retiro es de 10,000 Litoshis (0.0001 LTC). Aplica una
+                                            pequeña tarifa de red.</p>
+                                    </div>
+                                </div>
+
+
+                                <div>
+                                    <button
+                                        class="faq-question w-full text-left text-lg font-medium text-ltc-yellow py-2 flex justify-between items-center">
+                                        <span>¿Cómo funciona el programa de referidos?</span>
+                                        <i class="fas fa-chevron-down text-sm"></i>
+                                    </button>
+                                    <div class="faq-answer mt-2 text-gray-300 hidden">
+                                        <p>Puedes compartir tu código de referido único. Cuando un nuevo usuario se
+                                            registra usando tu código, ganarás una Comisión de 200 Litoshis por cada
+                                            referido.</p>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <button
+                                        class="faq-question w-full text-left text-lg font-medium text-ltc-yellow py-2 flex justify-between items-center">
+                                        <span>¿Cómo puedo contactar al soporte?</span>
+                                        <i class="fas fa-chevron-down text-sm"></i>
+                                    </button>
+                                    <div class="faq-answer mt-2 text-gray-300 hidden">
+                                        <p class="text-gray-300 mb-4">Si tienes alguna otra pregunta o necesitas soporte
+                                            técnico, no dudes en contactarnos a través de:</p>
+                                        <ul class="list-disc list-inside text-gray-300 space-y-2">
+                                            <li>Correo electrónico: <a href="mailto:soporte@tudominio.com"
+                                                    class="text-ltc-green-neon hover:underline">dpsservicio@gmail.com</a>
+                                            </li>
+                                            <li>
+                                                Proximamente en nuestras redes sociales para actualizaciones y
+                                                noticias.
+                                            </li>
+                                        </ul>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+            </section>
+
+
+
+            <div id="faucetPayErrorModal"
+                class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center hidden z-50">
+                <div
+                    class="bg-gray-800 p-8 rounded-lg shadow-xl max-w-lg w-full text-center relative border border-ltc-error">
+                    <button id="closeFaucetPayErrorModal"
+                        class="absolute top-3 right-3 text-white text-3xl font-bold">&times;</button>
+                    <h3 class="text-2xl font-orbitron font-bold text-ltc-error mb-4">Error de FaucetPay</h3>
+                    <p id="faucetPayErrorMessage" class="text-white mb-6">
+                    </p>
+                    <button id="okFaucetPayErrorButton" class="btn-primary bg-ltc-error hover:bg-red-700 py-2 px-5">
+                        Aceptar
+                    </button>
+                </div>
+            </div>
+
+        </main>
+
+    </div>
+
+    <div id="notificationContainer" class="fixed top-4 right-4 z-50 flex flex-col space-y-2"></div>
+
+    <div id="loadingModal"
+        class="fixed inset-0 bg-ltc-dark-gray bg-opacity-90 flex items-center justify-center z-50 hidden-completely">
+        <div class="text-center text-ltc-green-neon">
+            <div
+                class="loader ease-linear rounded-full border-4 border-t-4 border-ltc-primary h-12 w-12 mb-4 animate-spin">
+            </div>
+            <p id="loadingMessage" class="text-xl">Cargando aplicación...</p>
+        </div>
+    </div>
+
+    <style>
+       .hidden-completely {
+            display: none !important;
+        }
+
+        .main-screen {
+            width: 100%;
+            height: 100%;
+
+        }
+
+        /* Add this if your screens should take full height and width within the content-area */
+    </style>
+
+    <script type="module" src="./js/app.js"></script>
+    <script type="module" src="./js/game.js"></script>
+    <script type="module" src="./js/referralScreen.js"></script>
+    <script type="module" src="./js/screenHandler.js"></script>
+    <script type="module" src="./js/sidebar.js"></script>
+    <script type="module" src="./js/ui-feedback.js"></script>
+    <script type="module" src="./js/withdrawalScreen.js"></script>
+    <script type="module" src="./js/loading.js"></script>
+</body>
+
+</html>

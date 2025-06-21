@@ -1,0 +1,2082 @@
+/* Variables CSS para colores temáticos de Litecoin */
+:root {
+    --ltc-blue: #63B5F6;
+    /* Azul más claro y brillante, inspirado en la imagen */
+    --ltc-blue-dark: #3a81f0;
+    /* Un azul un poco más oscuro para hover */
+    --ltc-purple: #A57CFA;
+    /* Un morado vibrante para degradados */
+    --ltc-green-neon: #00FF99;
+    /* Verde neón para acentos */
+    --ltc-yellow-electric: #FFFF00;
+    /* Amarillo eléctrico para destacar */
+    --ltc-light-gray: #D3D3D3;
+    /* Gris claro para texto y algunos fondos */
+    --ltc-dark-bg-card: rgba(255, 255, 255, 0.1);
+    /* Fondo semi-transparente para tarjetas */
+    --ltc-border-card: rgba(255, 255, 255, 0.2);
+    /* Borde claro para tarjetas */
+    --ltc-text-main: #E0E0E0;
+    /* Color principal del texto */
+    --ltc-success: #48bb78;
+    /* Verde para éxito */
+    --ltc-error: #ef4444;
+    /* Rojo para error */
+}
+
+
+
+html,
+body {
+    font-family: 'Roboto', sans-serif;
+    color: var(--ltc-text-main);
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--ltc-blue-dark) 0%, var(--ltc-purple) 100%);
+    animation: gradientShift 10s ease infinite alternate;
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+
+
+
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    /* Apila el header y el main content verticalmente */
+    height: 100%;
+    /* El contenedor de la app ocupa toda la altura del body */
+    width: 100%;
+    /* El contenedor de la app ocupa todo el ancho */
+    overflow: hidden;
+    /* Importante para contener el scroll de las subsecciones */
+}
+
+
+
+
+.app-header {
+    position: relative;
+    z-index: 20;
+    background-color: #2d3748;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes headerFadeIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+
+
+.main-screen {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    padding-bottom: 20px;
+}
+
+
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    /* Asegúrate de que esté en el borde izquierdo */
+    width: 256px;
+    /* Coincide con w-64 de Tailwind (256px = 16rem * 16px/rem) */
+    height: 100%;
+    background: rgba(30, 30, 50, 0.95);
+    /* Fondo oscuro con transparencia */
+    backdrop-filter: blur(10px);
+    border-right: 2px solid var(--ltc-blue);
+    /* Borde a la derecha para que se vea al abrir */
+    box-shadow: 8px 0 25px rgba(0, 0, 0, 0.6);
+    /* Sombra hacia la derecha */
+    transform: translateX(-100%);
+    /* Oculto por defecto a la izquierda */
+    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    /* Transición elástica para transform */
+    z-index: 2001;
+    padding-top: 80px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Para el sidebar overlay */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 2000;
+    opacity: 0;
+    /* Inicialmente transparente */
+    pointer-events: none;
+    /* No interactuable cuando está oculto */
+    transition: opacity 0.3s ease-in-out;
+}
+
+
+
+.flex {
+    display: flex !important;
+}
+
+.hidden {
+    display: none !important;
+    /* El !important es a menudo necesario para Tailwind */
+}
+
+.app-logo {
+    height: 40px;
+    filter: drop-shadow(0 0 8px var(--ltc-blue));
+}
+
+/* Estilos para el logo de texto degradado */
+.app-logo-text {
+    /* Colores del degradado (puedes ajustar los colores) */
+    background: linear-gradient(to right, var(--ltc-blue), var(--ltc-green-neon));
+    /* Azul a verde neón */
+    -webkit-background-clip: text;
+    /* Para que el degradado solo se aplique al texto */
+    background-clip: text;
+    /* Estándar */
+    -webkit-text-fill-color: transparent;
+    /* Hace que el texto sea transparente para que se vea el degradado */
+    color: transparent;
+    /* Fallback para navegadores que no soporten -webkit-text-fill-color */
+
+    font-size: 2.5rem;
+    /* Tamaño de fuente más grande, ajusta si es necesario */
+    text-shadow: 0 0 15px rgba(0, 255, 153, 0.7);
+    /* Sombra de brillo verde neón para el texto */
+    transition: all 0.3s ease-in-out;
+    cursor: default;
+    /* No es un botón, no tiene cursor de puntero */
+}
+
+.app-logo-text:hover {
+    text-shadow: 0 0 25px rgba(0, 255, 153, 1), 0 0 35px rgba(99, 181, 246, 0.8);
+    /* Brillo más intenso en hover */
+}
+
+/* Asegúrate de que el header tenga suficiente padding para el logo más grande */
+.app-header {
+    background: linear-gradient(to right, rgba(99, 181, 246, 0.1), rgba(165, 124, 250, 0.1));
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 1.2rem 1.5rem;
+    /* Deja este padding o auméntalo si el texto es muy grande */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+    z-index: 2000;
+    animation: headerFadeIn 1s ease-out forwards;
+}
+
+/* Botón de hamburguesa */
+.hamburger-button {
+    background: none;
+    border: none;
+    color: var(--ltc-green-neon);
+    /* Color neón llamativo */
+    font-size: 2rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.hamburger-button:hover {
+    color: var(--ltc-yellow-electric);
+    /* Cambio a amarillo en hover */
+    transform: scale(1.1);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.sidebar.open {
+    transform: translateX(0);
+    /* Visible cuando la clase 'open' está presente */
+}
+
+
+
+
+.sidebar-overlay.visible {
+    opacity: 1;
+    /* Completamente visible */
+    pointer-events: auto;
+    /* Permite interacciones (clics para cerrar) */
+}
+
+
+
+
+
+.sidebar-overlay.hidden {
+    opacity: 0;
+}
+
+
+.sidebar-nav-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    color: var(--ltc-light-gray);
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sidebar-nav-item i {
+    margin-right: 1rem;
+    width: 20px;
+    text-align: center;
+}
+
+.sidebar-nav-item:hover {
+    background-color: rgba(99, 181, 246, 0.2);
+    /* Sutil hover de azul brillante */
+    color: white;
+    transform: translateX(8px);
+}
+
+.sidebar-nav-item.active {
+    background: linear-gradient(to right, var(--ltc-blue) 0%, rgba(99, 181, 246, 0.4) 100%);
+    color: white;
+    font-weight: bold;
+    border-left: 5px solid var(--ltc-green-neon);
+    /* Borde verde neón */
+    box-shadow: inset 5px 0 15px rgba(0, 255, 153, 0.3);
+}
+
+.sidebar-nav-item.logout {
+    color: var(--ltc-error);
+    margin-top: auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: none;
+}
+
+.sidebar-nav-item.logout:hover {
+    background-color: rgba(239, 68, 68, 0.2);
+    color: white;
+}
+
+/* Contenido principal */
+.content-area {
+    flex-grow: 1;
+    position: relative;
+    overflow: hidden;
+    /* El fondo del body ya maneja el degradado */
+}
+
+/* Estilos para las pantallas de contenido */
+.main-content {
+    position: absolute;
+    /* Para que se superpongan y solo una sea visible */
+    top: 0;
+    /* Ajusta según la altura de tu header */
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Ajusta según la altura de tu header si es necesario */
+    padding: 20px;
+    /* Ejemplo de padding, ajusta a tus necesidades */
+    padding-top: 80px;
+    /* Para dejar espacio al header fijo */
+    overflow-y: auto;
+    /* Permite desplazamiento si el contenido es grande */
+    -webkit-overflow-scrolling: touch;
+    box-sizing: border-box;
+
+    /* **CLAVE PARA LAS TRANSICIONES** */
+    opacity: 0;
+    /* Inicialmente transparente */
+    pointer-events: none;
+    /* No interactuable cuando está oculto */
+    transform: translateY(20px);
+    /* Pequeña animación de entrada */
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    /* Transiciones suaves */
+    display: flex;
+    /* O el display por defecto que necesites para el layout interno */
+    flex-direction: column;
+    align-items: center;
+    /* Centra el contenido horizontalmente */
+    justify-content: flex-start;
+    /* Alinea el contenido arriba */
+}
+
+/* Clase para la pantalla activa */
+.main-content.active-screen {
+    opacity: 1;
+    /* Completamente visible */
+    pointer-events: auto;
+    /* Permite interacciones */
+    transform: translateY(0);
+    /* Vuelve a su posición normal */
+    /* display: flex;  Ya lo tiene por defecto, pero puedes forzarlo aquí si necesitas cambiarlo */
+}
+
+/* Clase para ocultar completamente después de la transición */
+/* Esta clase se añade por JS una vez que la transición de opacidad ha terminado */
+.main-content.hidden-completely {
+    display: none !important;
+    pointer-events: none;
+    /* Importante para asegurar que no ocupe espacio y no se active con tabbing */
+}
+
+/* Estilos para el overlay de carga */
+#loadingOverlay {
+    position: fixed;
+    inset: 0;
+    /* top:0; left:0; right:0; bottom:0; */
+    background-color: rgba(17, 24, 39, 0.95);
+    /* Tailwind's gray-900 con opacidad */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    /* Asegura que esté por encima de todo */
+    transition: opacity 0.5s ease-out;
+    /* Transición para ocultar */
+}
+
+#loadingOverlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+    /* No interactuable */
+}
+
+/* Loader spinner */
+.loader {
+    border: 8px solid rgba(255, 255, 255, 0.2);
+    border-top: 8px solid var(--ltc-blue);
+    /* Ajuste de color a tu tema */
+    border-radius: 50%;
+    width: 60px;
+    /* Ajuste de tamaño */
+    height: 60px;
+    /* Ajuste de tamaño */
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Estilos para los modales (helpModal, faucetPayErrorModal) */
+/* Deben tener display: none por defecto y ser controlados por JS */
+#helpModal,
+#faucetPayErrorModal {
+    display: none;
+    /* Oculto por defecto */
+    /* Asegúrate de que las demás propiedades (position, inset, background, etc.) estén correctas */
+}
+
+#helpModal.active,
+#faucetPayErrorModal.active {
+    display: flex;
+    /* Se muestra cuando está activo */
+}
+
+
+/* Estilos específicos para pantallas */
+#authScreen {
+    justify-content: center;
+    background: none;
+    /* Background handled by body */
+    animation: fadeIn 0.8s ease-out;
+}
+
+/* Tarjetas (auth, balance, game) - Estilo unificado */
+.auth-card,
+.balance-card,
+.daily-reward-card,
+.game-card {
+    background: var(--ltc-dark-bg-card);
+    /* Fondo semi-transparente para todas las tarjetas */
+    backdrop-filter: blur(10px);
+    /* Efecto de desenfoque */
+    border: 1px solid var(--ltc-border-card);
+    /* Borde sutil claro */
+    padding: 2rem;
+    border-radius: 1.5rem;
+    /* Esquinas más redondeadas */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    /* Sombra más pronunciada */
+    animation: slideInUp 0.6s ease-out;
+}
+
+/* Borde especial para balance y daily reward */
+.balance-card {
+    border: 2px solid var(--ltc-blue);
+}
+
+.daily-reward-card {
+    border: 2px solid var(--ltc-green-neon);
+}
+
+
+/* Estilos de botones y inputs */
+.form-input {
+    background-color: rgba(255, 255, 255, 0.1);
+    /* Fondo más claro y transparente */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    /* Borde sutil */
+    color: white;
+    padding: 0.8rem 1rem;
+    border-radius: 0.75rem;
+    /* Más redondeado */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+
+/* Estilos para el botón de Google */
+.btn-google {
+    background-color: #4285F4;
+    /* Azul de Google */
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 0.75rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-google:hover {
+    background-color: #357ae8;
+    /* Un azul más oscuro al pasar el ratón */
+    transform: translateY(-2px);
+}
+
+.btn-google:active {
+    transform: translateY(0);
+}
+
+.btn-google img {
+    margin-right: 0.5rem;
+}
+
+
+/* Estilos para el placeholder de los inputs */
+.form-input::placeholder {
+    color: var(--ltc-green-neon);
+    /* O usa var(--ltc-yellow-electric) */
+    opacity: 0.8;
+    /* Para que no sea tan intenso como el texto principal */
+    transition: color 0.3s ease;
+}
+
+.form-input:focus::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+    /* Se vuelve más tenue al escribir */
+}
+
+.form-input:focus {
+    border-color: var(--ltc-green-neon);
+    /* Borde verde neón al enfocar */
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(0, 255, 153, 0.3);
+    /* Brillo verde neón */
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Estilos específicos para el select (desplegable) */
+select.form-input {
+    color: var(--ltc-light-gray);
+    /* Color inicial del texto en el select, un gris claro */
+    -webkit-appearance: none;
+    /* Elimina estilos por defecto de navegador */
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23D3D3D3'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    /* Icono de flecha SVG blanco */
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1em;
+    padding-right: 2.5rem;
+    /* Espacio para la flecha */
+}
+
+/* Estilos para las opciones del select */
+select.form-input option {
+    background-color: #2c2c4a;
+    /* Fondo más oscuro para las opciones */
+    color: white;
+    /* Color blanco para el texto de las opciones */
+    padding: 0.5rem 1rem;
+}
+
+select.form-input option:checked {
+    background-color: var(--ltc-blue);
+    /* Fondo azul para la opción seleccionada */
+    color: white;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, var(--ltc-blue), var(--ltc-purple));
+    /* Degradado en botones */
+    color: white;
+    padding: 0.9rem 1.8rem;
+    /* Más grande */
+    border-radius: 0.75rem;
+    /* Más redondeado */
+    font-weight: bold;
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+    border: none;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(45deg, var(--ltc-green-neon), var(--ltc-yellow-electric));
+    /* Degradado en hover */
+    transform: translateY(-3px) scale(1.02);
+    /* Más movimiento */
+    box-shadow: 0 8px 25px rgba(0, 255, 153, 0.5);
+    /* Sombra de brillo verde */
+}
+
+.btn-secondary {
+    background-color: rgba(255, 255, 255, 0.1);
+    /* Fondo semi-transparente */
+    color: var(--ltc-light-gray);
+    padding: 0.9rem 1.8rem;
+    border-radius: 0.75rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease, border-color 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: var(--ltc-blue);
+    transform: translateY(-2px);
+}
+
+/* Botones específicos como el de compartir */
+.btn-share {
+    background: linear-gradient(45deg, #28a745, #218838);
+    /* Verde más tradicional para compartir */
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+}
+
+.btn-share:hover {
+    background: linear-gradient(45deg, #218838, #1e7e34);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(40, 167, 69, 0.4);
+}
+
+
+/* Efectos de texto */
+.text-ltc-blue {
+    color: var(--ltc-blue);
+}
+
+.text-ltc-success {
+    color: var(--ltc-green-neon);
+    /* Éxito en verde neón */
+}
+
+.text-ltc-error {
+    color: var(--ltc-error);
+}
+
+.text-ltc-light-gray {
+    color: var(--ltc-light-gray);
+}
+
+.text-ltc-purple {
+    color: var(--ltc-purple);
+}
+
+/* Estilos para la pantalla de carga */
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(30, 30, 50, 0.98);
+    /* Un fondo casi opaco para cubrir todo */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    /* Asegura que esté por encima de todo */
+    color: var(--ltc-text-main);
+    font-size: 1.2rem;
+    transition: opacity 0.5s ease-out;
+    /* Para una transición suave al ocultar */
+}
+
+.loading-screen.hidden {
+    opacity: 0;
+    pointer-events: none;
+    /* Crucial: para que no bloquee interacciones una vez oculta */
+}
+
+
+
+
+
+/* Game Screen specific */
+#homeScreen {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+#homeScreen {
+    transform: translateY(-8px) scale(1.03);
+    /* Más movimiento y escala */
+    box-shadow: 0 15px 30px rgba(0, 255, 153, 0.5);
+    /* Sombra de brillo verde neón */
+    border-color: var(--ltc-green-neon);
+}
+
+#homeScreen {
+    border: 3px solid var(--ltc-blue);
+    /* Borde más pronunciado */
+    box-shadow: 0 0 15px rgba(99, 181, 246, 0.7);
+    /* Sombra de brillo azul */
+}
+
+
+
+/* Game Screen specific */
+.game-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.game-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    /* Más movimiento y escala */
+    box-shadow: 0 15px 30px rgba(0, 255, 153, 0.5);
+    /* Sombra de brillo verde neón */
+    border-color: var(--ltc-green-neon);
+}
+
+.game-card img {
+    border: 3px solid var(--ltc-blue);
+    /* Borde más pronunciado */
+    box-shadow: 0 0 15px rgba(99, 181, 246, 0.7);
+    /* Sombra de brillo azul */
+}
+
+
+/* Animaciones */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Media queries para responsividad */
+@media (max-width: 768px) {
+    .auth-card {
+        padding: 1.5rem;
+        margin: 0 0.5rem;
+        /* Menos margen en móviles */
+    }
+
+    .sidebar {
+        width: 220px;
+
+    }
+
+
+
+    .sidebar-nav-item {
+        font-size: 1rem;
+        padding: 0.8rem 1rem;
+    }
+
+    .sidebar-nav-item i {
+        margin-right: 0.8rem;
+    }
+
+    .app-header {
+        padding: 0.75rem 1rem;
+    }
+
+    .app-logo {
+        height: 35px;
+    }
+
+    .game-card {
+        padding: 1.2rem;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        padding: 0.7rem 1.2rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Estilos para el contenedor del juego Memory Match */
+
+/* Estilos para el efecto 3D de volteo de cartas */
+.memory-card .card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s;
+    /* Velocidad de volteo */
+    transform-style: preserve-3d;
+    /* Por defecto, el inner no está volteado, muestra la parte trasera */
+    transform: rotateY(0deg);
+    /* Asegura que no haya rotación inicial */
+}
+
+.memory-card .card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    /* Oculta la cara trasera de cada "cara" */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* El font-size general para los iconos de las cartas ya lo tienes en .memory-card */
+    /* Asegúrate de que card-face tenga un fondo */
+    background-color: var(--ltc-blue);
+    /* Color de fondo de la cara trasera y frontal si no hay imagen */
+    color: white;
+    /* Color del signo de interrogación */
+    border-radius: 0.75rem;
+    /* Asegura que la cara tenga los mismos bordes */
+}
+
+.memory-card .card-back {
+    /* La cara trasera se muestra por defecto */
+    transform: rotateY(0deg);
+    /* Puedes darle un color específico para la parte de atrás si difiere de .card-face general */
+    background-color: var(--ltc-blue);
+    /* Fondo del signo de interrogación */
+    color: white;
+    /* Color del signo de interrogación */
+}
+
+.memory-card .card-front {
+    /* La cara frontal está oculta por defecto */
+    transform: rotateY(180deg);
+    /* Fondo para la cara frontal (donde irán las imágenes) */
+    background-color: white;
+    /* Generalmente blanco o muy claro para que la imagen resalte */
+    padding: 5px;
+    /* Pequeño padding si las imágenes son muy grandes y necesitas espacio */
+}
+
+.memory-card .card-front img {
+    max-width: 80%;
+    /* Asegura que la imagen no se desborde */
+    max-height: 80%;
+    object-fit: contain;
+    /* Para que la imagen se ajuste sin distorsionarse */
+}
+
+/* Cuando la carta se voltea, rota el contenedor interno */
+.memory-card.flipped .card-inner {
+    transform: rotateY(180deg);
+    /* Esto revela la cara frontal */
+}
+
+#activeMemoryGame {
+    width: 100%;
+    max-width: 600px;
+    /* Mantener este ancho máximo para pantallas más grandes */
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+
+
+/* Estilos para el grid de las cartas */
+#game-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    /* 4 columnas de igual ancho por defecto */
+    gap: 1rem;
+    /* Espacio entre las cartas */
+    width: 100%;
+    /* Asegura que el grid ocupe todo el ancho disponible del contenedor padre */
+    max-width: 300px;
+    /* Limita el ancho del grid para que no se estire demasiado en pantallas medianas */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Estilos para las tarjetas individuales del juego */
+.memory-card {
+    width: 100%;
+    /* Ocupa todo el ancho disponible en su columna */
+    aspect-ratio: 1 / 1;
+    /* Mantiene las tarjetas cuadradas */
+    background-color: var(--ltc-blue);
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5em;
+    /* Tamaño del icono o texto. Lo ajustaremos en media queries. */
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.memory-card.flipped {
+    background-color: #f0f0f0;
+}
+
+/* Media query para pantallas pequeñas (ej. smartphones en horizontal o tablets pequeñas) */
+@media (max-width: 768px) {
+    #activeMemoryGame {
+        padding: 0.5rem;
+        /* Reducir el padding general */
+    }
+
+    #game-grid {
+        gap: 0.7rem;
+        /* Ligeramente menos espacio entre las cartas */
+        max-width: 300px;
+        /* Ajuste el ancho máximo del grid para que quepan mejor las 4 columnas */
+    }
+
+    .memory-card {
+        font-size: 1.6em;
+        /* Hacer la fuente de las cartas más pequeña */
+        border-radius: 0.6rem;
+    }
+}
+
+/* Media query para pantallas aún más pequeñas (ej. la mayoría de los smartphones en vertical) */
+@media (max-width: 480px) {
+    #activeMemoryGame {
+        padding: 0.3rem;
+        /* Reducir aún más el padding general */
+    }
+
+    #game-grid {
+        grid-template-columns: repeat(4, 1fr);
+        /* Intentamos mantener 4 columnas si es posible */
+        gap: 0.4rem;
+        /* Reducir aún más el espacio */
+        max-width: 200px;
+        /* Reducir el ancho máximo del grid para 4 columnas muy ajustadas */
+    }
+
+    .memory-card {
+        font-size: 1.2em;
+        /* Hacer la fuente de las cartas notablemente más pequeña */
+        border-radius: 0.4rem;
+    }
+}
+
+/* Media query para pantallas MUY estrechas (ej. iPhone SE, dispositivos muy pequeños) */
+@media (max-width: 360px) {
+    #game-grid {
+        grid-template-columns: repeat(3, 1fr);
+        /* Cambiar a 3 columnas */
+        gap: 0.4rem;
+        /* Reducir el espacio para 3 columnas */
+        max-width: 150px;
+        /* Ajustar el ancho máximo para 3 columnas */
+    }
+
+    .memory-card {
+        font-size: 0.2em;
+        /* Ajustar la fuente para 3 columnas */
+        border-radius: 0.3rem;
+    }
+}
+
+/* Media query para pantallas MUY estrechas (ej. iPhone SE, dispositivos muy pequeños) */
+@media (max-width: 260px) {
+    #game-grid {
+        grid-template-columns: repeat(3, 1fr);
+        /* Cambiar a 3 columnas */
+        gap: 0.1rem;
+        /* Reducir el espacio para 3 columnas */
+        max-width: 50px;
+        /* Ajustar el ancho máximo para 3 columnas */
+    }
+
+    .memory-card {
+        font-size: 0.1em;
+        /* Ajustar la fuente para 3 columnas */
+        border-radius: 0.3rem;
+    }
+}
+
+/* In your style.css or embedded styles */
+#notificationContainer {
+    position: fixed;
+    /* Or absolute */
+    top: 13%;
+    /* This is the problem! It puts it at the very top. */
+    left: 50%;
+    width: 90%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    /* Ensures it's on top of other content */
+    /* ... other styles like padding, background, etc. */
+}
+
+
+/* style.css */
+
+#loadingModal {
+    position: fixed; /* Esto lo fija en el viewport */
+    top: 0;          /* Lo posiciona arriba */
+    left: 0;         /* Lo posiciona a la izquierda */
+    width: 100%;     /* Ocupa todo el ancho de la pantalla */
+    height: 100%;    /* Ocupa todo el alto de la pantalla */
+    background-color: rgba(0, 0, 0, 0.7); /* Esto crea el fondo oscuro y semi-transparente */
+    display: flex;   /* Habilita Flexbox para centrar su contenido */
+    justify-content: center; /* Centra horizontalmente el 'loading-content' */
+    align-items: center;     /* Centra verticalmente el 'loading-content' */
+    z-index: 9999;   /* Asegura que esté por encima de todo lo demás en la página */
+    pointer-events: auto; /* IMPORTANTE: Esto asegura que el modal capture todos los eventos de clic y no los deje pasar a los elementos debajo. */
+}
+
+#loadingModal.hidden {
+    display: none; /* Esta clase oculta el modal */
+}
+
+.loading-content {
+    background-color: #2c2c3e; /* Fondo oscuro para el cuadro del mensaje/spinner */
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    color: #ffffff; /* Color del texto del modal */
+}
+
+.spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid #4CAF50; /* Color de la parte giratoria del spinner */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 15px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-message {
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+
+
+
+
+/* Variables CSS para colores temáticos de Litecoin */
+:root {
+    --ltc-blue: #63B5F6;
+    /* Azul más claro y brillante, inspirado en la imagen */
+    --ltc-blue-dark: #3a81f0;
+    /* Un azul un poco más oscuro para hover */
+    --ltc-purple: #A57CFA;
+    /* Un morado vibrante para degradados */
+    --ltc-green-neon: #00FF99;
+    /* Verde neón para acentos */
+    --ltc-yellow-electric: #FFFF00;
+    /* Amarillo eléctrico para destacar */
+    --ltc-light-gray: #D3D3D3;
+    /* Gris claro para texto y algunos fondos */
+    --ltc-dark-bg-card: rgba(255, 255, 255, 0.1);
+    /* Fondo semi-transparente para tarjetas */
+    --ltc-border-card: rgba(255, 255, 255, 0.2);
+    /* Borde claro para tarjetas */
+    --ltc-text-main: #E0E0E0;
+    /* Color principal del texto */
+    --ltc-success: #48bb78;
+    /* Verde para éxito */
+    --ltc-error: #ef4444;
+    /* Rojo para error */
+}
+
+
+
+html,
+body {
+    font-family: 'Roboto', sans-serif;
+    color: var(--ltc-text-main);
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--ltc-blue-dark) 0%, var(--ltc-purple) 100%);
+    animation: gradientShift 10s ease infinite alternate;
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+
+
+
+
+.app-container {
+    display: flex;
+    flex-direction: column; /* Apila el header y el main content verticalmente */
+    height: 100%; /* El contenedor de la app ocupa toda la altura del body */
+    width: 100%; /* El contenedor de la app ocupa todo el ancho */
+    overflow: hidden; /* Importante para contener el scroll de las subsecciones */
+}
+
+  
+
+
+.app-header {
+    position: relative;
+    z-index: 20;
+    background-color: #2d3748;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+@keyframes headerFadeIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+
+
+.main-screen {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    padding-bottom: 20px;
+}
+
+
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0; /* Asegúrate de que esté en el borde izquierdo */
+    width: 256px; /* Coincide con w-64 de Tailwind (256px = 16rem * 16px/rem) */
+    height: 100%;
+    background: rgba(30, 30, 50, 0.95); /* Fondo oscuro con transparencia */
+    backdrop-filter: blur(10px);
+    border-right: 2px solid var(--ltc-blue); /* Borde a la derecha para que se vea al abrir */
+    box-shadow: 8px 0 25px rgba(0, 0, 0, 0.6); /* Sombra hacia la derecha */
+    transform: translateX(-100%); /* Oculto por defecto a la izquierda */
+    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Transición elástica para transform */
+    z-index: 2001;
+    padding-top: 80px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Para el sidebar overlay */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 2000;
+    opacity: 0; /* Inicialmente transparente */
+    pointer-events: none; /* No interactuable cuando está oculto */
+    transition: opacity 0.3s ease-in-out;
+}
+
+
+
+.flex {
+    display: flex !important;
+}
+
+.hidden {
+    display: none !important; /* El !important es a menudo necesario para Tailwind */
+}
+
+.app-logo {
+    height: 40px;
+    filter: drop-shadow(0 0 8px var(--ltc-blue));
+}
+
+/* Estilos para el logo de texto degradado */
+.app-logo-text {
+    /* Colores del degradado (puedes ajustar los colores) */
+    background: linear-gradient(to right, var(--ltc-blue), var(--ltc-green-neon));
+    /* Azul a verde neón */
+    -webkit-background-clip: text;
+    /* Para que el degradado solo se aplique al texto */
+    background-clip: text;
+    /* Estándar */
+    -webkit-text-fill-color: transparent;
+    /* Hace que el texto sea transparente para que se vea el degradado */
+    color: transparent;
+    /* Fallback para navegadores que no soporten -webkit-text-fill-color */
+
+    font-size: 2.5rem;
+    /* Tamaño de fuente más grande, ajusta si es necesario */
+    text-shadow: 0 0 15px rgba(0, 255, 153, 0.7);
+    /* Sombra de brillo verde neón para el texto */
+    transition: all 0.3s ease-in-out;
+    cursor: default;
+    /* No es un botón, no tiene cursor de puntero */
+}
+
+.app-logo-text:hover {
+    text-shadow: 0 0 25px rgba(0, 255, 153, 1), 0 0 35px rgba(99, 181, 246, 0.8);
+    /* Brillo más intenso en hover */
+}
+
+/* Asegúrate de que el header tenga suficiente padding para el logo más grande */
+.app-header {
+    background: linear-gradient(to right, rgba(99, 181, 246, 0.1), rgba(165, 124, 250, 0.1));
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 1.2rem 1.5rem;
+    /* Deja este padding o auméntalo si el texto es muy grande */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+    z-index: 2000;
+    animation: headerFadeIn 1s ease-out forwards;
+}
+
+/* Botón de hamburguesa */
+.hamburger-button {
+    background: none;
+    border: none;
+    color: var(--ltc-green-neon);
+    /* Color neón llamativo */
+    font-size: 2rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.hamburger-button:hover {
+    color: var(--ltc-yellow-electric);
+    /* Cambio a amarillo en hover */
+    transform: scale(1.1);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.sidebar.open {
+    transform: translateX(0);
+    /* Visible cuando la clase 'open' está presente */
+}
+
+
+
+
+.sidebar-overlay.visible {
+    opacity: 1;
+    /* Completamente visible */
+    pointer-events: auto;
+    /* Permite interacciones (clics para cerrar) */
+}
+
+
+
+
+
+.sidebar-overlay.hidden {
+    opacity: 0;
+}
+
+
+.sidebar-nav-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    color: var(--ltc-light-gray);
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sidebar-nav-item i {
+    margin-right: 1rem;
+    width: 20px;
+    text-align: center;
+}
+
+.sidebar-nav-item:hover {
+    background-color: rgba(99, 181, 246, 0.2);
+    /* Sutil hover de azul brillante */
+    color: white;
+    transform: translateX(8px);
+}
+
+.sidebar-nav-item.active {
+    background: linear-gradient(to right, var(--ltc-blue) 0%, rgba(99, 181, 246, 0.4) 100%);
+    color: white;
+    font-weight: bold;
+    border-left: 5px solid var(--ltc-green-neon);
+    /* Borde verde neón */
+    box-shadow: inset 5px 0 15px rgba(0, 255, 153, 0.3);
+}
+
+.sidebar-nav-item.logout {
+    color: var(--ltc-error);
+    margin-top: auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: none;
+}
+
+.sidebar-nav-item.logout:hover {
+    background-color: rgba(239, 68, 68, 0.2);
+    color: white;
+}
+
+/* Contenido principal */
+.content-area {
+    flex-grow: 1;
+    position: relative;
+    overflow: hidden;
+    /* El fondo del body ya maneja el degradado */
+}
+
+/* Estilos para las pantallas de contenido */
+.main-content {
+    position: absolute;
+    /* Para que se superpongan y solo una sea visible */
+    top: 0;
+    /* Ajusta según la altura de tu header */
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Ajusta según la altura de tu header si es necesario */
+    padding: 20px;
+    /* Ejemplo de padding, ajusta a tus necesidades */
+    padding-top: 80px;
+    /* Para dejar espacio al header fijo */
+    overflow-y: auto;
+    /* Permite desplazamiento si el contenido es grande */
+    -webkit-overflow-scrolling: touch;
+    box-sizing: border-box;
+
+    /* **CLAVE PARA LAS TRANSICIONES** */
+    opacity: 0;
+    /* Inicialmente transparente */
+    pointer-events: none;
+    /* No interactuable cuando está oculto */
+    transform: translateY(20px);
+    /* Pequeña animación de entrada */
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    /* Transiciones suaves */
+    display: flex;
+    /* O el display por defecto que necesites para el layout interno */
+    flex-direction: column;
+    align-items: center;
+    /* Centra el contenido horizontalmente */
+    justify-content: flex-start;
+    /* Alinea el contenido arriba */
+}
+
+/* Clase para la pantalla activa */
+.main-content.active-screen {
+    opacity: 1;
+    /* Completamente visible */
+    pointer-events: auto;
+    /* Permite interacciones */
+    transform: translateY(0);
+    /* Vuelve a su posición normal */
+    /* display: flex;  Ya lo tiene por defecto, pero puedes forzarlo aquí si necesitas cambiarlo */
+}
+
+/* Clase para ocultar completamente después de la transición */
+/* Esta clase se añade por JS una vez que la transición de opacidad ha terminado */
+.main-content.hidden-completely {
+    display: none !important;
+    /* Importante para asegurar que no ocupe espacio y no se active con tabbing */
+}
+
+/* Estilos para el overlay de carga */
+#loadingOverlay {
+    position: fixed;
+    inset: 0;
+    /* top:0; left:0; right:0; bottom:0; */
+    background-color: rgba(17, 24, 39, 0.95);
+    /* Tailwind's gray-900 con opacidad */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    /* Asegura que esté por encima de todo */
+    transition: opacity 0.5s ease-out;
+    /* Transición para ocultar */
+}
+
+#loadingOverlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+    /* No interactuable */
+}
+
+/* Loader spinner */
+.loader {
+    border: 8px solid rgba(255, 255, 255, 0.2);
+    border-top: 8px solid var(--ltc-blue);
+    /* Ajuste de color a tu tema */
+    border-radius: 50%;
+    width: 60px;
+    /* Ajuste de tamaño */
+    height: 60px;
+    /* Ajuste de tamaño */
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Estilos para los modales (helpModal, faucetPayErrorModal) */
+/* Deben tener display: none por defecto y ser controlados por JS */
+#helpModal,
+#faucetPayErrorModal {
+    display: none;
+    /* Oculto por defecto */
+    /* Asegúrate de que las demás propiedades (position, inset, background, etc.) estén correctas */
+}
+
+#helpModal.active,
+#faucetPayErrorModal.active {
+    display: flex;
+    /* Se muestra cuando está activo */
+}
+
+
+/* Estilos específicos para pantallas */
+#authScreen {
+    justify-content: center;
+    background: none;
+    /* Background handled by body */
+    animation: fadeIn 0.8s ease-out;
+}
+
+/* Tarjetas (auth, balance, game) - Estilo unificado */
+.auth-card,
+.balance-card,
+.daily-reward-card,
+.game-card {
+    background: var(--ltc-dark-bg-card);
+    /* Fondo semi-transparente para todas las tarjetas */
+    backdrop-filter: blur(10px);
+    /* Efecto de desenfoque */
+    border: 1px solid var(--ltc-border-card);
+    /* Borde sutil claro */
+    padding: 2rem;
+    border-radius: 1.5rem;
+    /* Esquinas más redondeadas */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    /* Sombra más pronunciada */
+    animation: slideInUp 0.6s ease-out;
+}
+
+/* Borde especial para balance y daily reward */
+.balance-card {
+    border: 2px solid var(--ltc-blue);
+}
+
+.daily-reward-card {
+    border: 2px solid var(--ltc-green-neon);
+}
+
+
+/* Estilos de botones y inputs */
+.form-input {
+    background-color: rgba(255, 255, 255, 0.1);
+    /* Fondo más claro y transparente */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    /* Borde sutil */
+    color: white;
+    padding: 0.8rem 1rem;
+    border-radius: 0.75rem;
+    /* Más redondeado */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+
+/* Estilos para el botón de Google */
+.btn-google {
+    background-color: #4285F4;
+    /* Azul de Google */
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 0.75rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-google:hover {
+    background-color: #357ae8;
+    /* Un azul más oscuro al pasar el ratón */
+    transform: translateY(-2px);
+}
+
+.btn-google:active {
+    transform: translateY(0);
+}
+
+.btn-google img {
+    margin-right: 0.5rem;
+}
+
+
+/* Estilos para el placeholder de los inputs */
+.form-input::placeholder {
+    color: var(--ltc-green-neon);
+    /* O usa var(--ltc-yellow-electric) */
+    opacity: 0.8;
+    /* Para que no sea tan intenso como el texto principal */
+    transition: color 0.3s ease;
+}
+
+.form-input:focus::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+    /* Se vuelve más tenue al escribir */
+}
+
+.form-input:focus {
+    border-color: var(--ltc-green-neon);
+    /* Borde verde neón al enfocar */
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(0, 255, 153, 0.3);
+    /* Brillo verde neón */
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Estilos específicos para el select (desplegable) */
+select.form-input {
+    color: var(--ltc-light-gray);
+    /* Color inicial del texto en el select, un gris claro */
+    -webkit-appearance: none;
+    /* Elimina estilos por defecto de navegador */
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23D3D3D3'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    /* Icono de flecha SVG blanco */
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1em;
+    padding-right: 2.5rem;
+    /* Espacio para la flecha */
+}
+
+/* Estilos para las opciones del select */
+select.form-input option {
+    background-color: #2c2c4a;
+    /* Fondo más oscuro para las opciones */
+    color: white;
+    /* Color blanco para el texto de las opciones */
+    padding: 0.5rem 1rem;
+}
+
+select.form-input option:checked {
+    background-color: var(--ltc-blue);
+    /* Fondo azul para la opción seleccionada */
+    color: white;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, var(--ltc-blue), var(--ltc-purple));
+    /* Degradado en botones */
+    color: white;
+    padding: 0.9rem 1.8rem;
+    /* Más grande */
+    border-radius: 0.75rem;
+    /* Más redondeado */
+    font-weight: bold;
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+    border: none;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(45deg, var(--ltc-green-neon), var(--ltc-yellow-electric));
+    /* Degradado en hover */
+    transform: translateY(-3px) scale(1.02);
+    /* Más movimiento */
+    box-shadow: 0 8px 25px rgba(0, 255, 153, 0.5);
+    /* Sombra de brillo verde */
+}
+
+.btn-secondary {
+    background-color: rgba(255, 255, 255, 0.1);
+    /* Fondo semi-transparente */
+    color: var(--ltc-light-gray);
+    padding: 0.9rem 1.8rem;
+    border-radius: 0.75rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease, border-color 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: var(--ltc-blue);
+    transform: translateY(-2px);
+}
+
+/* Botones específicos como el de compartir */
+.btn-share {
+    background: linear-gradient(45deg, #28a745, #218838);
+    /* Verde más tradicional para compartir */
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+}
+
+.btn-share:hover {
+    background: linear-gradient(45deg, #218838, #1e7e34);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(40, 167, 69, 0.4);
+}
+
+
+/* Efectos de texto */
+.text-ltc-blue {
+    color: var(--ltc-blue);
+}
+
+.text-ltc-success {
+    color: var(--ltc-green-neon);
+    /* Éxito en verde neón */
+}
+
+.text-ltc-error {
+    color: var(--ltc-error);
+}
+
+.text-ltc-light-gray {
+    color: var(--ltc-light-gray);
+}
+
+.text-ltc-purple {
+    color: var(--ltc-purple);
+}
+
+/* Estilos para la pantalla de carga */
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(30, 30, 50, 0.98);
+    /* Un fondo casi opaco para cubrir todo */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    /* Asegura que esté por encima de todo */
+    color: var(--ltc-text-main);
+    font-size: 1.2rem;
+    transition: opacity 0.5s ease-out;
+    /* Para una transición suave al ocultar */
+}
+
+.loading-screen.hidden {
+    opacity: 0;
+    pointer-events: none;
+    /* Crucial: para que no bloquee interacciones una vez oculta */
+}
+
+
+
+
+
+/* Game Screen specific */
+#homeScreen {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+#homeScreen {
+    transform: translateY(-8px) scale(1.03);
+    /* Más movimiento y escala */
+    box-shadow: 0 15px 30px rgba(0, 255, 153, 0.5);
+    /* Sombra de brillo verde neón */
+    border-color: var(--ltc-green-neon);
+}
+
+#homeScreen {
+    border: 3px solid var(--ltc-blue);
+    /* Borde más pronunciado */
+    box-shadow: 0 0 15px rgba(99, 181, 246, 0.7);
+    /* Sombra de brillo azul */
+}
+
+
+
+/* Game Screen specific */
+.game-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.game-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    /* Más movimiento y escala */
+    box-shadow: 0 15px 30px rgba(0, 255, 153, 0.5);
+    /* Sombra de brillo verde neón */
+    border-color: var(--ltc-green-neon);
+}
+
+.game-card img {
+    border: 3px solid var(--ltc-blue);
+    /* Borde más pronunciado */
+    box-shadow: 0 0 15px rgba(99, 181, 246, 0.7);
+    /* Sombra de brillo azul */
+}
+
+
+/* Animaciones */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Media queries para responsividad */
+@media (max-width: 768px) {
+    .auth-card {
+        padding: 1.5rem;
+        margin: 0 0.5rem;
+        /* Menos margen en móviles */
+    }
+
+    .sidebar {
+        width: 220px;
+
+    }
+
+
+
+    .sidebar-nav-item {
+        font-size: 1rem;
+        padding: 0.8rem 1rem;
+    }
+
+    .sidebar-nav-item i {
+        margin-right: 0.8rem;
+    }
+
+    .app-header {
+        padding: 0.75rem 1rem;
+    }
+
+    .app-logo {
+        height: 35px;
+    }
+
+    .game-card {
+        padding: 1.2rem;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        padding: 0.7rem 1.2rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Estilos para el contenedor del juego Memory Match */
+
+/* Estilos para el efecto 3D de volteo de cartas */
+.memory-card .card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s;
+    /* Velocidad de volteo */
+    transform-style: preserve-3d;
+    /* Por defecto, el inner no está volteado, muestra la parte trasera */
+    transform: rotateY(0deg);
+    /* Asegura que no haya rotación inicial */
+}
+
+.memory-card .card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    /* Oculta la cara trasera de cada "cara" */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* El font-size general para los iconos de las cartas ya lo tienes en .memory-card */
+    /* Asegúrate de que card-face tenga un fondo */
+    background-color: var(--ltc-blue);
+    /* Color de fondo de la cara trasera y frontal si no hay imagen */
+    color: white;
+    /* Color del signo de interrogación */
+    border-radius: 0.75rem;
+    /* Asegura que la cara tenga los mismos bordes */
+}
+
+.memory-card .card-back {
+    /* La cara trasera se muestra por defecto */
+    transform: rotateY(0deg);
+    /* Puedes darle un color específico para la parte de atrás si difiere de .card-face general */
+    background-color: var(--ltc-blue);
+    /* Fondo del signo de interrogación */
+    color: white;
+    /* Color del signo de interrogación */
+}
+
+.memory-card .card-front {
+    /* La cara frontal está oculta por defecto */
+    transform: rotateY(180deg);
+    /* Fondo para la cara frontal (donde irán las imágenes) */
+    background-color: white;
+    /* Generalmente blanco o muy claro para que la imagen resalte */
+    padding: 5px;
+    /* Pequeño padding si las imágenes son muy grandes y necesitas espacio */
+}
+
+.memory-card .card-front img {
+    max-width: 80%;
+    /* Asegura que la imagen no se desborde */
+    max-height: 80%;
+    object-fit: contain;
+    /* Para que la imagen se ajuste sin distorsionarse */
+}
+
+/* Cuando la carta se voltea, rota el contenedor interno */
+.memory-card.flipped .card-inner {
+    transform: rotateY(180deg);
+    /* Esto revela la cara frontal */
+}
+
+#activeMemoryGame {
+    width: 100%;
+    max-width: 600px;
+    /* Mantener este ancho máximo para pantallas más grandes */
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+
+
+/* Estilos para el grid de las cartas */
+#game-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    /* 4 columnas de igual ancho por defecto */
+    gap: 1rem;
+    /* Espacio entre las cartas */
+    width: 100%;
+    /* Asegura que el grid ocupe todo el ancho disponible del contenedor padre */
+    max-width: 300px;
+    /* Limita el ancho del grid para que no se estire demasiado en pantallas medianas */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Estilos para las tarjetas individuales del juego */
+.memory-card {
+    width: 100%;
+    /* Ocupa todo el ancho disponible en su columna */
+    aspect-ratio: 1 / 1;
+    /* Mantiene las tarjetas cuadradas */
+    background-color: var(--ltc-blue);
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5em;
+    /* Tamaño del icono o texto. Lo ajustaremos en media queries. */
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.memory-card.flipped {
+    background-color: #f0f0f0;
+}
+
+/* Media query para pantallas pequeñas (ej. smartphones en horizontal o tablets pequeñas) */
+@media (max-width: 768px) {
+    #activeMemoryGame {
+        padding: 0.5rem;
+        /* Reducir el padding general */
+    }
+
+    #game-grid {
+        gap: 0.7rem;
+        /* Ligeramente menos espacio entre las cartas */
+        max-width: 300px;
+        /* Ajuste el ancho máximo del grid para que quepan mejor las 4 columnas */
+    }
+
+    .memory-card {
+        font-size: 1.6em;
+        /* Hacer la fuente de las cartas más pequeña */
+        border-radius: 0.6rem;
+    }
+}
+
+/* Media query para pantallas aún más pequeñas (ej. la mayoría de los smartphones en vertical) */
+@media (max-width: 480px) {
+    #activeMemoryGame {
+        padding: 0.3rem;
+        /* Reducir aún más el padding general */
+    }
+
+    #game-grid {
+        grid-template-columns: repeat(4, 1fr);
+        /* Intentamos mantener 4 columnas si es posible */
+        gap: 0.4rem;
+        /* Reducir aún más el espacio */
+        max-width: 200px;
+        /* Reducir el ancho máximo del grid para 4 columnas muy ajustadas */
+    }
+
+    .memory-card {
+        font-size: 1.2em;
+        /* Hacer la fuente de las cartas notablemente más pequeña */
+        border-radius: 0.4rem;
+    }
+}
+
+/* Media query para pantallas MUY estrechas (ej. iPhone SE, dispositivos muy pequeños) */
+@media (max-width: 360px) {
+    #game-grid {
+        grid-template-columns: repeat(3, 1fr);
+        /* Cambiar a 3 columnas */
+        gap: 0.4rem;
+        /* Reducir el espacio para 3 columnas */
+        max-width: 150px;
+        /* Ajustar el ancho máximo para 3 columnas */
+    }
+
+    .memory-card {
+        font-size: 0.2em;
+        /* Ajustar la fuente para 3 columnas */
+        border-radius: 0.3rem;
+    }
+}
+
+/* Media query para pantallas MUY estrechas (ej. iPhone SE, dispositivos muy pequeños) */
+@media (max-width: 260px) {
+    #game-grid {
+        grid-template-columns: repeat(3, 1fr);
+        /* Cambiar a 3 columnas */
+        gap: 0.1rem;
+        /* Reducir el espacio para 3 columnas */
+        max-width: 50px;
+        /* Ajustar el ancho máximo para 3 columnas */
+    }
+
+    .memory-card {
+        font-size: 0.1em;
+        /* Ajustar la fuente para 3 columnas */
+        border-radius: 0.3rem;
+    }
+}
+
+/* In your style.css or embedded styles */
+#notificationContainer {
+    position: fixed; /* Or absolute */
+    top: 13%; /* This is the problem! It puts it at the very top. */
+    left: 50%;
+    width:90%;
+    transform: translateX(-50%);
+    z-index: 1000; /* Ensures it's on top of other content */
+    /* ... other styles like padding, background, etc. */
+}
+
+
+
+/* style.css */
+
+.loading-modal {
+    position: fixed; /* Esto lo fija en el viewport */
+    top: 0;          /* Lo posiciona arriba */
+    left: 0;         /* Lo posiciona a la izquierda */
+    width: 100%;     /* Ocupa todo el ancho de la pantalla */
+    height: 100%;    /* Ocupa todo el alto de la pantalla */
+    background-color: rgba(0, 0, 0, 0.7); /* Esto crea el fondo oscuro y semi-transparente */
+    display: flex;   /* Habilita Flexbox para centrar su contenido */
+    justify-content: center; /* Centra horizontalmente el 'loading-content' */
+    align-items: center;     /* Centra verticalmente el 'loading-content' */
+    z-index: 9999;   /* Asegura que esté por encima de todo lo demás en la página */
+    pointer-events: auto; /* IMPORTANTE: Esto asegura que el modal capture todos los eventos de clic y no los deje pasar a los elementos debajo. */
+}
+
+.loading-modal.hidden {
+    display: none; /* Esta clase oculta el modal */
+}
+
+.loading-content {
+    background-color: #2c2c3e; /* Fondo oscuro para el cuadro del mensaje/spinner */
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    color: #ffffff; /* Color del texto del modal */
+}
+
+.spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid #4CAF50; /* Color de la parte giratoria del spinner */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 15px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-message {
+    font-size: 1.1em;
+    font-weight: bold;
+}
