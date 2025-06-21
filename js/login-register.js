@@ -28,13 +28,11 @@ let registerForm;    // Contenedor del formulario de Registro
 let authMessage;     // Mensaje general de autenticación
 let registerMessage; // Mensaje específico de registro (aunque con Google, puede no usarse mucho)
 
-/**
- * Inicializa la pantalla de login/registro y sus event listeners.
- */
-export function initializeLoginRegisterScreen() {
-    console.log("Inicializando Login/Register Screen (con Google Sign-In)...");
+// *** NUEVA FUNCIÓN PARA INICIALIZAR DESPUÉS DE QUE EL DOM Y LOS BRIDGES ESTÉN LISTOS ***
+function setupLoginRegisterListeners() {
+    console.log("Configurando listeners de Login/Register...");
 
-    // Asocia los elementos del DOM con sus IDs (¡CONFIRMA QUE ESTOS IDS SON CORRECTOS EN TU HTML!)
+    // Asocia los elementos del DOM con sus IDs
     googleSignInBtn = document.getElementById('googleSignInBtn');
     googleSignInBtnRegister = document.getElementById('googleSignInBtnRegister');
     goToRegisterBtn = document.getElementById('goToRegisterBtn');
@@ -77,20 +75,31 @@ export function initializeLoginRegisterScreen() {
     // Asegura que uno de los formularios esté visible al inicializar
     showLoginForm(); // Por defecto, muestra el formulario de login al iniciar
 
-    // *** INICIALIZAR CALLBACKS DE ANDROID BRIDGE ***
-    // Esto es CRUCIAL para que los métodos de Java puedan llamar a estas funciones JS.
-    // Aseguramos que window.AndroidBridge exista para evitar errores si no estamos en Android.
-    window.AndroidBridge = window.AndroidBridge || {};
+    // *** INICIALIZAR CALLBACKS DE ANDROID BRIDGE (Asegurarse de que window.AndroidBridge exista) ***
+    window.AndroidBridge = window.AndroidBridge || {}; // Asegura que el objeto exista
 
-    window.AndroidBridge.onGoogleSignInSuccess = function(uid) {
+    window.AndroidBridge.onGoogleSignInSuccess = async function(uid) {
         console.log('AndroidBridge Callback: Google Sign-In exitoso. UID:', uid);
         hideLoadingModal();
         showNotification("¡Inicio de sesión exitoso con Google!", "success");
-        // El usuario ya está autenticado en Firebase (desde Android).
-        // El `onAuthStateChanged` en `app.js` debería detectar esto automáticamente
-        // y redirigir al usuario a la pantalla de inicio.
-        // Si no se redirige automáticamente, puedes forzar una redirección aquí:
-        // window.location.href = '/home.html'; // O la URL de tu pantalla principal
+
+        // IMPORTANTE: Después de un inicio de sesión nativo exitoso,
+        // el usuario ya está autenticado en Firebase. Ahora, debemos
+        // asegurarnos de que la lógica de registro/login de tu base de datos
+        // (verificación de nuevo usuario, etc.) se ejecute.
+        try {
+            // El usuario ya debería estar autenticado en authInstance (getAuth())
+            const currentUser = authInstance.currentUser; // O getAuth().currentUser
+            if (currentUser && currentUser.uid === uid) {
+                await handleNewUserGoogle(currentUser); // Reutiliza tu lógica existente
+            } else {
+                console.error("UID del usuario de Android Bridge no coincide con el usuario de Firebase Web SDK.");
+                showAuthMessage("Error de sincronización de usuario. Por favor, intenta de nuevo.", "error");
+            }
+        } catch (error) {
+            console.error("Error al procesar el usuario después de Google Sign-In nativo:", error);
+            showAuthMessage("Error interno al finalizar el inicio de sesión.", "error");
+        }
     };
 
     window.AndroidBridge.onGoogleSignInFailure = function(errorMessage) {
@@ -99,12 +108,37 @@ export function initializeLoginRegisterScreen() {
         showAuthMessage('Error al iniciar sesión con Google: ' + errorMessage, "error");
     };
 
-    // Si tienes un método `rewardUser` en `AndroidBridge`, también podrías definirlo aquí
-    // window.AndroidBridge.rewardUser = function() {
-    //     console.log("AndroidBridge Callback: Usuario recompensado.");
-    //     // Lógica para actualizar la UI tras una recompensa
-    // };
+    // DEBUGGING DEL PUENTE:
+    console.log('--- Depuración AndroidBridge (después de setup) ---');
+    console.log('typeof AndroidBridge:', typeof window.AndroidBridge); // Usa window.AndroidBridge explícitamente
+    if (typeof window.AndroidBridge !== 'undefined') {
+        console.log('AndroidBridge existe. Métodos:', Object.keys(window.AndroidBridge));
+        if (window.AndroidBridge.startGoogleSignIn) {
+            console.log('AndroidBridge.startGoogleSignIn existe y es una función.');
+        } else {
+            console.log('AndroidBridge.startGoogleSignIn NO existe o no es una función.');
+        }
+    }
+    console.log('----------------------------------------------------');
 }
+
+
+/**
+ * Inicializa la pantalla de login/registro y sus event listeners.
+ * Esta función ahora solo exporta `setupLoginRegisterListeners`.
+ */
+export function initializeLoginRegisterScreen() {
+    console.log("Inicializando Login/Register Screen (exportada)...");
+    // Llama a la función de configuración después de un pequeño retraso
+    // para dar tiempo al WebView para inyectar el JavascriptInterface.
+    // Una alternativa es usar un MutationObserver o un listener específico si es posible.
+    // Sin embargo, para los interfaces de Javascript, un setTimeout suele ser efectivo.
+    // También puedes intentar llamar a setupLoginRegisterListeners() directamente
+    // si el problema no es de timing sino de dónde se define.
+    // Por ahora, vamos con el setTimeout para la máxima compatibilidad.
+    setTimeout(setupLoginRegisterListeners, 500); // Retraso de 500ms
+}
+
 
 /**
  * Muestra el formulario de login y oculta el de registro.
@@ -177,9 +211,10 @@ async function handleGoogleSignIn() {
     showLoadingModal("Autenticando con Google...");
 
     // *** Detectar si estamos en la aplicación Android y usar el puente ***
-    if (typeof AndroidBridge !== 'undefined' && AndroidBridge.startGoogleSignIn) {
+    // Usa window.AndroidBridge explícitamente para asegurar el scope global.
+    if (typeof window.AndroidBridge !== 'undefined' && typeof window.AndroidBridge.startGoogleSignIn === 'function') {
         console.log('Detectada aplicación Android. Iniciando Google Sign-In nativo...');
-        AndroidBridge.startGoogleSignIn(); // Llama al método Java
+        window.AndroidBridge.startGoogleSignIn(); // Llama al método Java
         // El resto de la lógica de éxito/fracaso será manejada por los callbacks AndroidBridge.onGoogleSignInSuccess/Failure
         return; // Salimos de la función, el flujo continúa en Android y sus callbacks JS.
     }
