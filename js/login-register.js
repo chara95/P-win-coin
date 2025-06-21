@@ -1,6 +1,6 @@
 // js/login-register.js
 
-// Importaciones de Firebase Auth
+// Importaciones de Firebase Auth (mantener para el caso de navegador web)
 import {
     getAuth,
     GoogleAuthProvider,
@@ -76,6 +76,34 @@ export function initializeLoginRegisterScreen() {
 
     // Asegura que uno de los formularios esté visible al inicializar
     showLoginForm(); // Por defecto, muestra el formulario de login al iniciar
+
+    // *** INICIALIZAR CALLBACKS DE ANDROID BRIDGE ***
+    // Esto es CRUCIAL para que los métodos de Java puedan llamar a estas funciones JS.
+    // Aseguramos que window.AndroidBridge exista para evitar errores si no estamos en Android.
+    window.AndroidBridge = window.AndroidBridge || {};
+
+    window.AndroidBridge.onGoogleSignInSuccess = function(uid) {
+        console.log('AndroidBridge Callback: Google Sign-In exitoso. UID:', uid);
+        hideLoadingModal();
+        showNotification("¡Inicio de sesión exitoso con Google!", "success");
+        // El usuario ya está autenticado en Firebase (desde Android).
+        // El `onAuthStateChanged` en `app.js` debería detectar esto automáticamente
+        // y redirigir al usuario a la pantalla de inicio.
+        // Si no se redirige automáticamente, puedes forzar una redirección aquí:
+        // window.location.href = '/home.html'; // O la URL de tu pantalla principal
+    };
+
+    window.AndroidBridge.onGoogleSignInFailure = function(errorMessage) {
+        console.error('AndroidBridge Callback: Google Sign-In fallido. Mensaje:', errorMessage);
+        hideLoadingModal();
+        showAuthMessage('Error al iniciar sesión con Google: ' + errorMessage, "error");
+    };
+
+    // Si tienes un método `rewardUser` en `AndroidBridge`, también podrías definirlo aquí
+    // window.AndroidBridge.rewardUser = function() {
+    //     console.log("AndroidBridge Callback: Usuario recompensado.");
+    //     // Lógica para actualizar la UI tras una recompensa
+    // };
 }
 
 /**
@@ -143,46 +171,32 @@ function hideAuthMessages() {
 
 /**
  * Maneja el inicio de sesión/registro con Google.
+ * *** MODIFICADO PARA COMPATIBILIDAD CON ANDROID NATIVO ***
  */
 async function handleGoogleSignIn() {
     showLoadingModal("Autenticando con Google...");
 
+    // *** Detectar si estamos en la aplicación Android y usar el puente ***
+    if (typeof AndroidBridge !== 'undefined' && AndroidBridge.startGoogleSignIn) {
+        console.log('Detectada aplicación Android. Iniciando Google Sign-In nativo...');
+        AndroidBridge.startGoogleSignIn(); // Llama al método Java
+        // El resto de la lógica de éxito/fracaso será manejada por los callbacks AndroidBridge.onGoogleSignInSuccess/Failure
+        return; // Salimos de la función, el flujo continúa en Android y sus callbacks JS.
+    }
+
+    // *** Si no estamos en Android (ej. navegador web), usamos el flujo Firebase Web SDK normal ***
+    console.log('No detectada aplicación Android. Usando Firebase Web SDK para Google Sign-In...');
     try {
         const provider = new GoogleAuthProvider();
         const result = await signInWithPopup(authInstance, provider);
         const user = result.user;
-        console.log("Usuario autenticado con Google:", user.uid);
+        console.log("Usuario autenticado con Google (Web SDK):", user.uid);
 
-        // Verificar si es un usuario nuevo y guardar sus datos iniciales en la DB
-        const userRef = ref(dbInstance, `users/${user.uid}`);
-        const snapshot = await get(userRef);
-
-        if (!snapshot.exists()) {
-            console.log("Nuevo usuario Google, guardando datos iniciales...");
-            // Generar un código de referido único (ejemplo: 6 caracteres aleatorios)
-            const referralCode = generateRandomString(6).toUpperCase();
-
-            await set(userRef, {
-                email: user.email,
-                displayName: user.displayName || user.email.split('@')[0],
-                photoURL: user.photoURL,
-                createdAt: Date.now(),
-                balance: 0, // Saldo inicial
-                referralCode: referralCode, // Código de referido único
-                referredBy: null, // Inicialmente no referido por nadie
-                hasAppliedReferral: false, // Bandera para saber si ya aplicó un código
-            });
-            showNotification("¡Registro exitoso con Google! Bienvenido a Win Coin.", "success");
-        } else {
-            console.log("Usuario existente, iniciando sesión...");
-            showNotification("¡Bienvenido de nuevo!", "success");
-        }
-
-        // No es necesario llamar a showScreen('homeScreen') aquí directamente.
-        // El onAuthStateChanged en app.js detectará el cambio de estado y lo hará.
+        // Lógica para nuevos usuarios (igual que antes)
+        await handleNewUserGoogle(user);
 
     } catch (error) {
-        console.error("Error al autenticar con Google:", error);
+        console.error("Error al autenticar con Google (Web SDK):", error);
         let errorMessage = "Error al autenticar con Google.";
         switch (error.code) {
             case 'auth/popup-closed-by-user':
@@ -202,6 +216,38 @@ async function handleGoogleSignIn() {
         hideLoadingModal();
     }
 }
+
+/**
+ * Lógica para verificar si es un usuario nuevo de Google y guardar sus datos iniciales.
+ * Extraída de handleGoogleSignIn para reutilización.
+ * @param {Object} user El objeto de usuario de Firebase.
+ */
+async function handleNewUserGoogle(user) {
+    const userRef = ref(dbInstance, `users/${user.uid}`);
+    const snapshot = await get(userRef);
+
+    if (!snapshot.exists()) {
+        console.log("Nuevo usuario Google, guardando datos iniciales...");
+        const referralCode = generateRandomString(6).toUpperCase();
+
+        await set(userRef, {
+            email: user.email,
+            displayName: user.displayName || user.email.split('@')[0],
+            photoURL: user.photoURL,
+            createdAt: Date.now(),
+            balance: 0,
+            referralCode: referralCode,
+            referredBy: null,
+            hasAppliedReferral: false,
+        });
+        showNotification("¡Registro exitoso con Google! Bienvenido a Win Coin.", "success");
+    } else {
+        console.log("Usuario existente, iniciando sesión...");
+        showNotification("¡Bienvenido de nuevo!", "success");
+    }
+    // El onAuthStateChanged en app.js detectará el cambio de estado y redirigirá.
+}
+
 
 // Función auxiliar para generar códigos de referido (simple, para ejemplo)
 function generateRandomString(length) {
