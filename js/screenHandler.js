@@ -98,18 +98,6 @@ export function showScreen(targetScreenId) {
 
     // Muestra la pantalla objetivo
     screenInfo.element.classList.remove('hidden-completely');
-    // Usar 'flex' por defecto, ajusta si tu CSS usa 'block' o 'grid' para esa pantalla específica
-    // Idealmente, tu CSS para .main-screen o para cada ID de pantalla ya definiría su display.
-    // Si no, puedes añadir lógica aquí:
-    // if (targetScreenId === 'someGridScreen') screenInfo.element.classList.add('grid');
-    // else screenInfo.element.classList.add('flex'); // O 'block'
-
-    // Para la mayoría de las pantallas de contenido principal, 'flex' que centra el contenido puede ser bueno.
-    // Si usas Tailwind, 'flex flex-col items-center justify-center' es común.
-    // 'hidden-completely' ya es 'display: none !important;'. Cuando lo quitas, se aplicará el display que tenga el elemento.
-    // Si tus pantallas tienen 'flex' en su HTML (como authScreen), no necesitas añadirlo aquí.
-    // Por simplicidad, me abstendré de añadir un display específico aquí, dejando que Tailwind o styles.css lo manejen.
-    // Si tus pantallas no se muestran correctamente, agrega `screenInfo.element.style.display = 'flex';` o `block`, etc.
 
     currentActiveScreen = targetScreenId;
     console.log(`Mostrando pantalla: ${targetScreenId}`);

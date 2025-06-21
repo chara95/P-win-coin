@@ -3,15 +3,7 @@
 import { showScreen } from './screenHandler.js'; // Necesario para cambiar de pantalla
 import { authInstance, dbInstance } from './app.js'; // Necesario para el logout y para pasar a init functions (aunque showScreen ya lo hace)
 
-// No es necesario importar las funciones de inicialización aquí.
-// showScreen en screenHandler.js ya se encarga de llamarlas.
-// ELIMINADAS:
-// import { initializeHomeScreen } from './home-screen.js';
-// import { initializeWithdrawalScreen } from './withdrawalScreen.js';
-// import { initializeFaucetScreen } from './faucetScreen.js';
-// import { initializeReferralsScreen } from './referralScreen.js';
-// import { initializeActivityScreen } from './activityScreen.js';
-// import { initializeGameScreen } from './game.js'; // Si la usabas
+
 
 /**
  * Inicializa la funcionalidad del sidebar.

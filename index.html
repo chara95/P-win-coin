@@ -75,7 +75,8 @@
         <main class="content-area relative w-full h-full">
 
             <div id="authScreen" class="main-screen flex flex-col items-center justify-center p-4 hidden-completely">
-                <div class="glass-card p-8 w-full max-w-md text-center">
+                <!-- <div class="glass-card p-8 w-full max-w-md text-center">
+
                     <h2 class="text-3xl font-bold font-orbitron text-ltc-blue mb-6">Bienvenido</h2>
                     <p id="authMessage" class="hidden text-ltc-error text-sm mb-4"></p>
                     <p id="registerMessage" class="hidden text-ltc-error text-sm mb-4"></p>
@@ -108,8 +109,77 @@
                                 Sesión</a>
                         </p>
                     </div>
+                </div> -->
+
+                <div class="max-w-md mx-auto bg-gray-800 p-8 rounded-lg shadow-lg text-center">
+                    <h1 class="text-3xl font-bold text-ltc-green-neon mb-6">Win Coin App</h1>
+
+                    <p id="authMessage" class="hidden text-ltc-error mb-4"></p>
+                    <p id="registerMessage" class="hidden text-ltc-error mb-4"></p>
+
+                    <div id="loginForm" class="transition-all duration-300 ease-in-out">
+                        <h2 class="text-2xl font-semibold text-white mb-4">Iniciar Sesión</h2>
+
+                        <div class="mb-4">
+                            <input type="email" id="emailLogin" placeholder="Correo electrónico"
+                                class="w-full p-3 rounded-md bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-ltc-green-neon">
+                        </div>
+                        <div class="mb-6">
+                            <input type="password" id="passwordLogin" placeholder="Contraseña"
+                                class="w-full p-3 rounded-md bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-ltc-green-neon">
+                        </div>
+
+                        <button id="loginButton"
+                            class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-md hover:bg-blue-700 transition-colors duration-200">
+                            Iniciar Sesión
+                        </button>
+
+                        <div class="flex items-center my-6">
+                            <div class="flex-grow border-t border-gray-600"></div>
+                            <span class="flex-shrink mx-4 text-gray-400">o</span>
+                            <div class="flex-grow border-t border-gray-600"></div>
+                        </div>
+
+                        <p class="text-gray-400 mt-4">¿No tienes cuenta? <a href="#" id="goToRegisterBtn"
+                                class="text-ltc-green-neon hover:underline">Regístrate aquí</a></p>
+                    </div>
+
+                    <div id="registerForm" class="transition-all duration-300 ease-in-out hidden opacity-0 scale-95">
+                        <h2 class="text-2xl font-semibold text-white mb-4">Registrarse</h2>
+
+                        <div class="mb-4">
+                            <input type="email" id="emailRegister" placeholder="Correo electrónico"
+                                class="w-full p-3 rounded-md bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-ltc-green-neon">
+                        </div>
+                        <div class="mb-4">
+                            <input type="password" id="passwordRegister" placeholder="Contraseña"
+                                class="w-full p-3 rounded-md bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-ltc-green-neon">
+                        </div>
+                        <div class="mb-6">
+                            <input type="password" id="confirmPasswordRegister" placeholder="Confirmar contraseña"
+                                class="w-full p-3 rounded-md bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-ltc-green-neon">
+                        </div>
+
+                        <button id="registerButton"
+                            class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-md hover:bg-blue-700 transition-colors duration-200">
+                            Registrarse
+                        </button>
+
+                        <div class="flex items-center my-6">
+                            <div class="flex-grow border-t border-gray-600"></div>
+                            <span class="flex-shrink mx-4 text-gray-400">o</span>
+                            <div class="flex-grow border-t border-gray-600"></div>
+                        </div>
+
+                        <p class="text-gray-400 mt-4">¿Ya tienes cuenta? <a href="#" id="goToLoginBtn"
+                                class="text-ltc-green-neon hover:underline">Inicia sesión aquí</a></p>
+
+                    </div>
                 </div>
             </div>
+
+
+
 
             <div id="homeScreen" class="main-screen flex flex-col items-center justify-center p-6 hidden-completely">
                 <h2 class="text-3xl font-orbitron font-bold mb-6 text-center text-ltc-blue">Faucet Games
@@ -435,7 +505,7 @@
     </div>
 
     <style>
-       .hidden-completely {
+        .hidden-completely {
             display: none !important;
         }
 
