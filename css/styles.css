@@ -386,19 +386,7 @@ body {
     /* No interactuable */
 }
 
-/* Loader spinner */
-.loader {
-    border: 8px solid rgba(255, 255, 255, 0.2);
-    border-top: 8px solid var(--ltc-blue);
-    /* Ajuste de color a tu tema */
-    border-radius: 50%;
-    width: 60px;
-    /* Ajuste de tamaño */
-    height: 60px;
-    /* Ajuste de tamaño */
-    animation: spin 1s linear infinite;
-    margin-bottom: 20px;
-}
+
 
 @keyframes spin {
     0% {
@@ -1000,35 +988,41 @@ select.form-input option:checked {
 /* style.css */
 
 #loadingModal {
-    position: fixed; /* Esto lo fija en el viewport */
-    top: 0;          /* Lo posiciona arriba */
-    left: 0;         /* Lo posiciona a la izquierda */
-    width: 100%;     /* Ocupa todo el ancho de la pantalla */
-    height: 100%;    /* Ocupa todo el alto de la pantalla */
-    background-color: rgba(0, 0, 0, 0.7); /* Esto crea el fondo oscuro y semi-transparente */
-    display: flex;   /* Habilita Flexbox para centrar su contenido */
-    justify-content: center; /* Centra horizontalmente el 'loading-content' */
-    align-items: center;     /* Centra verticalmente el 'loading-content' */
-    z-index: 9999;   /* Asegura que esté por encima de todo lo demás en la página */
-    pointer-events: auto; /* IMPORTANTE: Esto asegura que el modal capture todos los eventos de clic y no los deje pasar a los elementos debajo. */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    pointer-events: auto;
 }
 
+
 #loadingModal.hidden {
-    display: none; /* Esta clase oculta el modal */
+    display: none;
+    /* Esta clase oculta el modal */
 }
 
 .loading-content {
-    background-color: #2c2c3e; /* Fondo oscuro para el cuadro del mensaje/spinner */
+    background-color: #2c2c3e;
+    /* Fondo oscuro para el cuadro del mensaje/spinner */
     padding: 30px 40px;
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     text-align: center;
-    color: #ffffff; /* Color del texto del modal */
+    color: #ffffff;
+    /* Color del texto del modal */
 }
 
 .spinner {
     border: 4px solid rgba(255, 255, 255, 0.3);
-    border-top: 4px solid #4CAF50; /* Color de la parte giratoria del spinner */
+    border-top: 4px solid #4CAF50;
+    /* Color de la parte giratoria del spinner */
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -1037,8 +1031,13 @@ select.form-input option:checked {
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .loading-message {
@@ -1106,13 +1105,17 @@ body {
 
 .app-container {
     display: flex;
-    flex-direction: column; /* Apila el header y el main content verticalmente */
-    height: 100%; /* El contenedor de la app ocupa toda la altura del body */
-    width: 100%; /* El contenedor de la app ocupa todo el ancho */
-    overflow: hidden; /* Importante para contener el scroll de las subsecciones */
+    flex-direction: column;
+    /* Apila el header y el main content verticalmente */
+    height: 100%;
+    /* El contenedor de la app ocupa toda la altura del body */
+    width: 100%;
+    /* El contenedor de la app ocupa todo el ancho */
+    overflow: hidden;
+    /* Importante para contener el scroll de las subsecciones */
 }
 
-  
+
 
 
 .app-header {
@@ -1123,7 +1126,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 @keyframes headerFadeIn {
@@ -1152,15 +1155,22 @@ body {
 .sidebar {
     position: fixed;
     top: 0;
-    left: 0; /* Asegúrate de que esté en el borde izquierdo */
-    width: 256px; /* Coincide con w-64 de Tailwind (256px = 16rem * 16px/rem) */
+    left: 0;
+    /* Asegúrate de que esté en el borde izquierdo */
+    width: 256px;
+    /* Coincide con w-64 de Tailwind (256px = 16rem * 16px/rem) */
     height: 100%;
-    background: rgba(30, 30, 50, 0.95); /* Fondo oscuro con transparencia */
+    background: rgba(30, 30, 50, 0.95);
+    /* Fondo oscuro con transparencia */
     backdrop-filter: blur(10px);
-    border-right: 2px solid var(--ltc-blue); /* Borde a la derecha para que se vea al abrir */
-    box-shadow: 8px 0 25px rgba(0, 0, 0, 0.6); /* Sombra hacia la derecha */
-    transform: translateX(-100%); /* Oculto por defecto a la izquierda */
-    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Transición elástica para transform */
+    border-right: 2px solid var(--ltc-blue);
+    /* Borde a la derecha para que se vea al abrir */
+    box-shadow: 8px 0 25px rgba(0, 0, 0, 0.6);
+    /* Sombra hacia la derecha */
+    transform: translateX(-100%);
+    /* Oculto por defecto a la izquierda */
+    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    /* Transición elástica para transform */
     z-index: 2001;
     padding-top: 80px;
     display: flex;
@@ -1176,8 +1186,10 @@ body {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
     z-index: 2000;
-    opacity: 0; /* Inicialmente transparente */
-    pointer-events: none; /* No interactuable cuando está oculto */
+    opacity: 0;
+    /* Inicialmente transparente */
+    pointer-events: none;
+    /* No interactuable cuando está oculto */
     transition: opacity 0.3s ease-in-out;
 }
 
@@ -1188,7 +1200,8 @@ body {
 }
 
 .hidden {
-    display: none !important; /* El !important es a menudo necesario para Tailwind */
+    display: none !important;
+    /* El !important es a menudo necesario para Tailwind */
 }
 
 .app-logo {
@@ -1427,15 +1440,14 @@ body {
 .loader {
     border: 8px solid rgba(255, 255, 255, 0.2);
     border-top: 8px solid var(--ltc-blue);
-    /* Ajuste de color a tu tema */
     border-radius: 50%;
     width: 60px;
-    /* Ajuste de tamaño */
     height: 60px;
-    /* Ajuste de tamaño */
     animation: spin 1s linear infinite;
     margin-bottom: 20px;
 }
+
+
 
 @keyframes spin {
     0% {
@@ -2021,12 +2033,15 @@ select.form-input option:checked {
 
 /* In your style.css or embedded styles */
 #notificationContainer {
-    position: fixed; /* Or absolute */
-    top: 13%; /* This is the problem! It puts it at the very top. */
+    position: fixed;
+    /* Or absolute */
+    top: 13%;
+    /* This is the problem! It puts it at the very top. */
     left: 50%;
-    width:90%;
+    width: 90%;
     transform: translateX(-50%);
-    z-index: 1000; /* Ensures it's on top of other content */
+    z-index: 1000;
+    /* Ensures it's on top of other content */
     /* ... other styles like padding, background, etc. */
 }
 
@@ -2035,35 +2050,50 @@ select.form-input option:checked {
 /* style.css */
 
 .loading-modal {
-    position: fixed; /* Esto lo fija en el viewport */
-    top: 0;          /* Lo posiciona arriba */
-    left: 0;         /* Lo posiciona a la izquierda */
-    width: 100%;     /* Ocupa todo el ancho de la pantalla */
-    height: 100%;    /* Ocupa todo el alto de la pantalla */
-    background-color: rgba(0, 0, 0, 0.7); /* Esto crea el fondo oscuro y semi-transparente */
-    display: flex;   /* Habilita Flexbox para centrar su contenido */
-    justify-content: center; /* Centra horizontalmente el 'loading-content' */
-    align-items: center;     /* Centra verticalmente el 'loading-content' */
-    z-index: 9999;   /* Asegura que esté por encima de todo lo demás en la página */
-    pointer-events: auto; /* IMPORTANTE: Esto asegura que el modal capture todos los eventos de clic y no los deje pasar a los elementos debajo. */
+    position: fixed;
+    /* Esto lo fija en el viewport */
+    top: 0;
+    /* Lo posiciona arriba */
+    left: 0;
+    /* Lo posiciona a la izquierda */
+    width: 100%;
+    /* Ocupa todo el ancho de la pantalla */
+    height: 100%;
+    /* Ocupa todo el alto de la pantalla */
+    background-color: rgba(0, 0, 0, 0.7);
+    /* Esto crea el fondo oscuro y semi-transparente */
+    display: flex;
+    /* Habilita Flexbox para centrar su contenido */
+    justify-content: center;
+    /* Centra horizontalmente el 'loading-content' */
+    align-items: center;
+    /* Centra verticalmente el 'loading-content' */
+    z-index: 9999;
+    /* Asegura que esté por encima de todo lo demás en la página */
+    pointer-events: auto;
+    /* IMPORTANTE: Esto asegura que el modal capture todos los eventos de clic y no los deje pasar a los elementos debajo. */
 }
 
 .loading-modal.hidden {
-    display: none; /* Esta clase oculta el modal */
+    display: none;
+    /* Esta clase oculta el modal */
 }
 
 .loading-content {
-    background-color: #2c2c3e; /* Fondo oscuro para el cuadro del mensaje/spinner */
+    background-color: #2c2c3e;
+    /* Fondo oscuro para el cuadro del mensaje/spinner */
     padding: 30px 40px;
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     text-align: center;
-    color: #ffffff; /* Color del texto del modal */
+    color: #ffffff;
+    /* Color del texto del modal */
 }
 
 .spinner {
     border: 4px solid rgba(255, 255, 255, 0.3);
-    border-top: 4px solid #4CAF50; /* Color de la parte giratoria del spinner */
+    border-top: 4px solid #4CAF50;
+    /* Color de la parte giratoria del spinner */
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -2072,8 +2102,13 @@ select.form-input option:checked {
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .loading-message {

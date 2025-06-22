@@ -36,6 +36,10 @@ let registerForm;
 let authMessage;
 let registerMessage;
 
+let termsAndConditionsLink;
+let termsAndConditionsLink2;
+let privacyPolicyLink;
+
 // *** Función para inicializar listeners ***
 function setupLoginRegisterListeners() {
     console.log("Configurando listeners de Login/Register...");
@@ -57,6 +61,9 @@ function setupLoginRegisterListeners() {
     passwordRegisterInput = document.getElementById('passwordRegister');
     confirmPasswordRegisterInput = document.getElementById('confirmPasswordRegister');
     registerButton = document.getElementById('registerButton');
+
+    termsAndConditionsLink = document.getElementById('termsAndConditionsLink');
+    privacyPolicyLink = document.getElementById('privacyPolicyLink');
 
 
     if (googleSignInBtn) {
@@ -83,6 +90,30 @@ function setupLoginRegisterListeners() {
     if (registerButton) {
         registerButton.removeEventListener('click', handleEmailRegister);
         registerButton.addEventListener('click', handleEmailRegister);
+    }
+
+    if (termsAndConditionsLink) {
+        termsAndConditionsLink.addEventListener('click', (event) => {
+            event.preventDefault(); // Evita que el navegador navegue directamente
+            window.open('https://sites.google.com/view/condiciones-win-con-miner/inicio', '_blank'); // Abre en una nueva pestaña/ventana
+            console.log("Abriendo Términos y Condiciones.");
+        });
+    }
+
+     if (termsAndConditionsLink2) {
+        termsAndConditionsLink.addEventListener('click', (event) => {
+            event.preventDefault(); // Evita que el navegador navegue directamente
+            window.open('https://sites.google.com/view/condiciones-win-con-miner/inicio', '_blank'); // Abre en una nueva pestaña/ventana
+            console.log("Abriendo Términos y Condiciones.");
+        });
+    }
+
+    if (privacyPolicyLink) {
+        privacyPolicyLink.addEventListener('click', (event) => {
+            event.preventDefault();
+            window.open('https://sites.google.com/view/win-coin-miner/inicio', '_blank'); // Abre en una nueva pestaña/ventana
+            console.log("Abriendo Política de Privacidad.");
+        });
     }
 
     // Llama a la función para mostrar el formulario de login por defecto al inicio
@@ -384,3 +415,4 @@ function generateRandomString(length) {
 }
 
 // Asegúrate de que las importaciones estén en la parte superior del archivo.
+

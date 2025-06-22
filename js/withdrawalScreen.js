@@ -332,8 +332,6 @@ async function handleWithdrawalRequest() {
         return;
     }
 
-    // Obtener el correo de FaucetPay directamente del DOM o del balance guardado
-    // (el backend lo verificará de todas formas)
     const faucetPayEmail = displayEmail.textContent;
 
     if (!faucetPayEmail || faucetPayEmail === "no configurado") {
@@ -345,33 +343,40 @@ async function handleWithdrawalRequest() {
 
     try {
         const user = authInstance.currentUser;
-        const idToken = await currentUser.getIdToken(); // Obtén el token de Firebase Auth
+        const idToken = await currentUser.getIdToken();
 
         const response = await fetch(`${BACKEND_URL}/api/request-faucetpay-withdrawal`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${idToken}` // Envía el token al backend
+                'Authorization': `Bearer ${idToken}`
             },
             body: JSON.stringify({
-                userId: currentUser.uid, // Asegúrate de que el backend use este userId
+                userId: currentUser.uid,
                 email: faucetPayEmail,
-                amount: (selectedAmountLitoshis / LTC_TO_LITOSHIS_FACTOR) // Envía el monto en LTC (decimal) al backend
+                amount: (selectedAmountLitoshis / LTC_TO_LITOSHIS_FACTOR)
             })
         });
 
         const data = await response.json();
 
-        if (!response.ok) { // Si la respuesta no es 2xx
+        if (!response.ok) {
             throw new Error(data.message || 'Error desconocido al procesar el retiro.');
         }
 
-
+        // --- All good! Withdrawal successful. ---
         await logUserActivity(user.uid, 'withdrawal', selectedAmountLitoshis, `Solicitud de retiro con éxito.`);
-        // El backend ya actualizó el balance y registró la actividad.
-        // Solo mostramos la notificación y recargamos los datos.
+
         showNotification(`Solicitud de retiro de ${ (selectedAmountLitoshis / LTC_TO_LITOSHIS_FACTOR).toFixed(8) } LTC enviada con éxito.`, "success", 7000);
         loadWithdrawalData(); // Recargar datos para actualizar balance en UI
+
+        // --- NEW: Load and show an Interstitial Ad ---
+        console.log("[JS] Retiro exitoso. Intentando mostrar anuncio intersticial.");
+        if (typeof UnityAdsBridge !== 'undefined' && UnityAdsBridge.showInterstitialAd) {
+                UnityAdsBridge.showInterstitialAd();
+        } else {
+            console.warn("[JS] UnityAdsBridge.loadInterstitialAd o showInterstitialAd no están disponibles. El anuncio no se mostrará.");
+        }
 
     } catch (error) {
         console.error("Error al procesar retiro:", error);

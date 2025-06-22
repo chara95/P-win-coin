@@ -54,7 +54,7 @@ export function initializeHomeScreen(firebaseAuth, firebaseDb) {
     dailyRewardTimer = document.getElementById('daily-reward-timer');
 
     // Listener para el botón de reclamar recompensa diaria
-   if (claimDailyRewardButton && !isClaimDailyRewardListenerAttached) {
+    if (claimDailyRewardButton && !isClaimDailyRewardListenerAttached) {
         claimDailyRewardButton.addEventListener('click', handleClaimDailyReward);
         isClaimDailyRewardListenerAttached = true; // Marca que ya se adjuntó
         console.log("Listener para claimDailyRewardButton adjuntado.");
@@ -132,17 +132,51 @@ async function loadDailyRewardStatus() {
     }
 }
 
-async function handleClaimDailyReward() {
-    showLoadingModal("Reclamando recompensa diaria...");
+
+async function grantDailyRewardAfterAd() {
+    showLoadingModal("Otorgando recompensa diaria..."); // Show loading specifically for reward processing
     try {
-        const user = authInstance.currentUser; // Usa authInstance
+        const user = authInstance.currentUser;
+        if (!user) {
+            showNotification("No hay usuario autenticado para otorgar la recompensa.", "error");
+            return;
+        }
+
+        const userRef = ref(dbInstance, `users/${user.uid}`);
+        const currentTime = Date.now();
+
+        await update(userRef, {
+            balance: increment(DAILY_REWARD_AMOUNT),
+            lastDailyRewardClaim: currentTime
+        });
+
+        showNotification(`¡Has reclamado ${DAILY_REWARD_AMOUNT} Litoshis de recompensa diaria!`, "success", 5000);
+        loadDailyRewardStatus(); // Recarga el estado para actualizar el contador/UI
+        await logUserActivity(user.uid, 'daily_reward', DAILY_REWARD_AMOUNT, `Recompensa Diaria por Anuncio`);
+        console.log("Recompensa diaria otorgada y logueada.");
+
+    } catch (error) {
+        console.error("Error al otorgar recompensa diaria:", error);
+        showNotification(`Error al otorgar recompensa: ${error.message}`, "error");
+    } finally {
+        hideLoadingModal(); // Always hide the loading modal
+    }
+}
+
+window.grantDailyRewardAfterAd = grantDailyRewardAfterAd;
+
+async function handleClaimDailyReward() {
+    showLoadingModal("Comprobando recompensa diaria..."); // Mensaje de carga inicial
+
+    try {
+        const user = authInstance.currentUser;
         if (!user) {
             showNotification("No hay usuario autenticado para reclamar.", "error");
             hideLoadingModal();
             return;
         }
 
-        const userRef = ref(dbInstance, `users/${user.uid}`); // Usa dbInstance
+        const userRef = ref(dbInstance, `users/${user.uid}`);
         const snapshot = await get(userRef);
         const userData = snapshot.val();
         const lastClaimTime = userData.lastDailyRewardClaim || 0;
@@ -150,23 +184,46 @@ async function handleClaimDailyReward() {
         const elapsedTimeSeconds = Math.floor((currentTime - lastClaimTime) / 1000);
 
         if (elapsedTimeSeconds >= DAILY_REWARD_COOLDOWN_SECONDS) {
-            await update(userRef, {
-                balance: increment(DAILY_REWARD_AMOUNT),
-                lastDailyRewardClaim: currentTime
-            });
-            showNotification(`¡Has reclamado ${DAILY_REWARD_AMOUNT} Litoshis de recompensa diaria!`, "success", 5000);
-            loadDailyRewardStatus(); // Recarga el estado para reiniciar el contador
-            await logUserActivity(user.uid, 'daily_reward', DAILY_REWARD_AMOUNT, `Recompensa Diaria`);
+            // Cooldown ha pasado, ahora intentamos mostrar el anuncio
+            console.log("Cooldown diario pasado. Intentando mostrar anuncio recompensado.");
+
+            // Verifica si UnityAdsBridge y showRewardedAd están disponibles
+            if (typeof UnityAdsBridge !== 'undefined' && UnityAdsBridge.showRewardedAd) {
+                // Establece el flag global para que AndroidBridge.rewardUser sepa el contexto
+                window.isWatchingDailyRewardAd = true;
+                showLoadingModal("Mostrando anuncio de recompensa...", "info"); // Mensaje para indicar que se muestra el anuncio
+
+                // ¡DIRECTAMENTE LLAMA A MOSTRAR EL ANUNCIO!
+                // Android ya se encarga de que esté precargado.
+                UnityAdsBridge.showRewardedAd();
+
+            } else {
+                console.warn("[JS] UnityAdsBridge.showRewardedAd no está disponible. No se puede mostrar el anuncio.");
+                showNotification("Error: Servicio de anuncios no disponible.", "error");
+                hideLoadingModal(); // Oculta el modal si el servicio de anuncios no está disponible
+            }
         } else {
+            // Todavía dentro del período de cooldown
             const timeLeft = DAILY_REWARD_COOLDOWN_SECONDS - elapsedTimeSeconds;
             showNotification(`Debes esperar ${formatTime(timeLeft)} para reclamar de nuevo.`, "info", 5000);
+            hideLoadingModal(); // Oculta el modal si todavía está en cooldown
         }
     } catch (error) {
-        console.error("Error al reclamar recompensa diaria:", error);
-        showNotification(`Error al reclamar recompensa: ${error.message}`, "error");
-    } finally {
+        console.error("Error al iniciar el reclamo de recompensa diaria:", error);
+        showNotification(`Error: ${error.message}`, "error");
         hideLoadingModal();
     }
+}
+
+
+// --- Existing: Listener for the daily reward claim button ---
+// Ensure this part remains as is, calling handleClaimDailyReward
+if (claimDailyRewardButton && !isClaimDailyRewardListenerAttached) {
+    claimDailyRewardButton.addEventListener('click', handleClaimDailyReward);
+    isClaimDailyRewardListenerAttached = true; // Mark as attached
+    console.log("Listener para claimDailyRewardButton adjuntado.");
+} else if (!claimDailyRewardButton) {
+    console.warn("Elemento 'claimDailyRewardButton' no encontrado.");
 }
 
 function updateDailyRewardButtonState(timeLeft, canClaim) {

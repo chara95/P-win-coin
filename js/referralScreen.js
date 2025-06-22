@@ -363,10 +363,39 @@ async function handleShareReferralLink() {
         return;
     }
 
-    // Construye el enlace de referido completo
-    const shareUrl = `https://tudominio.com/register?ref=${referralCode}`; // ¡IMPORTANTE: Reemplaza con tu URL real!
-    const shareText = `¡Únete a Win Coin y gana criptomonedas! Usa mi código de referido: ${referralCode}`;
+    // --- IMPORTANTE: Reemplaza con la URL REAL de tu aplicación en Google Play Store ---
+    // Por ejemplo: "https://play.google.com/store/apps/details?id=com.win_coin.app"
+    // Asegúrate de que 'com.win_coin.app' sea el ID de paquete real de tu app.
+    const appPlayStoreUrl = "https://play.google.com/store/apps/details?id=com.win_coin"; // <--- CAMBIA ESTO
 
+    // Si no tienes la app en Play Store aún, puedes usar la URL de tu Render como temporal
+    // const appBaseUrl = "https://win-coin.onrender.com/";
+    // const shareUrl = `${appBaseUrl}?ref=${referralCode}`;
+
+    const shareUrl = `${appPlayStoreUrl}&ref=${referralCode}`; // Añade el parámetro 'ref' a la URL de Play Store
+
+    const shareText = `¡Únete a Win Coin y gana criptomonedas! Usa mi código de referido: ${referralCode} para obtener una recompensa al registrarte. Descárgala aquí: ${shareUrl}`;
+
+    // --- Intentar usar el AndroidBridge primero ---
+    if (typeof AndroidBridge !== 'undefined' && AndroidBridge.shareApp) {
+        try {
+            AndroidBridge.shareApp(shareText);
+            console.log('Solicitud de compartir enviada a AndroidBridge.');
+        } catch (e) {
+            console.error('Error al llamar a AndroidBridge.shareApp:', e);
+            // Fallback si falla el puente (poco probable si el puente está bien configurado)
+            fallbackToNavigatorShare(shareText, shareUrl);
+        }
+    } else {
+        console.warn('AndroidBridge.shareApp no está disponible. Cayendo a navigator.share o copiar.');
+        // Fallback si AndroidBridge no está presente (ej. en un navegador web)
+        fallbackToNavigatorShare(shareText, shareUrl);
+    }
+}
+
+
+// Función auxiliar para el fallback (si AndroidBridge no funciona o no está presente)
+async function fallbackToNavigatorShare(shareText, shareUrl) {
     if (navigator.share) {
         try {
             await navigator.share({
@@ -374,14 +403,25 @@ async function handleShareReferralLink() {
                 text: shareText,
                 url: shareUrl,
             });
-            console.log('Contenido compartido con éxito.');
+            console.log('Contenido compartido con éxito vía navigator.share.');
         } catch (error) {
-            console.error('Error al compartir:', error);
-            showNotification("No se pudo compartir el contenido.", "error");
+            console.error('Error al compartir vía navigator.share:', error);
+            showNotification("No se pudo compartir el contenido. Copia el enlace manualmente.", "error");
+            // Como último recurso, copia el enlace al portapapeles
+            navigator.clipboard.writeText(shareUrl).then(() => {
+                showNotification("Enlace de la app copiado al portapapeles.", "info");
+            }).catch(err => {
+                console.error('Error al copiar al portapapeles en fallback:', err);
+            });
         }
     } else {
-        showNotification("Tu navegador no soporta la función de compartir. Copia el enlace y compártelo manualmente.", "info");
-        handleCopyReferralLink(); // Opcionalmente, copia al portapapeles como fallback
+        showNotification("Tu dispositivo no soporta la función de compartir directamente. Enlace copiado.", "info");
+        // Si navigator.share no está disponible, copia el enlace al portapapeles
+        navigator.clipboard.writeText(shareUrl).then(() => {
+            showNotification("Enlace de la app copiado al portapapeles.", "info");
+        }).catch(err => {
+            console.error('Error al copiar al portapapeles en else de navigator.share:', err);
+        });
     }
 }
 

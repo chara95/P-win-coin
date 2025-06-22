@@ -25,6 +25,10 @@ let dbInstance;
 let hasGameListenersBeenAttached = false;
 let initialGameNotificationShown = false;
 
+// --- Nueva bandera para controlar si se está esperando el intersticial del juego ---
+window.isShowingGameInterstitial = false;
+
+
 /**
  * Inicializa los listeners y referencias del DOM para el juego de memoria.
  * Esta función es llamada desde app.js o screenHandler.js.
@@ -43,7 +47,7 @@ export function initializeGameScreen(firebaseAuth, firebaseDb) {
     }
 
     // Llama a startGame() aquí para que el juego se inicie al mostrar la pantalla
-    //startGame();
+    //startGame(); // Comentado, asumiendo que un controlador externo lo llamará al cargar la pantalla.
 }
 
 // === LÓGICA DEL JUEGO DE MEMORIA ===
@@ -123,12 +127,11 @@ export function startGame() {
 
     generateCards();
 
-     if (!initialGameNotificationShown) {
+    if (!initialGameNotificationShown) {
         showNotification(`¡Encuentra los pares! Tienes ${MAX_MOVES} movimientos.`, "info", 5000);
         initialGameNotificationShown = true; // Marcar que ya se mostró
     }
     gameStarted = true;
-    // showNotification(`¡Encuentra los pares! Tienes ${MAX_MOVES} movimientos.`, "info", 5000);
 }
 
 function flipCard(card) {
@@ -293,12 +296,44 @@ function displayGameResult(message, type) {
 
     parentContainer.appendChild(resultWrapper); // Añade el resultado al nuevo contenedor
     
-    playAgainBtnEl.addEventListener('click', handlePlayAgain);
+    // --- MODIFICACIÓN AQUÍ: Llamamos a una nueva función para manejar el clic del botón "Volver a Jugar" ---
+    playAgainBtnEl.addEventListener('click', handlePlayAgainWithInterstitial);
 }
 
-function handlePlayAgain() {
-    console.log("Play Again button clicked.");
-    removeGameResultMessage(); // Oculta el mensaje de resultado
+// --- NUEVA FUNCIÓN PARA MANEJAR EL BOTÓN "VOLVER A JUGAR" CON ANUNCIO INTERSTICIAL ---
+function handlePlayAgainWithInterstitial() {
+    console.log("Botón 'Volver a Jugar' clickeado. Intentando mostrar anuncio intersticial.");
+    
+    // Oculta el mensaje de resultado antes de intentar mostrar el ad o reiniciar el juego
+    removeGameResultMessage(); 
+
+    // Muestra un modal de carga para indicar que algo está sucediendo
+    showLoadingModal("Cargando anuncio para la siguiente partida...");
+
+    // Verifica si el puente de Android para Unity Ads y la función de intersticial están disponibles
+    if (typeof UnityAdsBridge !== 'undefined' && UnityAdsBridge.showInterstitialAd) {
+        window.isShowingGameInterstitial = true; // Establece la bandera para este contexto
+        UnityAdsBridge.showInterstitialAd(); // Llama al método del puente de Android para mostrar el intersticial
+
+        // La lógica para realmente iniciar el juego se moverá a un nuevo callback
+        // que será llamado por AndroidBridge después de que el intersticial se cierre.
+    } else {
+        console.warn("[JS] UnityAdsBridge.showInterstitialAd no está disponible. Reiniciando el juego sin anuncio.");
+        hideLoadingModal(); // Oculta el modal si no se puede mostrar el ad
+        startGame(); // Si no se puede mostrar el anuncio, simplemente reinicia el juego.
+        showNotification("¡Nueva partida de Memory Match!", "info");
+        window.isShowingGameInterstitial = false; // Asegurarse de que la bandera esté en false
+    }
+}
+
+// --- NUEVA FUNCIÓN QUE SERÁ LLAMADA POR AndroidBridge DESPUÉS DE QUE EL ANUNCIO INTERSTICIAL SE CIERRE ---
+// Esta función necesita ser accesible globalmente (ej. en window) para que AndroidBridge.interstitialAdClosed()
+// pueda llamarla. Podría estar en mobileBridge.js o app.js, pero para este ejemplo la ponemos aquí
+// asumiendo que es la única que la necesita y la exportamos para que sea global.
+export function continueGameAfterInterstitial() {
+    console.log("[JS] Anuncio intersticial del juego cerrado. Reiniciando juego...");
+    hideLoadingModal(); // Oculta cualquier modal de carga que estuviera mostrando.
     startGame(); // Inicia una nueva partida
     showNotification("¡Nueva partida de Memory Match!", "info");
+    window.isShowingGameInterstitial = false; // Resetea la bandera después de reiniciar el juego
 }
