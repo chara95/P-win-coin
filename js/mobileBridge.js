@@ -8,12 +8,13 @@ import { continueGameAfterInterstitial } from './game.js';    // Función para c
 // Banderas y variables de contexto globales
 window.isShowingGameInterstitial = false; // Para el contexto del anuncio intersticial del juego
 window.currentRewardAdContext = null;    // Para el contexto del anuncio recompensado (e.g., 'faucet', 'daily_reward')
+window.isShowingWithdrawalInterstitial = false;
 
 // === UNIFICACIÓN DE window.AndroidBridge ===
 // Este objeto es el puente principal para que el código Java de Android llame a funciones JavaScript.
 window.AndroidBridge = {
     // --- Funciones para Google Sign-In (existentes) ---
-    showToast: function(message) {
+    showToast: function (message) {
         console.log(`[JS] Toast solicitado: ${message}`);
         // Implementación real para Android si es necesario, o un fallback JS
         if (typeof Android !== 'undefined' && Android.showToast) {
@@ -23,7 +24,7 @@ window.AndroidBridge = {
             showNotification(message, "info");
         }
     },
-    startGoogleSignIn: function() {
+    startGoogleSignIn: function () {
         console.log("[JS] Solicitando Google Sign-In a Android.");
         if (typeof Android !== 'undefined' && Android.startGoogleSignIn) {
             Android.startGoogleSignIn();
@@ -32,7 +33,7 @@ window.AndroidBridge = {
             showNotification("Error: No se pudo iniciar sesión con Google. Servicio no disponible.", "error");
         }
     },
-    onGoogleSignInSuccess: function(uid) {
+    onGoogleSignInSuccess: function (uid) {
         console.log(`[JS] Google Sign-In exitoso. UID: ${uid}`);
         // Aquí podrías tener una función global en tu app para manejar el inicio de sesión
         if (typeof onGoogleSignInSuccessGlobal === 'function') {
@@ -41,7 +42,7 @@ window.AndroidBridge = {
             console.warn("[JS] onGoogleSignInSuccessGlobal no está definida.");
         }
     },
-    onGoogleSignInFailure: function(errorMessage) {
+    onGoogleSignInFailure: function (errorMessage) {
         console.error(`[JS] Google Sign-In fallido. Mensaje: ${errorMessage}`);
         // Aquí podrías tener una función global para manejar fallos de inicio de sesión
         if (typeof onGoogleSignInFailureGlobal === 'function') {
@@ -51,7 +52,7 @@ window.AndroidBridge = {
             showNotification(`Error de Google Sign-In: ${errorMessage}`, "error");
         }
     },
-    shareApp: function(textToShare) {
+    shareApp: function (textToShare) {
         console.log(`[JS] Solicitando compartir app a Android con texto: ${textToShare}`);
         if (typeof Android !== 'undefined' && Android.shareApp) {
             Android.shareApp(textToShare);
@@ -63,7 +64,7 @@ window.AndroidBridge = {
 
     // --- RECOMPENSA DE ANUNCIOS (Faucet/Daily Reward/etc.) ---
     // Esta es la función que MainActivity.java llama cuando un anuncio recompensado se COMPLETA.
-    rewardUser: async function() {
+    rewardUser: async function () {
         console.log("[JS] Recibida notificación de Android: ¡Usuario recompensado!");
 
         // Usar la variable de contexto para determinar qué recompensa otorgar
@@ -100,13 +101,12 @@ window.AndroidBridge = {
 
     // --- ANUNCIO INTERSTICIAL (Juego de Memoria) ---
     // Esta es la función que MainActivity.java llama cuando un anuncio intersticial se cierra.
-    interstitialAdClosed: function() {
+    interstitialAdClosed: function () {
         console.log("[JS] AndroidBridge.interstitialAdClosed() llamado desde Android.");
 
         if (window.isShowingGameInterstitial) {
-            window.isShowingGameInterstitial = false; // Resetear la bandera
+            window.isShowingGameInterstitial = false;
             console.log("[JS] Intersticial de juego cerrado. Llamando a continuar juego...");
-
             if (typeof continueGameAfterInterstitial === 'function') {
                 continueGameAfterInterstitial();
             } else {
@@ -114,11 +114,30 @@ window.AndroidBridge = {
                 hideLoadingModal();
                 showNotification("Error interno al continuar juego.", "error");
             }
+        } else if (window.isShowingWithdrawalInterstitial) {
+            window.isShowingWithdrawalInterstitial = false; // Resetear la bandera
+            console.log("[JS] Intersticial de retiro cerrado. Mostrando notificación de éxito y recargando datos.");
+
+            if (window.lastWithdrawalMessage) {
+                showNotification(window.lastWithdrawalMessage, "success", 7000); // Muestra el mensaje guardado
+                window.lastWithdrawalMessage = null; // Limpiar mensaje temporal
+            } else {
+                showNotification("¡Retiro solicitado con éxito!", "success"); // Mensaje de fallback
+            }
+
+            // ¡¡¡AQUÍ ES DONDE DEBES LLAMAR A loadWithdrawalData()!!!
+            if (typeof loadWithdrawalData === 'function') {
+                loadWithdrawalData(); // <-- ¡Llamar para refrescar el balance y UI!
+            } else {
+                console.error("[JS] 'loadWithdrawalData' no está definida o accesible en mobileBridge.");
+                // Considera cómo manejar esto si no está globalmente accesible.
+                // Puede que necesites importarla en mobileBridge.js o asegurarte de que se exponga al window.
+            }
+
+            hideLoadingModal(); // Asegura que cualquier modal de carga se oculte
         } else {
-            console.log("[JS] Intersticial cerrado sin contexto de juego. Posiblemente un intersticial general.");
-            hideLoadingModal(); // Oculta el modal por si acaso.
-            // Aquí podrías emitir un evento CustomEvent si otras partes de la app necesitan saber esto.
-            // document.dispatchEvent(new CustomEvent('interstitialGeneralClosed'));
+            console.log("[JS] Intersticial cerrado sin contexto específico. Ocultando modal.");
+            hideLoadingModal();
         }
     }
 };
@@ -127,7 +146,7 @@ window.AndroidBridge = {
 // Estos callbacks son generalmente llamados por Android para notificar el estado de los anuncios de Unity Ads.
 window.UnityAdsBridge = window.UnityAdsBridge || {}; // Asegurarse de que el objeto existe
 
-window.UnityAdsBridge.onAdLoaded = function(placementId) {
+window.UnityAdsBridge.onAdLoaded = function (placementId) {
     console.log(`[JS] Unity Ad cargado: ${placementId}`);
     // No ocultar el modal aquí si es un ad que aún se va a mostrar manualmente.
     // El modal se oculta cuando el ad empieza a mostrarse (onAdShowStart) o falla.
@@ -137,14 +156,14 @@ window.UnityAdsBridge.onAdLoaded = function(placementId) {
 };
 
 // Llamada cuando no se pudo cargar el anuncio
-window.UnityAdsBridge.onAdLoadFailed = function(placementId, message) {
+window.UnityAdsBridge.onAdLoadFailed = function (placementId, message) {
     console.error(`[JS] Unity Ad falló al cargar: ${placementId}, Mensaje: ${message}`);
-    
+
     // Resetear el contexto de recompensa si era un rewarded ad
     if (placementId && placementId.includes('Rewarded')) { // Asumiendo tus placement IDs de recompensados incluyen 'Rewarded'
         window.currentRewardAdContext = null;
     }
-    
+
     // Resetear bandera de intersticial de juego si era un interstitial ad
     if (window.isShowingGameInterstitial) {
         window.isShowingGameInterstitial = false;
@@ -159,14 +178,14 @@ window.UnityAdsBridge.onAdLoadFailed = function(placementId, message) {
 };
 
 // Llamada si el anuncio falla y no se pudo mostrar
-window.UnityAdsBridge.onAdShowFailed = function(placementId, message) {
+window.UnityAdsBridge.onAdShowFailed = function (placementId, message) {
     console.error(`[JS] Unity Ad falló al mostrar: ${placementId}, Mensaje: ${message}`);
-    
+
     // Resetear el contexto de recompensa si era un rewarded ad
     if (placementId && placementId.includes('Rewarded')) { // Asumiendo tus placement IDs de recompensados incluyen 'Rewarded'
         window.currentRewardAdContext = null;
     }
-    
+
     // Resetear bandera de intersticial de juego si era un interstitial ad
     if (window.isShowingGameInterstitial) {
         window.isShowingGameInterstitial = false;
@@ -181,14 +200,14 @@ window.UnityAdsBridge.onAdShowFailed = function(placementId, message) {
 };
 
 // Llamada cuando un anuncio se empieza a mostrar
-window.UnityAdsBridge.onAdShowStart = function(placementId) {
+window.UnityAdsBridge.onAdShowStart = function (placementId) {
     console.log(`[JS] Unity Ad comenzó a mostrarse: ${placementId}`);
     // Ocultar el modal de carga una vez que el anuncio comienza a mostrarse
     hideLoadingModal();
 };
 
 // Llamada cuando se hizo clic en un anuncio
-window.UnityAdsBridge.onAdShowClick = function(placementId) {
+window.UnityAdsBridge.onAdShowClick = function (placementId) {
     console.log(`[JS] Unity Ad clickeado: ${placementId}`);
     // No hay acción específica aquí usualmente, solo log.
 };
@@ -197,15 +216,15 @@ window.UnityAdsBridge.onAdShowClick = function(placementId) {
 // Esta es una notificación general de Unity Ads. La lógica de recompensa/continuación del juego
 // se maneja en AndroidBridge.rewardUser y AndroidBridge.interstitialAdClosed,
 // que son llamadas CONDICIONALMENTE desde Java.
-window.UnityAdsBridge.onAdShowComplete = function(placementId, state) {
+window.UnityAdsBridge.onAdShowComplete = function (placementId, state) {
     console.log(`[JS] Unity Ad completado (general callback): ${placementId}, Estado: ${state}`);
     // Aquí no se otorga la recompensa directamente, solo se registra.
     // La recompensa se otorga cuando Android llama a AndroidBridge.rewardUser().
     // La continuación del juego se maneja cuando Android llama a AndroidBridge.interstitialAdClosed().
-    
+
     // Como fallback o para asegurar, si hay un modal de carga activo aquí y no se maneja
     // por las funciones de AndroidBridge, ocúltalo.
-    hideLoadingModal(); 
+    hideLoadingModal();
 };
 
 // === FUNCIONES PARA LLAMAR A ANDROID DESDE JS (Unity Ads) ===
@@ -213,7 +232,7 @@ window.UnityAdsBridge.onAdShowComplete = function(placementId, state) {
 // para solicitar a Android que realice una acción con Unity Ads.
 
 // Llamada para cargar el anuncio Intersticial
-window.UnityAdsBridge.loadInterstitialAd = function() {
+window.UnityAdsBridge.loadInterstitialAd = function () {
     if (typeof Android !== 'undefined' && Android.loadInterstitialAd) {
         Android.loadInterstitialAd();
         console.log("[JS] Solicitando cargar anuncio intersticial via Android.");
@@ -224,7 +243,7 @@ window.UnityAdsBridge.loadInterstitialAd = function() {
 };
 
 // Llamada para mostrar anuncio Intersticial
-window.UnityAdsBridge.showInterstitialAd = function() {
+window.UnityAdsBridge.showInterstitialAd = function () {
     if (typeof Android !== 'undefined' && Android.showInterstitialAd) {
         Android.showInterstitialAd();
         console.log("[JS] Solicitando mostrar anuncio intersticial via Android.");
@@ -240,7 +259,7 @@ window.UnityAdsBridge.showInterstitialAd = function() {
 };
 
 // Llamada para mostrar anuncio recompensado
-window.UnityAdsBridge.showRewardedAd = function() { 
+window.UnityAdsBridge.showRewardedAd = function () {
     if (typeof Android !== 'undefined' && Android.showRewardedAd) {
         Android.showRewardedAd();
         console.log("[JS] Solicitando mostrar anuncio recompensado via Android.");

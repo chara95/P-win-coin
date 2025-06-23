@@ -125,6 +125,8 @@ async function loadWithdrawalData() {
     }
 }
 
+window.loadWithdrawalData = loadWithdrawalData;
+
 /**
  * Actualiza la UI de la pantalla de retiro.
  * @param {number} balanceLitoshis El balance actual del usuario en Litoshis.
@@ -370,21 +372,47 @@ async function handleWithdrawalRequest() {
         // --- All good! Withdrawal successful. ---
         await logUserActivity(user.uid, 'withdrawal', selectedAmountLitoshis, `Solicitud de retiro con éxito.`);
 
-        showNotification(`Solicitud de retiro de ${(selectedAmountLitoshis / LTC_TO_LITOSHIS_FACTOR).toFixed(8)} LTC enviada con éxito.`, "success", 7000);
-        loadWithdrawalData(); // Recargar datos para actualizar balance en UI
+        // *** CAMBIOS CLAVE AQUÍ ***
 
-        // --- NEW: Load and show an Interstitial Ad ---
+        // 1. Guardar el mensaje de éxito para usarlo DESPUÉS del anuncio.
+        // Puedes guardar el mensaje exacto que quieres mostrar, incluyendo el monto.
+        window.lastWithdrawalMessage = `Solicitud de retiro de ${(selectedAmountLitoshis / LTC_TO_LITOSHIS_FACTOR).toFixed(8)} LTC enviada con éxito.`;
+
+        // 2. Establecer la bandera para que `mobileBridge.js` sepa que es un intersticial de retiro.
+        window.isShowingWithdrawalInterstitial = true;
+        // Opcional: Asegurarse de que otras banderas de intersticial no estén activas.
+        // window.isShowingGameInterstitial = false; 
+        
+        // 3. Solicitar mostrar el anuncio intersticial.
         console.log("[JS] Retiro exitoso. Intentando mostrar anuncio intersticial.");
         if (typeof UnityAdsBridge !== 'undefined' && UnityAdsBridge.showInterstitialAd) {
+            // El modal de carga ya está visible con "Procesando retiro...".
+            // Podrías cambiar el mensaje si quieres, pero no es estrictamente necesario.
+            // showLoadingModal("Cargando anuncio de retiro...", "info"); 
             UnityAdsBridge.showInterstitialAd();
         } else {
-            console.warn("[JS] UnityAdsBridge.loadInterstitialAd o showInterstitialAd no están disponibles. El anuncio no se mostrará.");
+            console.warn("[JS] UnityAdsBridge.showInterstitialAd no está disponible. El anuncio de retiro no se mostrará.");
+            // Si el ad no se puede mostrar, muestra la notificación directamente aquí
+            showNotification(window.lastWithdrawalMessage, "success", 7000);
+            loadWithdrawalData(); // Recargar datos para actualizar balance en UI
+
+            // Resetear las banderas y mensajes temporales
+            window.lastWithdrawalMessage = null;
+            window.isShowingWithdrawalInterstitial = false;
+            hideLoadingModal(); // Asegurarse de ocultar el modal
         }
+
+        // NO OCULTAR EL MODAL NI MOSTRAR LA NOTIFICACIÓN AQUÍ SI EL ANUNCIO SE VA A MOSTRAR.
+        // Eso lo hará `interstitialAdClosed` en `mobileBridge.js` cuando el ad se cierre.
 
     } catch (error) {
         console.error("Error al procesar retiro:", error);
         showNotification(`Error al procesar retiro: ${error.message}`, "error");
+        hideLoadingModal(); // Oculta el modal solo en caso de error
+        // Asegúrate de resetear la bandera de retiro si hubo un error antes de mostrar el ad.
+        window.isShowingWithdrawalInterstitial = false;
     } finally {
-        hideLoadingModal();
+        // No hidesLoadingModal() aquí si el ad se va a mostrar, porque lo hará el callback.
+        // El `catch` ya tiene su `hideLoadingModal()`.
     }
 }
