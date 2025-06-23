@@ -225,7 +225,7 @@ function updateWithdrawalDetails() {
     }
 
     if (selectedAmountLitoshis < MIN_WITHDRAWAL_LITOSHIS) {
-        minWithdrawalErrorDisplay.textContent = `La cantidad mínima de retiro es ${ (MIN_WITHDRAWAL_LITOSHIS / LTC_TO_LITOSHIS_FACTOR).toFixed(8) } LTC.`;
+        minWithdrawalErrorDisplay.textContent = `La cantidad mínima de retiro es ${(MIN_WITHDRAWAL_LITOSHIS / LTC_TO_LITOSHIS_FACTOR).toFixed(8)} LTC.`;
         minWithdrawalErrorDisplay.classList.remove('hidden');
         return;
     }
@@ -264,6 +264,9 @@ async function handleSaveFaucetPayEmail() {
 
     try {
         const idToken = await currentUser.getIdToken(); // Obtén el token de Firebase Auth
+        console.log("[JS] token ", idToken );
+        console.log("[JS] Correo a validar:", email);
+        
 
         const response = await fetch(`${BACKEND_URL}/api/validate-faucetpay-email`, {
             method: 'POST',
@@ -367,13 +370,13 @@ async function handleWithdrawalRequest() {
         // --- All good! Withdrawal successful. ---
         await logUserActivity(user.uid, 'withdrawal', selectedAmountLitoshis, `Solicitud de retiro con éxito.`);
 
-        showNotification(`Solicitud de retiro de ${ (selectedAmountLitoshis / LTC_TO_LITOSHIS_FACTOR).toFixed(8) } LTC enviada con éxito.`, "success", 7000);
+        showNotification(`Solicitud de retiro de ${(selectedAmountLitoshis / LTC_TO_LITOSHIS_FACTOR).toFixed(8)} LTC enviada con éxito.`, "success", 7000);
         loadWithdrawalData(); // Recargar datos para actualizar balance en UI
 
         // --- NEW: Load and show an Interstitial Ad ---
         console.log("[JS] Retiro exitoso. Intentando mostrar anuncio intersticial.");
         if (typeof UnityAdsBridge !== 'undefined' && UnityAdsBridge.showInterstitialAd) {
-                UnityAdsBridge.showInterstitialAd();
+            UnityAdsBridge.showInterstitialAd();
         } else {
             console.warn("[JS] UnityAdsBridge.loadInterstitialAd o showInterstitialAd no están disponibles. El anuncio no se mostrará.");
         }

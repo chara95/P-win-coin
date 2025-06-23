@@ -320,8 +320,7 @@ function handlePlayAgainWithInterstitial() {
     } else {
         console.warn("[JS] UnityAdsBridge.showInterstitialAd no está disponible. Reiniciando el juego sin anuncio.");
         hideLoadingModal(); // Oculta el modal si no se puede mostrar el ad
-        startGame(); // Si no se puede mostrar el anuncio, simplemente reinicia el juego.
-        showNotification("¡Nueva partida de Memory Match!", "info");
+        showNotification("¡Oh Anuncio no disponible intenta nuevamente", "info");
         window.isShowingGameInterstitial = false; // Asegurarse de que la bandera esté en false
     }
 }
@@ -332,8 +331,8 @@ function handlePlayAgainWithInterstitial() {
 // asumiendo que es la única que la necesita y la exportamos para que sea global.
 export function continueGameAfterInterstitial() {
     console.log("[JS] Anuncio intersticial del juego cerrado. Reiniciando juego...");
-    hideLoadingModal(); // Oculta cualquier modal de carga que estuviera mostrando.
-    startGame(); // Inicia una nueva partida
+    hideLoadingModal();
+    startGame();
     showNotification("¡Nueva partida de Memory Match!", "info");
-    window.isShowingGameInterstitial = false; // Resetea la bandera después de reiniciar el juego
+    window.isShowingGameInterstitial = false; 
 }

@@ -56,14 +56,15 @@ export function initializeFaucetScreen(firebaseAuth, firebaseDb) {
 
 // --- NUEVA FUNCIÓN PARA OTORGAR LA RECOMPENSA DEL FAUCET DESPUÉS DEL ANUNCIO ---
 // Esta función se llamará *solo* cuando el anuncio recompensado se haya visto completamente.
-async function grantFaucetRewardAfterAd() {
+export async function grantFaucetRewardAfterAd() {
     console.log("[JS] Anuncio de Faucet completado. Otorgando recompensa...");
-    hideLoadingModal(); // Oculta el modal de carga que se mostró antes de que apareciera el anuncio.
+    // showLoadingModal("Otorgando recompensa del Faucet..."); // Puedes añadir esto si quieres un modal específico para este proceso
 
     const user = authInstance.currentUser;
     if (!user) {
         showNotification("No hay usuario autenticado. No se pudo otorgar la recompensa del Faucet.", "error");
-        if (claimButton) claimButton.disabled = false; // Re-habilitar botón si no hay usuario
+        if (claimButton) claimButton.disabled = false;
+        hideLoadingModal(); // Asegurarse de ocultar el modal aquí si no hay usuario
         return;
     }
 
@@ -73,33 +74,32 @@ async function grantFaucetRewardAfterAd() {
         if (!snapshot.exists()) {
             showNotification("Datos de usuario no encontrados. No se pudo otorgar la recompensa del Faucet.", "error");
             if (claimButton) claimButton.disabled = false;
+            hideLoadingModal(); // Asegurarse de ocultar el modal aquí si no se encuentran datos
             return;
         }
 
-        const userData = snapshot.val();
-        const currentBalance = userData.balance || 0;
-        const newBalance = currentBalance + FAUCET_REWARD;
-        const currentTime = Date.now(); // Usar el tiempo actual para el timestamp de reclamo final
-
-        // Actualizar balance y el último timestamp de reclamo en la DB
+        // NO LEAS EL BALANCE ACTUAL Y SUMES LOCALMENTE.
+        // Usa `increment` de Firebase para una operación atómica y segura.
         await update(userRef, {
-            balance: newBalance,
-            lastFaucetClaim: currentTime
+            balance: increment(FAUCET_REWARD), // <-- ¡CAMBIO CLAVE AQUÍ! Usa increment
+            lastFaucetClaim: Date.now()        // Usa Date.now() directamente para el timestamp
         });
 
         // Registrar la actividad del Faucet
-        const activityRef = ref(dbInstance, `users/${user.uid}/activities`);
-        const newActivityRef = await push(activityRef); // Genera una nueva clave única
-        await set(newActivityRef, {
-            type: 'faucet_claim',
-            description: FAUCET_CLAIM_ACTIVITY_DESCRIPTION,
-            amount: FAUCET_REWARD,
-            timestamp: currentTime
-        });
+        // Aquí puedes usar logUserActivity si ya la tienes configurada para Realtime Database
+        // o usar push/set directamente como lo estabas haciendo si es más directo.
+        await logUserActivity(user.uid, 'faucet_claim', FAUCET_REWARD, `Reclamo de Faucet`);
+        console.log("Recompensa del Faucet otorgada y logueada.");
 
         showNotification(`¡Has reclamado ${formatLTC(FAUCET_REWARD)} del Faucet!`, "success");
-        updateBalanceDisplay(newBalance); // Actualiza el balance visible en la UI
-        await logUserActivity(user.uid, 'faucet_claim', FAUCET_REWARD, `Reclamo de Faucet`);
+        // Para actualizar la UI con el nuevo balance, recarga los datos del usuario
+        // o actualiza la UI directamente con el FAUCET_REWARD sumado (pero la recarga es más segura)
+        // Puedes llamar a una función que obtenga el balance actualizado y lo muestre.
+        // Por ejemplo, `loadUserData()` o una función que específicamente actualice el balance display.
+        updateBalanceDisplay(user.uid); // <--- Asumiendo que esta función obtiene el balance actual de la DB
+                                        // o pásale el valor directamente si es solo para UI: updateBalanceDisplay(currentBalance + FAUCET_REWARD)
+                                        // Si tu `updateBalanceDisplay` ya lee de la base de datos, está perfecto.
+
         startFaucetCooldownTimer(); // Inicia el temporizador de cooldown en la UI
         
         if (faucetMessage) faucetMessage.classList.add('hidden'); // Ocultar mensaje de "listo para reclamar"
@@ -108,23 +108,20 @@ async function grantFaucetRewardAfterAd() {
     } catch (error) {
         console.error("Error al otorgar la recompensa del Faucet después del anuncio:", error);
         showNotification("Error al procesar tu recompensa del Faucet. Inténtalo de nuevo.", "error");
+        if (claimButton) claimButton.disabled = false; // Re-habilitar botón en caso de error
     } finally {
-        // Asegúrate de que el botón se habilite si no hay cooldown activo después de la recompensa.
-        // `faucetInterval` es una buena forma de saber si el cooldown está corriendo.
-        if (claimButton && !faucetInterval) {
-            claimButton.disabled = false;
-        }
-        // ¡Importante! Resetea la bandera después de procesar la recompensa
-        window.isWatchingFaucetAd = false;
+        hideLoadingModal(); // ¡Siempre ocultar el modal al finalizar, sea éxito o error!
+        window.currentRewardAdContext = null; // <-- ¡CAMBIO CLAVE AQUÍ! Resetear la variable de contexto
+        // No necesitas `window.isWatchingFaucetAd = false;` si usas `currentRewardAdContext`
     }
 }
 
-
+window.grantFaucetRewardAfterAd = grantFaucetRewardAfterAd;
 /**
  * Maneja el reclamo del Faucet. Ahora, antes de dar la recompensa, muestra un anuncio.
  */
 async function handleFaucetClaim() {
-    showLoadingModal("Procesando reclamo del Faucet...");
+    showLoadingModal("Comprobando reclamo del Faucet..."); // Mensaje de carga inicial
     if (claimButton) claimButton.disabled = true; // Deshabilita el botón inmediatamente
 
     const user = authInstance.currentUser;
@@ -165,15 +162,10 @@ async function handleFaucetClaim() {
 
         // --- Lógica para mostrar el anuncio recompensado ---
         console.log("Cooldown del Faucet pasado. Intentando mostrar anuncio recompensado.");
-        // Verifica si el puente de Android para Unity Ads está disponible
         if (typeof UnityAdsBridge !== 'undefined' && UnityAdsBridge.showRewardedAd) {
-            // Establece la bandera específica para la recompensa del Faucet
-            window.isWatchingFaucetAd = true;
-            // Asegúrate de que otras banderas de recompensa estén en false para evitar conflictos.
-            // Si tienes una bandera para la recompensa diaria, desactívala aquí:
-            if (window.isWatchingDailyRewardAd !== undefined) {
-                window.isWatchingDailyRewardAd = false;
-            }
+            // Establece el contexto para la recompensa del Faucet
+            window.currentRewardAdContext = 'faucet'; // <-- ¡CAMBIO CLAVE AQUÍ!
+            // No necesitas deshabilitar otras banderas aquí, el 'currentRewardAdContext' lo maneja.
 
             showLoadingModal("Mostrando anuncio para reclamar del Faucet...", "info"); // Mensaje relevante para el usuario
             UnityAdsBridge.showRewardedAd(); // Llama al método de Android para mostrar el anuncio
@@ -182,7 +174,7 @@ async function handleFaucetClaim() {
             // `handleFaucetClaim()` no debe otorgar la recompensa directamente.
             // La recompensa se otorgará en `grantFaucetRewardAfterAd()`
             // una vez que el anuncio se haya completado exitosamente a través del callback de Android.
-            // El botón permanecerá deshabilitado hasta que el ad termine/falle,
+            // El botón permanecerá deshabilitado (ya lo deshabilitaste al principio) hasta que el ad termine/falle,
             // o el temporizador de cooldown se active y tome el control.
 
         } else {
@@ -198,10 +190,6 @@ async function handleFaucetClaim() {
         hideLoadingModal(); // Oculta el modal en caso de error
         if (claimButton) claimButton.disabled = false; // Re-habilitar botón en caso de error
     }
-    // El bloque `finally` de tu función original ha sido reestructurado
-    // para que la gestión del `hideLoadingModal()` y la habilitación/deshabilitación del botón
-    // se maneje en los puntos específicos de éxito o fallo (ya sea antes de mostrar el ad,
-    // o después de que el ad se completa/falla).
 }
 
 

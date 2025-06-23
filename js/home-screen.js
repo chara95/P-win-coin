@@ -133,7 +133,7 @@ async function loadDailyRewardStatus() {
 }
 
 
-async function grantDailyRewardAfterAd() {
+ export async function grantDailyRewardAfterAd() {
     showLoadingModal("Otorgando recompensa diaria..."); // Show loading specifically for reward processing
     try {
         const user = authInstance.currentUser;
@@ -190,11 +190,10 @@ async function handleClaimDailyReward() {
             // Verifica si UnityAdsBridge y showRewardedAd están disponibles
             if (typeof UnityAdsBridge !== 'undefined' && UnityAdsBridge.showRewardedAd) {
                 // Establece el flag global para que AndroidBridge.rewardUser sepa el contexto
-                window.isWatchingDailyRewardAd = true;
-                showLoadingModal("Mostrando anuncio de recompensa...", "info"); // Mensaje para indicar que se muestra el anuncio
+              
 
-                // ¡DIRECTAMENTE LLAMA A MOSTRAR EL ANUNCIO!
-                // Android ya se encarga de que esté precargado.
+                window.currentRewardAdContext = 'daily_reward';
+                showLoadingModal("Mostrando anuncio de recompensa...", "info"); 
                 UnityAdsBridge.showRewardedAd();
 
             } else {
