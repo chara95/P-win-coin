@@ -357,10 +357,6 @@ async function handleCopyReferralLink() {
  * Maneja el clic en el botón "Compartir".
  */
 async function handleShareReferralLink() {
-    // Asegúrate de que userReferralCodeDisplay sea el elemento correcto (ej. un input, un span)
-    // const userReferralCodeDisplay = document.getElementById('tu-id-del-campo-de-codigo');
-    // Si es un input, usa .value; si es un div/span, usa .textContent o .innerText.
-    // Asumiendo que es un input oculto o un elemento donde se muestra el código.
     const referralCode = userReferralCodeDisplay.value; // o .textContent
 
     if (!referralCode || referralCode === "Generando..." || referralCode === "N/A" || referralCode === "Error") {
@@ -368,24 +364,14 @@ async function handleShareReferralLink() {
         return;
     }
 
-    // --- IMPORTANTE: Reemplaza con la URL REAL de tu aplicación en Google Play Store ---
-    // Asegúrate de que 'com.win_coin.app' sea el ID de paquete real de tu app.
-    const appPlayStoreUrl = "https://play.google.com/store/apps/details?id=com.win_coin.app"; // <--- ¡¡CAMBIA ESTO!!
+   
+    const appPlayStoreUrl = "https://play.google.com/store/apps/details?id=com.win_coin.app"; 
+    const shareUrl = `${appPlayStoreUrl}`;
 
-    // Si tu app aún NO está en Play Store, usa una URL de descarga directa o tu landing page.
-    // const appDownloadUrl = "https://win-coin.onrender.com/download-apk"; // Ejemplo de URL directa de tu server
-    // const shareUrl = `${appDownloadUrl}?ref=${referralCode}`;
-
-    // Si estás usando la URL de Play Store, la estás añadiendo el parámetro ref,
-    // que es un parámetro de seguimiento para Play Store, no un deep link para la app.
-    // Para el caso de "copiar código manualmente", esto está bien.
-    const shareUrl = `${appPlayStoreUrl}`; // La URL base que se va a abrir, sin el parámetro de referido directamente en la URL si no lo procesas con deep links.
-
-    // El mensaje de texto que se va a compartir. Aquí incluimos el código de referido.
+  
     const shareText = `¡Únete a Win Coin y gana criptomonedas! Usa mi código de referido: ${referralCode} para obtener una recompensa al registrarte. Descárgala aquí: ${shareUrl}`;
 
-    // --- Intentar usar el AndroidBridge primero ---
-    // ¡Asegúrate de usar window.AndroidBridge si así lo exportaste!
+   
     if (typeof window.AndroidBridge !== 'undefined' && window.AndroidBridge.shareApp) {
         try {
             window.AndroidBridge.shareApp(shareText); // Pasa el shareText completo
@@ -400,13 +386,7 @@ async function handleShareReferralLink() {
     }
 }
 
-// Asegúrate de que fallbackToNavigatorShare esté definida en el mismo archivo o importada.
-// (La definición de fallbackToNavigatorShare que te di arriba)
 
-
-// Función auxiliar para el fallback (si AndroidBridge no funciona o no está presente)
-// Asegúrate de que esta función esté definida en el mismo ámbito que handleShareReferralLink
-// O en un archivo de utilidades que sea importado.
 
 async function fallbackToNavigatorShare(shareText, shareUrl) {
     // Si la API Web Share (navigator.share) está disponible
