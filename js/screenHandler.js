@@ -142,5 +142,3 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Exporta showScreen para que app.js u otros módulos puedan usarlo
-// (Ya está exportado al inicio del archivo)

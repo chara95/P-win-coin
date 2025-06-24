@@ -11,18 +11,18 @@ let dbInstance;
 // Todos los montos se manejan en Litoshis internamente.
 // 1 LTC = 100,000,000 Litoshis
 const LTC_TO_LITOSHIS_FACTOR = 100_000_000;
-const MIN_WITHDRAWAL_LITOSHIS = 1000; // 0.0001 LTC (100,000 Litoshis) - Esto debe coincidir con tu backend
+const MIN_WITHDRAWAL_LITOSHIS = 10000; 
 const WITHDRAWAL_FEE_LITOSHIS = 1000; // 0.00001 LTC (1,000 Litoshis) - Esto DEBE coincidir con tu backend (server.js)
 
 // Definición de las opciones de retiro en Litoshis
 // ¡Ajustado para que los 'value' sean los LITOSHIS correctos para cada monto LTC!
 const WITHDRAWAL_OPTIONS = [
     // El 'label' es lo que se muestra al usuario, el 'amountLitoshis' es el valor interno
-    { amountLTC: 0.00001, amountLitoshis: 1000, label: "0.00001 LTC" },
-    { amountLTC: 0.00005, amountLitoshis: 5000, label: "0.00005 LTC" },
-    { amountLTC: 0.0001, amountLitoshis: 10000, label: "0.00010 LTC" }, // Este es el mínimo que deseas mostrar en el error
-    { amountLTC: 0.0005, amountLitoshis: 50000, label: "0.00050 LTC" },
-    { amountLTC: 0.001, amountLitoshis: 100000, label: "0.00100 LTC" },
+    { amountLTC: 0.0001, amountLitoshis: 10000, label:  "0.0001 LTC" },
+    { amountLTC: 0.0005, amountLitoshis: 50000, label:  "0.0005 LTC" },
+    { amountLTC: 0.0015, amountLitoshis: 150000, label: "0.00150 LTC" }, // Este es el mínimo que deseas mostrar en el error
+    { amountLTC: 0.0020, amountLitoshis: 200000, label:  "0.00200 LTC" },
+    { amountLTC: 0.0050, amountLitoshis: 500000, label:  "0.00500 LTC" },
     // Agrega más opciones si lo deseas
 ];
 

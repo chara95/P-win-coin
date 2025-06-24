@@ -47,10 +47,10 @@
                     class="fas fa-wallet"></i>
                 <span>Retiro</span>
             </a>
-            <a href="#" data-target-screen="gameScreen" class="sidebar-link sidebar-nav-item"> <i
+            <!-- <a href="#" data-target-screen="gameScreen" class="sidebar-link sidebar-nav-item"> <i
                     class="fa-solid fa-brain"></i>
                 <span>Memory Match</span>
-            </a>
+            </a> -->
             <a href="#" data-target-screen="clickerFaucet" class="sidebar-link sidebar-nav-item"> <i
                     class="fa-solid fa-hand-pointer"></i>
                 <span>Clicker Faucet</span>
@@ -197,7 +197,7 @@
                 </h2>
                 <div class="balance-card w-full max-w-2xl mb-6 text-center">
                     <h3 class="text-xl font-semibold mb-2 text-ltc-light-gray">Tu Balance Actual:</h3>
-                    <p id="userBalance" class="text-5xl font-orbitron font-bold text-ltc-green-neon">0.00000000
+                    <p id="userBalance" class="text-4xl font-orbitron font-bold text-ltc-green-neon">0.00000000
                         LTC
                     </p>
                     <p id="homeScreenMessage" class="mt-4 text-center text-sm"></p>
@@ -277,6 +277,11 @@
 
                 </div>
             </div>
+
+
+
+
+
 
             <div id="activityScreen"
                 class="main-screen flex flex-col items-center justify-center p-6 hidden-completely">
@@ -371,11 +376,11 @@
                         retiro (LTC):</label>
                     <select id="withdrawalAmountSelect" class="form-input w-full mb-4">
                         <option value="">Selecciona un monto</option>
-                        <option value="1000">0.00001 LTC (10000 satoshis)</option>
-                        <option value="5000">0.00005 LTC (50000 satoshis)</option>
                         <option value="10000">0.0001 LTC (100000 satoshis)</option>
                         <option value="50000">0.0005 LTC (500000 satoshis)</option>
-                        <option value="100000">0.001 LTC (1000000 satoshis)</option>
+                        <option value="150000">0.0015 LTC (150000 satoshis)</option>
+                        <option value="200000">0.002 LTC (200000 satoshis)</option>
+                        <option value="500000">0.005 LTC (500000 satoshis)</option>
                     </select>
 
                     <button id="requestWithdrawalBtn" class="btn-primary w-full py-3">

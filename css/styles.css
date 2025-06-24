@@ -1,27 +1,15 @@
-/* Variables CSS para colores temáticos de Litecoin */
 :root {
     --ltc-blue: #63B5F6;
-    /* Azul más claro y brillante, inspirado en la imagen */
     --ltc-blue-dark: #3a81f0;
-    /* Un azul un poco más oscuro para hover */
     --ltc-purple: #A57CFA;
-    /* Un morado vibrante para degradados */
     --ltc-green-neon: #00FF99;
-    /* Verde neón para acentos */
     --ltc-yellow-electric: #FFFF00;
-    /* Amarillo eléctrico para destacar */
     --ltc-light-gray: #D3D3D3;
-    /* Gris claro para texto y algunos fondos */
     --ltc-dark-bg-card: rgba(255, 255, 255, 0.1);
-    /* Fondo semi-transparente para tarjetas */
     --ltc-border-card: rgba(255, 255, 255, 0.2);
-    /* Borde claro para tarjetas */
     --ltc-text-main: #E0E0E0;
-    /* Color principal del texto */
     --ltc-success: #48bb78;
-    /* Verde para éxito */
     --ltc-error: #ef4444;
-    /* Rojo para error */
 }
 
 
@@ -38,6 +26,7 @@ body {
     animation: gradientShift 10s ease infinite alternate;
 }
 
+
 @keyframes gradientShift {
     0% {
         background-position: 0% 50%;
@@ -47,10 +36,6 @@ body {
         background-position: 100% 50%;
     }
 }
-
-
-
-
 
 .app-container {
     display: flex;
@@ -64,19 +49,22 @@ body {
     /* Importante para contener el scroll de las subsecciones */
 }
 
-
-
-
 .app-header {
     position: relative;
-    z-index: 20;
-    background-color: #2d3748;
-    padding: 1rem;
+    background: linear-gradient(to right, rgba(99, 181, 246, 0.1), rgba(165, 124, 250, 0.1));
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+     padding: 1.2rem 1.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+    z-index: 2000;
+    animation: headerFadeIn 1s ease-out forwards;
 }
+
+
+
 
 @keyframes headerFadeIn {
     from {
@@ -100,33 +88,24 @@ body {
 }
 
 
-
 .sidebar {
     position: fixed;
     top: 0;
     left: 0;
-    /* Asegúrate de que esté en el borde izquierdo */
     width: 256px;
-    /* Coincide con w-64 de Tailwind (256px = 16rem * 16px/rem) */
     height: 100%;
     background: rgba(30, 30, 50, 0.95);
-    /* Fondo oscuro con transparencia */
     backdrop-filter: blur(10px);
     border-right: 2px solid var(--ltc-blue);
-    /* Borde a la derecha para que se vea al abrir */
     box-shadow: 8px 0 25px rgba(0, 0, 0, 0.6);
-    /* Sombra hacia la derecha */
     transform: translateX(-100%);
-    /* Oculto por defecto a la izquierda */
     transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-    /* Transición elástica para transform */
     z-index: 2001;
     padding-top: 80px;
     display: flex;
     flex-direction: column;
 }
 
-/* Para el sidebar overlay */
 .sidebar-overlay {
     position: fixed;
     top: 0;
@@ -136,13 +115,9 @@ body {
     background-color: rgba(0, 0, 0, 0.7);
     z-index: 2000;
     opacity: 0;
-    /* Inicialmente transparente */
     pointer-events: none;
-    /* No interactuable cuando está oculto */
     transition: opacity 0.3s ease-in-out;
 }
-
-
 
 .flex {
     display: flex !important;
@@ -150,7 +125,6 @@ body {
 
 .hidden {
     display: none !important;
-    /* El !important es a menudo necesario para Tailwind */
 }
 
 .app-logo {
@@ -158,50 +132,23 @@ body {
     filter: drop-shadow(0 0 8px var(--ltc-blue));
 }
 
-/* Estilos para el logo de texto degradado */
 .app-logo-text {
-    /* Colores del degradado (puedes ajustar los colores) */
     background: linear-gradient(to right, var(--ltc-blue), var(--ltc-green-neon));
-    /* Azul a verde neón */
     -webkit-background-clip: text;
-    /* Para que el degradado solo se aplique al texto */
     background-clip: text;
-    /* Estándar */
     -webkit-text-fill-color: transparent;
-    /* Hace que el texto sea transparente para que se vea el degradado */
     color: transparent;
-    /* Fallback para navegadores que no soporten -webkit-text-fill-color */
-
     font-size: 2.5rem;
-    /* Tamaño de fuente más grande, ajusta si es necesario */
     text-shadow: 0 0 15px rgba(0, 255, 153, 0.7);
-    /* Sombra de brillo verde neón para el texto */
     transition: all 0.3s ease-in-out;
     cursor: default;
-    /* No es un botón, no tiene cursor de puntero */
 }
+
 
 .app-logo-text:hover {
     text-shadow: 0 0 25px rgba(0, 255, 153, 1), 0 0 35px rgba(99, 181, 246, 0.8);
-    /* Brillo más intenso en hover */
 }
 
-/* Asegúrate de que el header tenga suficiente padding para el logo más grande */
-.app-header {
-    background: linear-gradient(to right, rgba(99, 181, 246, 0.1), rgba(165, 124, 250, 0.1));
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-    padding: 1.2rem 1.5rem;
-    /* Deja este padding o auméntalo si el texto es muy grande */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
-    z-index: 2000;
-    animation: headerFadeIn 1s ease-out forwards;
-}
-
-/* Botón de hamburguesa */
 .hamburger-button {
     background: none;
     border: none;
@@ -215,28 +162,12 @@ body {
 
 .hamburger-button:hover {
     color: var(--ltc-yellow-electric);
-    /* Cambio a amarillo en hover */
     transform: scale(1.1);
 }
 
-
-
-
-
-
-
-
-
-
-
-
 .sidebar.open {
     transform: translateX(0);
-    /* Visible cuando la clase 'open' está presente */
 }
-
-
-
 
 .sidebar-overlay.visible {
     opacity: 1;
@@ -244,9 +175,6 @@ body {
     pointer-events: auto;
     /* Permite interacciones (clics para cerrar) */
 }
-
-
-
 
 
 .sidebar-overlay.hidden {
@@ -273,10 +201,11 @@ body {
 
 .sidebar-nav-item:hover {
     background-color: rgba(99, 181, 246, 0.2);
-    /* Sutil hover de azul brillante */
     color: white;
     transform: translateX(8px);
 }
+
+
 
 .sidebar-nav-item.active {
     background: linear-gradient(to right, var(--ltc-blue) 0%, rgba(99, 181, 246, 0.4) 100%);
@@ -736,64 +665,11 @@ select.form-input option:checked {
     }
 }
 
-/* Media queries para responsividad */
-@media (max-width: 768px) {
-    .auth-card {
-        padding: 1.5rem;
-        margin: 0 0.5rem;
-        /* Menos margen en móviles */
-    }
-
-    .sidebar {
-        width: 220px;
-
-    }
-
-
-
-    .sidebar-nav-item {
-        font-size: 1rem;
-        padding: 0.8rem 1rem;
-    }
-
-    .sidebar-nav-item i {
-        margin-right: 0.8rem;
-    }
-
-    .app-header {
-        padding: 0.75rem 1rem;
-    }
-
-    .app-logo {
-        height: 35px;
-    }
-
-    .game-card {
-        padding: 1.2rem;
-    }
-
-    .btn-primary,
-    .btn-secondary {
-        padding: 0.7rem 1.2rem;
-        font-size: 0.9rem;
-    }
-}
 
 /* Estilos para el contenedor del juego Memory Match */
 
 /* Estilos para el efecto 3D de volteo de cartas */
-.memory-card .card-inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    transition: transform 0.6s;
-    /* Velocidad de volteo */
-    transform-style: preserve-3d;
-    /* Por defecto, el inner no está volteado, muestra la parte trasera */
-    transform: rotateY(0deg);
-    /* Asegura que no haya rotación inicial */
-}
+
 
 .memory-card .card-face {
     position: absolute;
@@ -850,13 +726,14 @@ select.form-input option:checked {
 
 #activeMemoryGame {
     width: 100%;
-    max-width: 600px;
-    /* Mantener este ancho máximo para pantallas más grandes */
+    max-width: 500px; 
     margin-left: auto;
     margin-right: auto;
     padding: 1rem;
     box-sizing: border-box;
 }
+
+
 
 
 
@@ -898,26 +775,7 @@ select.form-input option:checked {
     background-color: #f0f0f0;
 }
 
-/* Media query para pantallas pequeñas (ej. smartphones en horizontal o tablets pequeñas) */
-@media (max-width: 768px) {
-    #activeMemoryGame {
-        padding: 0.5rem;
-        /* Reducir el padding general */
-    }
 
-    #game-grid {
-        gap: 0.7rem;
-        /* Ligeramente menos espacio entre las cartas */
-        max-width: 300px;
-        /* Ajuste el ancho máximo del grid para que quepan mejor las 4 columnas */
-    }
-
-    .memory-card {
-        font-size: 1.6em;
-        /* Hacer la fuente de las cartas más pequeña */
-        border-radius: 0.6rem;
-    }
-}
 
 /* Media query para pantallas aún más pequeñas (ej. la mayoría de los smartphones en vertical) */
 @media (max-width: 480px) {
@@ -1085,57 +943,17 @@ select.form-input option:checked {
 
 
 
-html,
-body {
-    font-family: 'Roboto', sans-serif;
-    color: var(--ltc-text-main);
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background: linear-gradient(135deg, var(--ltc-blue-dark) 0%, var(--ltc-purple) 100%);
-    animation: gradientShift 10s ease infinite alternate;
-}
-
-@keyframes gradientShift {
-    0% {
-        background-position: 0% 50%;
-    }
-
-    100% {
-        background-position: 100% 50%;
-    }
-}
 
 
 
 
 
-.app-container {
-    display: flex;
-    flex-direction: column;
-    /* Apila el header y el main content verticalmente */
-    height: 100%;
-    /* El contenedor de la app ocupa toda la altura del body */
-    width: 100%;
-    /* El contenedor de la app ocupa todo el ancho */
-    overflow: hidden;
-    /* Importante para contener el scroll de las subsecciones */
-}
 
 
 
 
-.app-header {
-    position: relative;
-    z-index: 20;
-    background-color: #2d3748;
-    padding: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
+
+
 
 @keyframes headerFadeIn {
     from {
@@ -1149,186 +967,6 @@ body {
     }
 }
 
-
-
-.main-screen {
-    width: 100%;
-    height: 100%;
-    overflow-y: auto;
-    padding-bottom: 20px;
-}
-
-
-
-.sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    /* Asegúrate de que esté en el borde izquierdo */
-    width: 256px;
-    /* Coincide con w-64 de Tailwind (256px = 16rem * 16px/rem) */
-    height: 100%;
-    background: rgba(30, 30, 50, 0.95);
-    /* Fondo oscuro con transparencia */
-    backdrop-filter: blur(10px);
-    border-right: 2px solid var(--ltc-blue);
-    /* Borde a la derecha para que se vea al abrir */
-    box-shadow: 8px 0 25px rgba(0, 0, 0, 0.6);
-    /* Sombra hacia la derecha */
-    transform: translateX(-100%);
-    /* Oculto por defecto a la izquierda */
-    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-    /* Transición elástica para transform */
-    z-index: 2001;
-    padding-top: 80px;
-    display: flex;
-    flex-direction: column;
-}
-
-/* Para el sidebar overlay */
-.sidebar-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    z-index: 2000;
-    opacity: 0;
-    /* Inicialmente transparente */
-    pointer-events: none;
-    /* No interactuable cuando está oculto */
-    transition: opacity 0.3s ease-in-out;
-}
-
-
-
-.flex {
-    display: flex !important;
-}
-
-.hidden {
-    display: none !important;
-    /* El !important es a menudo necesario para Tailwind */
-}
-
-.app-logo {
-    height: 40px;
-    filter: drop-shadow(0 0 8px var(--ltc-blue));
-}
-
-/* Estilos para el logo de texto degradado */
-.app-logo-text {
-    /* Colores del degradado (puedes ajustar los colores) */
-    background: linear-gradient(to right, var(--ltc-blue), var(--ltc-green-neon));
-    /* Azul a verde neón */
-    -webkit-background-clip: text;
-    /* Para que el degradado solo se aplique al texto */
-    background-clip: text;
-    /* Estándar */
-    -webkit-text-fill-color: transparent;
-    /* Hace que el texto sea transparente para que se vea el degradado */
-    color: transparent;
-    /* Fallback para navegadores que no soporten -webkit-text-fill-color */
-
-    font-size: 2.5rem;
-    /* Tamaño de fuente más grande, ajusta si es necesario */
-    text-shadow: 0 0 15px rgba(0, 255, 153, 0.7);
-    /* Sombra de brillo verde neón para el texto */
-    transition: all 0.3s ease-in-out;
-    cursor: default;
-    /* No es un botón, no tiene cursor de puntero */
-}
-
-.app-logo-text:hover {
-    text-shadow: 0 0 25px rgba(0, 255, 153, 1), 0 0 35px rgba(99, 181, 246, 0.8);
-    /* Brillo más intenso en hover */
-}
-
-/* Asegúrate de que el header tenga suficiente padding para el logo más grande */
-.app-header {
-    background: linear-gradient(to right, rgba(99, 181, 246, 0.1), rgba(165, 124, 250, 0.1));
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-    padding: 1.2rem 1.5rem;
-    /* Deja este padding o auméntalo si el texto es muy grande */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
-    z-index: 2000;
-    animation: headerFadeIn 1s ease-out forwards;
-}
-
-/* Botón de hamburguesa */
-.hamburger-button {
-    background: none;
-    border: none;
-    color: var(--ltc-green-neon);
-    /* Color neón llamativo */
-    font-size: 2rem;
-    cursor: pointer;
-    padding: 0.5rem;
-    transition: color 0.3s ease, transform 0.3s ease;
-}
-
-.hamburger-button:hover {
-    color: var(--ltc-yellow-electric);
-    /* Cambio a amarillo en hover */
-    transform: scale(1.1);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-.sidebar.open {
-    transform: translateX(0);
-    /* Visible cuando la clase 'open' está presente */
-}
-
-
-
-
-.sidebar-overlay.visible {
-    opacity: 1;
-    /* Completamente visible */
-    pointer-events: auto;
-    /* Permite interacciones (clics para cerrar) */
-}
-
-
-
-
-
-.sidebar-overlay.hidden {
-    opacity: 0;
-}
-
-
-.sidebar-nav-item {
-    display: flex;
-    align-items: center;
-    padding: 1rem 1.5rem;
-    color: var(--ltc-light-gray);
-    text-decoration: none;
-    font-size: 1.1rem;
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.sidebar-nav-item i {
-    margin-right: 1rem;
-    width: 20px;
-    text-align: center;
-}
 
 .sidebar-nav-item:hover {
     background-color: rgba(99, 181, 246, 0.2);
@@ -1797,48 +1435,7 @@ select.form-input option:checked {
     }
 }
 
-/* Media queries para responsividad */
-@media (max-width: 768px) {
-    .auth-card {
-        padding: 1.5rem;
-        margin: 0 0.5rem;
-        /* Menos margen en móviles */
-    }
 
-    .sidebar {
-        width: 220px;
-
-    }
-
-
-
-    .sidebar-nav-item {
-        font-size: 1rem;
-        padding: 0.8rem 1rem;
-    }
-
-    .sidebar-nav-item i {
-        margin-right: 0.8rem;
-    }
-
-    .app-header {
-        padding: 0.75rem 1rem;
-    }
-
-    .app-logo {
-        height: 35px;
-    }
-
-    .game-card {
-        padding: 1.2rem;
-    }
-
-    .btn-primary,
-    .btn-secondary {
-        padding: 0.7rem 1.2rem;
-        font-size: 0.9rem;
-    }
-}
 
 /* Estilos para el contenedor del juego Memory Match */
 
@@ -1849,12 +1446,11 @@ select.form-input option:checked {
     height: 100%;
     text-align: center;
     transition: transform 0.6s;
-    /* Velocidad de volteo */
     transform-style: preserve-3d;
-    /* Por defecto, el inner no está volteado, muestra la parte trasera */
     transform: rotateY(0deg);
-    /* Asegura que no haya rotación inicial */
 }
+
+
 
 .memory-card .card-face {
     position: absolute;
@@ -1909,15 +1505,7 @@ select.form-input option:checked {
     /* Esto revela la cara frontal */
 }
 
-#activeMemoryGame {
-    width: 100%;
-    max-width: 600px;
-    /* Mantener este ancho máximo para pantallas más grandes */
-    margin-left: auto;
-    margin-right: auto;
-    padding: 1rem;
-    box-sizing: border-box;
-}
+
 
 
 
@@ -1959,85 +1547,9 @@ select.form-input option:checked {
     background-color: #f0f0f0;
 }
 
-/* Media query para pantallas pequeñas (ej. smartphones en horizontal o tablets pequeñas) */
-@media (max-width: 768px) {
-    #activeMemoryGame {
-        padding: 0.5rem;
-        /* Reducir el padding general */
-    }
 
-    #game-grid {
-        gap: 0.7rem;
-        /* Ligeramente menos espacio entre las cartas */
-        max-width: 300px;
-        /* Ajuste el ancho máximo del grid para que quepan mejor las 4 columnas */
-    }
 
-    .memory-card {
-        font-size: 1.6em;
-        /* Hacer la fuente de las cartas más pequeña */
-        border-radius: 0.6rem;
-    }
-}
 
-/* Media query para pantallas aún más pequeñas (ej. la mayoría de los smartphones en vertical) */
-@media (max-width: 480px) {
-    #activeMemoryGame {
-        padding: 0.3rem;
-        /* Reducir aún más el padding general */
-    }
-
-    #game-grid {
-        grid-template-columns: repeat(4, 1fr);
-        /* Intentamos mantener 4 columnas si es posible */
-        gap: 0.4rem;
-        /* Reducir aún más el espacio */
-        max-width: 200px;
-        /* Reducir el ancho máximo del grid para 4 columnas muy ajustadas */
-    }
-
-    .memory-card {
-        font-size: 1.2em;
-        /* Hacer la fuente de las cartas notablemente más pequeña */
-        border-radius: 0.4rem;
-    }
-}
-
-/* Media query para pantallas MUY estrechas (ej. iPhone SE, dispositivos muy pequeños) */
-@media (max-width: 360px) {
-    #game-grid {
-        grid-template-columns: repeat(3, 1fr);
-        /* Cambiar a 3 columnas */
-        gap: 0.4rem;
-        /* Reducir el espacio para 3 columnas */
-        max-width: 150px;
-        /* Ajustar el ancho máximo para 3 columnas */
-    }
-
-    .memory-card {
-        font-size: 0.2em;
-        /* Ajustar la fuente para 3 columnas */
-        border-radius: 0.3rem;
-    }
-}
-
-/* Media query para pantallas MUY estrechas (ej. iPhone SE, dispositivos muy pequeños) */
-@media (max-width: 260px) {
-    #game-grid {
-        grid-template-columns: repeat(3, 1fr);
-        /* Cambiar a 3 columnas */
-        gap: 0.1rem;
-        /* Reducir el espacio para 3 columnas */
-        max-width: 50px;
-        /* Ajustar el ancho máximo para 3 columnas */
-    }
-
-    .memory-card {
-        font-size: 0.1em;
-        /* Ajustar la fuente para 3 columnas */
-        border-radius: 0.3rem;
-    }
-}
 
 /* In your style.css or embedded styles */
 #notificationContainer {
@@ -2123,3 +1635,143 @@ select.form-input option:checked {
     font-size: 1.1em;
     font-weight: bold;
 }
+
+
+
+
+/* Media queries para responsividad */
+@media (max-width: 768px) {
+    .auth-card {
+        padding: 1.5rem;
+        margin: 0 0.5rem;
+        /* Menos margen en móviles */
+    }
+
+    .sidebar {
+        width: 220px;
+
+    }
+
+
+
+    .sidebar-nav-item {
+        font-size: 1rem;
+        padding: 0.8rem 1rem;
+    }
+
+    .sidebar-nav-item i {
+        margin-right: 0.8rem;
+    }
+
+    .app-header {
+        padding: 0.75rem 1rem;
+    }
+
+    .app-logo {
+        height: 35px;
+    }
+
+    .game-card {
+        padding: 1.2rem;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        padding: 0.7rem 1.2rem;
+        font-size: 0.9rem;
+    }
+
+       #activeMemoryGame {
+        padding: 0.5rem;
+        /* Reducir el padding general */
+    }
+
+    #game-grid {
+        gap: 0.7rem;
+        /* Ligeramente menos espacio entre las cartas */
+        max-width: 300px;
+        /* Ajuste el ancho máximo del grid para que quepan mejor las 4 columnas */
+    }
+
+    .memory-card {
+        font-size: 1.6em;
+        /* Hacer la fuente de las cartas más pequeña */
+        border-radius: 0.6rem;
+    }
+}
+
+
+
+
+
+/* Media query para pantallas aún más pequeñas (ej. la mayoría de los smartphones en vertical) */
+@media (max-width: 480px) {
+    #activeMemoryGame {
+        padding: 0.3rem;
+        /* Reducir aún más el padding general */
+    }
+
+    #game-grid {
+        grid-template-columns: repeat(4, 1fr);
+        /* Intentamos mantener 4 columnas si es posible */
+        gap: 0.4rem;
+        /* Reducir aún más el espacio */
+        max-width: 200px;
+        /* Reducir el ancho máximo del grid para 4 columnas muy ajustadas */
+    }
+
+    .memory-card {
+        font-size: 1.2em;
+        /* Hacer la fuente de las cartas notablemente más pequeña */
+        border-radius: 0.4rem;
+    }
+}
+
+/* Media query para pantallas MUY estrechas (ej. iPhone SE, dispositivos muy pequeños) */
+@media (max-width: 360px) {
+    #game-grid {
+        grid-template-columns: repeat(3, 1fr);
+        /* Cambiar a 3 columnas */
+        gap: 0.4rem;
+        /* Reducir el espacio para 3 columnas */
+        max-width: 10px;
+        /* Ajustar el ancho máximo para 3 columnas */
+    }
+
+    .memory-card {
+        font-size: 0.2em;
+        /* Ajustar la fuente para 3 columnas */
+        border-radius: 0.3rem;
+    }
+}
+
+
+
+
+/* Media query para pantallas MUY estrechas (ej. iPhone SE, dispositivos muy pequeños) */
+@media (max-width: 260px) {
+    #game-grid {
+        grid-template-columns: repeat(3, 1fr);
+        /* Cambiar a 3 columnas */
+        gap: 0.1rem;
+        /* Reducir el espacio para 3 columnas */
+        max-width: 50px;
+        /* Ajustar el ancho máximo para 3 columnas */
+    }
+
+    .memory-card {
+        font-size: 0.1em;
+        /* Ajustar la fuente para 3 columnas */
+        border-radius: 0.3rem;
+    }
+}
+
+
+
+
+
+
+
+
+
+
