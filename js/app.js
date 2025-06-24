@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Lógica del botón de Salir (DEBE ESTAR AQUÍ) ---
     const logoutButton = document.getElementById('logoutBtn');
     const termsAndConditionsLink2 = document.getElementById('termsAndConditionsLink2');
-    const faucetpayUrlBtn = document.querySelector('faucetpayUrlBtn');
+    const faucetpayUrlBtn = document.getElementById('faucetpayUrlBtn');
     if (logoutButton) {
         logoutButton.addEventListener('click', async (e) => {
             e.preventDefault(); // Previene el comportamiento por defecto del enlace
