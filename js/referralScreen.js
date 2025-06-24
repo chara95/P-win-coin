@@ -372,9 +372,9 @@ async function handleShareReferralLink() {
     const shareText = `¡Únete a Win Coin y gana criptomonedas! Usa mi código de referido: ${referralCode} para obtener una recompensa al registrarte. Descárgala aquí: ${shareUrl}`;
 
    
-    if (typeof window.AndroidBridge !== 'undefined' && window.AndroidBridge.shareApp) {
+    if (typeof mobileBridge !== 'undefined' && mobileBridge.triggerNativeShare) {
         try {
-            window.AndroidBridge.shareApp(shareText); // Pasa el shareText completo
+             mobileBridge.triggerNativeShare(shareText); // Pasa el shareText completo
             console.log('Solicitud de compartir enviada a AndroidBridge.');
         } catch (e) {
             console.error('Error al llamar a window.AndroidBridge.shareApp:', e);

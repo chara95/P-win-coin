@@ -52,9 +52,9 @@ window.AndroidBridge = {
             showNotification(`Error de Google Sign-In: ${errorMessage}`, "error");
         }
     },
-    shareApp: function (textToShare) {
-        console.log(`[JS] Solicitando compartir app a Android con texto: ${textToShare}`);
-        if (typeof window.AndroidBridge !== 'undefined' && window.AndroidBridge.shareApp) {
+    triggerNativeShare: function (textToShare) {
+        console.log(`[JS] Solicitando compartir app a Android con texto (desde triggerNativeShare): ${textToShare}`); 
+        if (typeof AndroidBridge !== 'undefined' && AndroidBridge.shareApp) {
             AndroidBridge.shareApp(textToShare);
         } else {
             console.warn("[JS] window.AndroidBridge.shareApp no está disponible.");
