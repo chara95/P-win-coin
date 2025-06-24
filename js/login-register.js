@@ -40,6 +40,9 @@ let termsAndConditionsLink;
 let termsAndConditionsLink2;
 let privacyPolicyLink;
 
+const TERMS_URL = 'https://sites.google.com/view/condiciones-win-con-miner/inicio';
+const PRIVACY_POLICY_URL = 'https://sites.google.com/view/win-coin-miner/inicio';
+
 // *** Función para inicializar listeners ***
 function setupLoginRegisterListeners() {
     console.log("Configurando listeners de Login/Register...");
@@ -93,28 +96,31 @@ function setupLoginRegisterListeners() {
     }
 
     if (termsAndConditionsLink) {
-        termsAndConditionsLink.addEventListener('click', (event) => {
-            event.preventDefault(); // Evita que el navegador navegue directamente
-            window.open('https://sites.google.com/view/condiciones-win-con-miner/inicio', '_blank'); // Abre en una nueva pestaña/ventana
-            console.log("Abriendo Términos y Condiciones.");
-        });
-    }
-
-     if (termsAndConditionsLink2) {
-        termsAndConditionsLink.addEventListener('click', (event) => {
-            event.preventDefault(); // Evita que el navegador navegue directamente
-            window.open('https://sites.google.com/view/condiciones-win-con-miner/inicio', '_blank'); // Abre en una nueva pestaña/ventana
-            console.log("Abriendo Términos y Condiciones.");
+        termsAndConditionsLink.addEventListener('click', function(event) {
+            event.preventDefault(); // Evita que el navegador siga el href="#"
+            console.log("[JS] Enlace de Términos y Condiciones clickeado.");
+            if (window.AndroidBridge && window.AndroidBridge.openUrlInBrowser) {
+                window.AndroidBridge.openUrlInBrowser(TERMS_URL);
+            } else {
+                console.warn("[JS] AndroidBridge.openUrlInBrowser no disponible, abriendo en ventana JS.");
+                window.open(TERMS_URL, '_blank');
+            }
         });
     }
 
     if (privacyPolicyLink) {
-        privacyPolicyLink.addEventListener('click', (event) => {
-            event.preventDefault();
-            window.open('https://sites.google.com/view/win-coin-miner/inicio', '_blank'); // Abre en una nueva pestaña/ventana
-            console.log("Abriendo Política de Privacidad.");
+        privacyPolicyLink.addEventListener('click', function(event) {
+            event.preventDefault(); // Evita que el navegador siga el href="#"
+            console.log("[JS] Enlace de Política de Privacidad clickeado.");
+            if (window.AndroidBridge && window.AndroidBridge.openUrlInBrowser) {
+                window.AndroidBridge.openUrlInBrowser(PRIVACY_POLICY_URL);
+            } else {
+                console.warn("[JS] AndroidBridge.openUrlInBrowser no disponible, abriendo en ventana JS.");
+                window.open(PRIVACY_POLICY_URL, '_blank');
+            }
         });
     }
+
 
     // Llama a la función para mostrar el formulario de login por defecto al inicio
     showLoginForm();

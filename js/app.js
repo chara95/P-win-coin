@@ -20,6 +20,7 @@ import { initializeGameScreen } from './game.js';
 import { initializeSidebar } from './sidebar.js';
 // Si tienes initializeActivityScreen, asegúrate de importarlo aquí también
 // import { initializeActivityScreen } from './activityScreen.js';
+const TERMS_URL = 'https://sites.google.com/view/condiciones-win-con-miner/inicio';
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log("DOM completamente cargado. Iniciando app.js...");
@@ -27,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Lógica del botón de Salir (DEBE ESTAR AQUÍ) ---
     const logoutButton = document.getElementById('logoutBtn');
+    const termsAndConditionsLink2 = document.getElementById('termsAndConditionsLink2');
     if (logoutButton) {
         logoutButton.addEventListener('click', async (e) => {
             e.preventDefault(); // Previene el comportamiento por defecto del enlace
@@ -43,6 +45,19 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("Listener para el botón de Salir añadido.");
     } else {
         console.warn("Elemento #logoutBtn no encontrado en el DOM. El botón de Salir no funcionará.");
+    }
+
+     if (termsAndConditionsLink2) {
+        termsAndConditionsLink2.addEventListener('click', function(event) {
+            event.preventDefault(); // Evita que el navegador siga el href="#"
+            console.log("[JS] Enlace de Términos y Condiciones clickeado.");
+            if (window.AndroidBridge && window.AndroidBridge.openUrlInBrowser) {
+                window.AndroidBridge.openUrlInBrowser(TERMS_URL);
+            } else {
+                console.warn("[JS] AndroidBridge.openUrlInBrowser no disponible, abriendo en ventana JS.");
+                window.open(TERMS_URL, '_blank');
+            }
+        });
     }
     // --- Fin Lógica del botón de Salir ---
 
