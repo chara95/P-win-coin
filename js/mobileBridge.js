@@ -55,7 +55,7 @@ window.AndroidBridge = {
     shareApp: function (textToShare) {
         console.log(`[JS] Solicitando compartir app a Android con texto: ${textToShare}`);
         if (typeof window.AndroidBridge !== 'undefined' && window.AndroidBridge.shareApp) {
-            window.AndroidBridge.shareApp(textToShare);
+            AndroidBridge.shareApp(textToShare);
         } else {
             console.warn("[JS] window.AndroidBridge.shareApp no está disponible.");
             showNotification("Función de compartir no disponible.", "info");
