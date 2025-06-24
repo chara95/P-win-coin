@@ -4,7 +4,13 @@
  * Inicializa la pantalla de ayuda, configurando la lógica de los FAQ.
  * @param {object} auth - Instancia de Firebase Auth.
  * @param {object} db - Instancia de Firestore Database.
+ 
  */
+
+
+const faucetpayUrl = "https://faucetpay.io/?r=2543351";
+const faucetpayUrlBtn = document.querySelector('faucetpayUrlBtn');
+
 export function initializeHelpScreen(auth, db) {
     console.log("Inicializando HelpScreen (FAQ interactivo)...");
 
@@ -43,4 +49,20 @@ function toggleFaqAnswer(event) {
         icon.classList.toggle('fa-chevron-down'); // Cambia el icono hacia abajo
         icon.classList.toggle('fa-chevron-up');   // Cambia el icono hacia arriba
     }
+}
+
+
+
+
+if (faucetpayUrlBtn) {
+    faucetpayUrlBtn.addEventListener('click', function (event) {
+        event.preventDefault(); // Evita que el navegador siga el href="#"
+        console.log("[JS] Enlace de Términos y Condiciones clickeado.");
+        if (window.AndroidBridge && window.AndroidBridge.openUrlInBrowser) {
+            window.AndroidBridge.openUrlInBrowser(faucetpayUrl);
+        } else {
+            console.warn("[JS] AndroidBridge.openUrlInBrowser no disponible, abriendo en ventana JS.");
+            window.open(faucetpayUrl, '_blank');
+        }
+    });
 }

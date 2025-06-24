@@ -420,87 +420,219 @@
             <section id="helpScreen"
                 class="main-screen flex flex-col items-center justify-center p-6 hidden-completely">
 
-                <div class="container mx-auto max-w-4xl">
-                    <h2 class="text-3xl sm:text-4xl font-bold mb-6 text-ltc-green-neon text-center">Centro de Ayuda y</h2>
+                <div class="container mx-auto p-4 max-w-2xl">
+                    <h1 class="text-4xl font-bold text-center text-green-400 mb-8 rounded-lg p-3 bg-gray-800 shadow-xl">
+                        Preguntas Frecuentes
+                    </h1>
 
-                    <div class="space-y-6">
-                        <div class="bg-gray-800 rounded-lg p-6 shadow-lg">
-                            <h3 class="text-2xl font-semibold mb-4 text-white">Preguntas Frecuentes (FAQ)</h3>
-                            <div class="space-y-4">
-
-                                <div>
-                                    <button
-                                        class="faq-question w-full text-left text-lg font-medium text-ltc-yellow py-2 flex justify-between items-center">
-                                        <span>¿Cómo gano Litoshis en esta aplicación?</span>
-                                        <i class="fas fa-chevron-down text-sm"></i>
-                                    </button>
-                                    <div class="faq-answer mt-2 text-gray-300 hidden">
-                                        <p>Puedes ganar Litoshis reclamando del faucet cada cierto tiempo, jugando a los
-                                            minijuegos disponibles y participando en nuestro programa de referidos tambien hay una recompensa diaria.</p>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <button
-                                        class="faq-question w-full text-left text-lg font-medium text-ltc-yellow py-2 flex justify-between items-center">
-                                        <span>¿Cuál es la cantidad mínima para retirar?</span>
-                                        <i class="fas fa-chevron-down text-sm"></i>
-                                    </button>
-                                    <div class="faq-answer mt-2 text-gray-300 hidden">
-                                        <p>La cantidad mínima de retiro es de 10,000 Litoshis (0.00001 LTC). Aplica una
-                                            pequeña tarifa de 0.00001 LTC para cubrir tarifas de red.</p>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <button
-                                        class="faq-question w-full text-left text-lg font-medium text-ltc-yellow py-2 flex justify-between items-center">
-                                        <span>¿Cómo puedo solicitar un retiro?</span>
-                                        <i class="fas fa-chevron-down text-sm"></i>
-                                    </button>
-                                    <div class="faq-answer mt-2 text-gray-300 hidden">
-                                        <p>Para solicitar un retiro debes tener un cuenta en FaucetPay para resibir tus fondos 
-                                            y agregar la cuenta de correo electrónico de FaucetPay y listo para solicitar tu retiro.</p>
-                                    </div>
-                                </div>
-
-
-                                <div>
-                                    <button
-                                        class="faq-question w-full text-left text-lg font-medium text-ltc-yellow py-2 flex justify-between items-center">
-                                        <span>¿Cómo funciona el programa de referidos?</span>
-                                        <i class="fas fa-chevron-down text-sm"></i>
-                                    </button>
-                                    <div class="faq-answer mt-2 text-gray-300 hidden">
-                                        <p>Puedes compartir tu código de referido único. Cuando un nuevo usuario se
-                                            registra y usa tu código, ganarás una Comisión de 200 Litoshis por cada
-                                            referido.</p>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <button
-                                        class="faq-question w-full text-left text-lg font-medium text-ltc-yellow py-2 flex justify-between items-center">
-                                        <span>¿Cómo puedo contactar al soporte?</span>
-                                        <i class="fas fa-chevron-down text-sm"></i>
-                                    </button>
-                                    <div class="faq-answer mt-2 text-gray-300 hidden">
-                                        <p class="text-gray-300 mb-4">Si tienes alguna otra pregunta o necesitas soporte
-                                            técnico, no dudes en contactarnos a través de:</p>
-                                        <ul class="list-disc list-inside text-gray-300 space-y-2">
-                                            <li>Correo electrónico: <a href="mailto:soporte@tudominio.com"
-                                                    class="text-ltc-green-neon hover:underline">dpsservicio@gmail.com</a>
-                                            </li>
-                                            <li>
-                                                Proximamente en nuestras redes sociales para actualizaciones y
-                                                noticias.
-                                            </li>
-                                        </ul>
-
-                                    </div>
-                                </div>
+                    <div id="faq-list" class="space-y-4">
+                        <!-- FAQ Item: ¿Cómo gano Litoshis en esta aplicación? -->
+                        <div class="bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                            <button
+                                class="faq-question w-full text-left text-lg font-medium text-yellow-400 py-3 px-5 flex justify-between items-center focus:outline-none"
+                                aria-expanded="false" aria-controls="answer-1">
+                                <span>¿Cómo gano Litoshis en esta aplicación?</span>
+                                <i class="fas fa-chevron-down text-sm transition-transform duration-300"></i>
+                            </button>
+                            <div id="answer-1" class="faq-answer mt-2 px-5 pb-3 text-gray-300">
+                                <p>Puedes ganar Litoshis reclamando del faucet cada cierto tiempo, jugando a los
+                                    minijuegos disponibles y participando en nuestro programa de referidos. También hay
+                                    una recompensa diaria.</p>
                             </div>
                         </div>
+
+                        <!-- FAQ Item: ¿Qué es Win Coin? -->
+                        <div class="bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                            <button
+                                class="faq-question w-full text-left text-lg font-medium text-yellow-400 py-3 px-5 flex justify-between items-center focus:outline-none"
+                                aria-expanded="false" aria-controls="answer-2">
+                                <span>¿Qué es Win Coin?</span>
+                                <i class="fas fa-chevron-down text-sm transition-transform duration-300"></i>
+                            </button>
+                            <div id="answer-2" class="faq-answer mt-2 px-5 pb-3 text-gray-300">
+                                <p>Win Coin es una aplicación móvil que te permite ganar pequeñas cantidades de
+                                    criptomoneda Litecoin (LTC) a través de actividades divertidas y recompensas
+                                    diarias, incluyendo juegos y un sistema de referidos.</p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item: ¿Qué son los "Litoshis"? -->
+                        <div class="bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                            <button
+                                class="faq-question w-full text-left text-lg font-medium text-yellow-400 py-3 px-5 flex justify-between items-center focus:outline-none"
+                                aria-expanded="false" aria-controls="answer-3">
+                                <span>¿Qué son los "Litoshis"?</span>
+                                <i class="fas fa-chevron-down text-sm transition-transform duration-300"></i>
+                            </button>
+                            <div id="answer-3" class="faq-answer mt-2 px-5 pb-3 text-gray-300">
+                                <p>Los Litoshis son la unidad más pequeña de Litecoin, similar a cómo los satoshis son
+                                    la unidad más pequeña de Bitcoin. Win Coin te recompensa en Litoshis, los cuales se
+                                    acumulan en tu saldo.</p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item: ¿Cómo me registro en Win Coin? -->
+                        <div class="bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                            <button
+                                class="faq-question w-full text-left text-lg font-medium text-yellow-400 py-3 px-5 flex justify-between items-center focus:outline-none"
+                                aria-expanded="false" aria-controls="answer-4">
+                                <span>¿Cómo me registro en Win Coin?</span>
+                                <i class="fas fa-chevron-down text-sm transition-transform duration-300"></i>
+                            </button>
+                            <div id="answer-4" class="faq-answer mt-2 px-5 pb-3 text-gray-300">
+                                <p>Para usar Win Coin, simplemente inicia sesión con tu cuenta de Google. Nuestra
+                                    aplicación utiliza Google Sign-In para garantizar un proceso de registro y acceso
+                                    seguro y rápido.</p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item: ¿Necesito una cuenta de Google para usar Win Coin? -->
+                        <div class="bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                            <button
+                                class="faq-question w-full text-left text-lg font-medium text-yellow-400 py-3 px-5 flex justify-between items-center focus:outline-none"
+                                aria-expanded="false" aria-controls="answer-5">
+                                <span>¿Necesito una cuenta de Google para usar Win Coin?</span>
+                                <i class="fas fa-chevron-down text-sm transition-transform duration-300"></i>
+                            </button>
+                            <div id="answer-5" class="faq-answer mt-2 px-5 pb-3 text-gray-300">
+                                <p>Sí, Win Coin utiliza Google Sign-In para la autenticación de usuarios, lo que
+                                    garantiza un proceso de inicio de sesión seguro y sencillo para acceder a tu cuenta
+                                    y a tus ganancias.</p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item: ¿Mis ganancias están seguras? -->
+                        <div class="bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                            <button
+                                class="faq-question w-full text-left text-lg font-medium text-yellow-400 py-3 px-5 flex justify-between items-center focus:outline-none"
+                                aria-expanded="false" aria-controls="answer-6">
+                                <span>¿Mis ganancias están seguras?</span>
+                                <i class="fas fa-chevron-down text-sm transition-transform duration-300"></i>
+                            </button>
+                            <div id="answer-6" class="faq-answer mt-2 px-5 pb-3 text-gray-300">
+                                <p>La seguridad de tus Litoshis es nuestra prioridad. Tus balances se registran en una
+                                    base de datos segura (Firebase Firestore). Sin embargo, te recomendamos retirar tus
+                                    ganancias una vez que alcances el mínimo requerido para transferirlas a tu billetera
+                                    personal.</p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item: ¿Cómo puedo retirar mis Litecoins? -->
+                        <div class="bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                            <button
+                                class="faq-question w-full text-left text-lg font-medium text-yellow-400 py-3 px-5 flex justify-between items-center focus:outline-none"
+                                aria-expanded="false" aria-controls="answer-7">
+                                <span>¿Cómo puedo retirar mis Litecoins?</span>
+                                <i class="fas fa-chevron-down text-sm transition-transform duration-300"></i>
+                            </button>
+                            <div id="answer-7" class="faq-answer mt-2 px-5 pb-3 text-gray-300">
+                                <p>Para retirar tus Litecoins, debes alcanzar un saldo mínimo y proporcionar una
+                                    dirección de billetera de Litecoin válida. La opción de retiro estará disponible en
+                                    la sección de "Retiros" una vez que cumplas con los requisitos. Los retiros pueden
+                                    requerir la visualización de un anuncio intersticial antes de ser procesados.</p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item: ¿Hay límites de retiro o comisiones? -->
+                        <div class="bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                            <button
+                                class="faq-question w-full text-left text-lg font-medium text-yellow-400 py-3 px-5 flex justify-between items-center focus:outline-none"
+                                aria-expanded="false" aria-controls="answer-8">
+                                <span>¿Hay límites de retiro o comisiones?</span>
+                                <i class="fas fa-chevron-down text-sm transition-transform duration-300"></i>
+                            </button>
+                            <div id="answer-8" class="faq-answer mt-2 px-5 pb-3 text-gray-300">
+                                <p>Sí, existen límites mínimos de retiro para asegurar la eficiencia de las
+                                    transacciones. Las posibles comisiones de red se mostrarán claramente antes de
+                                    confirmar tu retiro. Estos detalles se especifican en la sección de "Retiros" de la
+                                    aplicación.</p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item: ¿Qué es FaucetPay y cómo creo una cuenta? -->
+                        <div class="bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                            <button
+                                class="faq-question w-full text-left text-lg font-medium text-yellow-400 py-3 px-5 flex justify-between items-center focus:outline-none"
+                                aria-expanded="false" aria-controls="answer-9">
+                                <span>¿Qué es FaucetPay y cómo creo una cuenta?</span>
+                                <i class="fas fa-chevron-down text-sm transition-transform duration-300"></i>
+                            </button>
+                            <div id="answer-9" class="faq-answer mt-2 px-5 pb-3 text-gray-300">
+                                <p>FaucetPay es una microwallet (microbilletera) de criptomonedas que permite recibir
+                                    pequeñas cantidades de diversas criptomonedas de faucets y otras fuentes. Para crear
+                                    una cuenta, visita su sitio web oficial 
+                                    <a href="#" id="faucetpayUrlBtn" class="text-blue-400 hover:underline">faucetpay.io</a>, haz clic
+                                    en "Sign Up" y sigue las instrucciones para registrarte. Luego, deberás vincular tus
+                                    direcciones de Litecoin (y otras criptomonedas) a tu cuenta de FaucetPay.</p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item: ¿Win Coin requiere conexión a Internet? -->
+                        <div class="bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                            <button
+                                class="faq-question w-full text-left text-lg font-medium text-yellow-400 py-3 px-5 flex justify-between items-center focus:outline-none"
+                                aria-expanded="false" aria-controls="answer-10">
+                                <span>¿Win Coin requiere conexión a Internet?</span>
+                                <i class="fas fa-chevron-down text-sm transition-transform duration-300"></i>
+                            </button>
+                            <div id="answer-10" class="faq-answer mt-2 px-5 pb-3 text-gray-300">
+                                <p>Sí, Win Coin es una aplicación que requiere una conexión a Internet activa (Wi-Fi o
+                                    datos móviles) para funcionar correctamente, ya que necesita comunicarse con
+                                    nuestros servidores para gestionar tu saldo, los juegos, los anuncios y el sistema
+                                    de referidos. Si no tienes conexión, verás una página de "Sin Conexión".</p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item: ¿Por qué veo anuncios en la aplicación? -->
+                        <div class="bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                            <button
+                                class="faq-question w-full text-left text-lg font-medium text-yellow-400 py-3 px-5 flex justify-between items-center focus:outline-none"
+                                aria-expanded="false" aria-controls="answer-11">
+                                <span>¿Por qué veo anuncios en la aplicación?</span>
+                                <i class="fas fa-chevron-down text-sm transition-transform duration-300"></i>
+                            </button>
+                            <div id="answer-11" class="faq-answer mt-2 px-5 pb-3 text-gray-300">
+                                <p>Los anuncios son una parte fundamental del modelo de negocio de Win Coin. Nos
+                                    permiten financiar las recompensas que te ofrecemos y mantener la aplicación
+                                    gratuita. Verás dos tipos principales de anuncios: Anuncios Recompensados (que
+                                    eliges ver a cambio de Litoshis) y Anuncios Intersticiales (que aparecen entre
+                                    pantallas o acciones).</p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item: ¿Cómo funciona el sistema de referidos? -->
+                        <div class="bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                            <button
+                                class="faq-question w-full text-left text-lg font-medium text-yellow-400 py-3 px-5 flex justify-between items-center focus:outline-none"
+                                aria-expanded="false" aria-controls="answer-12">
+                                <span>¿Cómo funciona el sistema de referidos?</span>
+                                <i class="fas fa-chevron-down text-sm transition-transform duration-300"></i>
+                            </button>
+                            <div id="answer-12" class="faq-answer mt-2 px-5 pb-3 text-gray-300">
+                                <p>Puedes encontrar tu código de referido único en la sección "Referidos". Comparte este
+                                    código con tus amigos. Cuando un nuevo usuario se registra en Win Coin usando tu
+                                    código, tanto tú como tu amigo recibirán una recompensa.</p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item: Tengo un problema o una pregunta que no está aquí. ¿Cómo puedo obtener soporte? -->
+                        <div class="bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                            <button
+                                class="faq-question w-full text-left text-lg font-medium text-yellow-400 py-3 px-5 flex justify-between items-center focus:outline-none"
+                                aria-expanded="false" aria-controls="answer-13">
+                                <span>Tengo un problema o una pregunta que no está aquí. ¿Cómo puedo obtener
+                                    soporte?</span>
+                                <i class="fas fa-chevron-down text-sm transition-transform duration-300"></i>
+                            </button>
+                            <div id="answer-13" class="faq-answer mt-2 px-5 pb-3 text-gray-300">
+                                <p>Si tienes alguna otra pregunta o encuentras un problema, por favor, ponte en contacto
+                                    con nuestro equipo de soporte a través de la opción de "Contacto" o "Ayuda" dentro
+                                    de la aplicación, o visita nuestro sitio web oficial para más información.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             </section>
 
 
