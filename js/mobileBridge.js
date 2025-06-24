@@ -157,7 +157,7 @@ window.UnityAdsBridge.onAdLoaded = function (placementId) {
     // No ocultar el modal aquí si es un ad que aún se va a mostrar manualmente.
     // El modal se oculta cuando el ad empieza a mostrarse (onAdShowStart) o falla.
     if (typeof showNotification === 'function') {
-        showNotification(`Anuncio listo: ${placementId}`, "info");
+        // showNotification(`Anuncio listo: ${placementId}`, "info");
     }
 };
 
@@ -180,7 +180,7 @@ window.UnityAdsBridge.onAdLoadFailed = function (placementId, message) {
         }
     }
     hideLoadingModal();
-    showNotification(`No se pudo cargar el anuncio (${placementId}). Intenta de nuevo.`, "error");
+   // showNotification(`No se pudo cargar el anuncio (${placementId}). Intenta de nuevo.`, "error");
 };
 
 // Llamada si el anuncio falla y no se pudo mostrar
@@ -244,7 +244,7 @@ window.UnityAdsBridge.loadInterstitialAd = function () {
         console.log("[JS] Solicitando cargar anuncio intersticial via Android.");
     } else {
         console.warn("[JS] Android.loadInterstitialAd no está disponible.");
-        showNotification("Error: No se pudo cargar el servicio de anuncios. Revisa la conexión.", "error");
+        showNotification("No se pudo cargar el servicio de anuncios. Revisa la conexión.", "error");
     }
 };
 
