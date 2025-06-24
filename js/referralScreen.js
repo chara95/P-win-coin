@@ -357,32 +357,32 @@ async function handleCopyReferralLink() {
  * Maneja el clic en el botón "Compartir".
  */
 async function handleShareReferralLink() {
-    const referralCode = userReferralCodeDisplay.value; // o .textContent
+    const referralCode = userReferralCodeDisplay.value; 
 
     if (!referralCode || referralCode === "Generando..." || referralCode === "N/A" || referralCode === "Error") {
         showNotification("No hay un código de referido válido para compartir.", "warning");
         return;
     }
 
-   
     const appPlayStoreUrl = "https://play.google.com/store/apps/details?id=com.win_coin.app"; 
-    const shareUrl = `${appPlayStoreUrl}`;
+    const shareUrl = `${appPlayStoreUrl}`; // Puedes usar shareUrl o appPlayStoreUrl, son lo mismo aquí.
 
-  
     const shareText = `¡Únete a Win Coin y gana criptomonedas! Usa mi código de referido: ${referralCode} para obtener una recompensa al registrarte. Descárgala aquí: ${shareUrl}`;
 
-   
-    if (typeof mobileBridge !== 'undefined' && mobileBridge.triggerNativeShare) {
+    // *** ESTE ES EL CAMBIO CLAVE EN handleShareReferralLink ***
+    // Verificamos y llamamos a la función triggerNativeShare que está DENTRO de window.AndroidBridge
+    if (typeof window.AndroidBridge !== 'undefined' && typeof window.AndroidBridge.triggerNativeShare === 'function') {
         try {
-             mobileBridge.triggerNativeShare(shareText); // Pasa el shareText completo
-            console.log('Solicitud de compartir enviada a AndroidBridge.');
+            window.AndroidBridge.triggerNativeShare(shareText); // <-- ¡LLAMADA CORRECTA A TU PROPIO PUENTE JS!
+            console.log('Solicitud de compartir enviada a window.AndroidBridge.triggerNativeShare.');
         } catch (e) {
-            console.error('Error al llamar a window.AndroidBridge.shareApp:', e);
-            fallbackToNavigatorShare(shareText, shareUrl); // Fallback si el puente falla
+            console.error('Error al llamar a window.AndroidBridge.triggerNativeShare:', e);
+            fallbackToNavigatorShare(shareText, shareUrl); // Fallback si la llamada JS falla inesperadamente
         }
     } else {
-        console.warn('window.AndroidBridge.shareApp no está disponible. Cayendo a navigator.share o copiar.');
-        fallbackToNavigatorShare(shareText, shareUrl); // Fallback si AndroidBridge no está presente
+        // Este bloque se ejecutará si window.AndroidBridge no existe o no tiene triggerNativeShare
+        console.warn('window.AndroidBridge.triggerNativeShare no está disponible. Cayendo a navigator.share o copiar.');
+        fallbackToNavigatorShare(shareText, shareUrl); // Fallback si la interfaz no está disponible
     }
 }
 

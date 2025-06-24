@@ -54,14 +54,20 @@ window.AndroidBridge = {
     },
     triggerNativeShare: function (textToShare) {
         console.log(`[JS] Solicitando compartir app a Android con texto (desde triggerNativeShare): ${textToShare}`); 
-        if (typeof AndroidBridge !== 'undefined' && AndroidBridge.shareApp) {
-            AndroidBridge.shareApp(textToShare);
+        
+        // *** THIS IS THE CRITICAL LINE TO CORRECT ***
+        // We need to refer to the Java-injected object by its NEW name: AndroidBridge_JavaInterface
+        if (typeof AndroidBridge_JavaInterface !== 'undefined' && AndroidBridge_JavaInterface.shareApp) {
+            AndroidBridge_JavaInterface.shareApp(textToShare); // <--- CALLING THE JAVA INTERFACE METHOD
+            console.log("[JS] Llamada a AndroidBridge_JavaInterface.shareApp (Java) enviada.");
         } else {
-            console.warn("[JS] window.AndroidBridge.shareApp no está disponible.");
+            // This 'else' block means the Java interface itself is NOT available.
+            console.warn("[JS] La interfaz nativa 'AndroidBridge_JavaInterface.shareApp' no está disponible.");
             showNotification("Función de compartir no disponible.", "info");
+            // NOTE: The actual fallback to clipboard/Web Share API should be handled in handleShareReferralLink,
+            // NOT directly here, as triggerNativeShare's primary job is to try the native bridge.
         }
     },
-
     // --- RECOMPENSA DE ANUNCIOS (Faucet/Daily Reward/etc.) ---
     // Esta es la función que MainActivity.java llama cuando un anuncio recompensado se COMPLETA.
     rewardUser: async function () {
