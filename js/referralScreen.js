@@ -364,7 +364,8 @@ async function handleShareReferralLink() {
         return;
     }
 
-    const appPlayStoreUrl = "https://play.google.com/store/apps/details?id=com.win_coin.app"; 
+    const appPlayStoreUrl = " https://play.google.com/store/apps/details?id=com.win_coin"; 
+  
     const shareUrl = `${appPlayStoreUrl}`; // Puedes usar shareUrl o appPlayStoreUrl, son lo mismo aquí.
 
     const shareText = `¡Únete a Win Coin y gana criptomonedas! Usa mi código de referido: ${referralCode} para obtener una recompensa al registrarte. Descárgala aquí: ${shareUrl}`;
