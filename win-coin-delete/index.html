@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eliminar Cuenta - Win Coin</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fuente Inter de Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1A202C; /* Tailwind gray-900 */
+            color: #E2E8F0; /* Tailwind gray-200 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1.5rem; /* px-6 py-8 */
+            box-sizing: border-box;
+           
+        }
+        .overlay-card {
+            background-color: rgba(45, 55, 72, 0.95); /* Gray-800 con algo de transparencia */
+            border-radius: 1.5rem; /* rounded-3xl */
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6); /* Sombra más pronunciada */
+            padding: 2.5rem; /* p-10 */
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            backdrop-filter: blur(5px); /* Efecto de desenfoque detrás de la tarjeta */
+            -webkit-backdrop-filter: blur(5px); /* Compatibilidad con Safari */
+        }
+        h1 {
+            color: #F56565; /* Tailwind red-400 */
+            font-size: 2.5rem; /* text-4xl */
+            font-weight: 700; /* font-bold */
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        h2 {
+            color: #48BB78; /* Tailwind green-500 */
+            font-size: 1.5rem; /* text-2xl */
+            font-weight: 600; /* font-semibold */
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        p {
+            font-size: 1.125rem; /* text-lg */
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            color: #CBD5E0; /* Tailwind gray-300 */
+        }
+        ol {
+            list-style: decimal;
+            padding-left: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: left;
+            color: #CBD5E0;
+        }
+        ol li {
+            margin-bottom: 0.5rem;
+            font-size: 1rem; /* text-base */
+        }
+        .action-button {
+            background: linear-gradient(to right, #4CAF50, #2E8B57); /* Gradiente verde */
+            color: white;
+            padding: 0.85rem 2rem;
+            border-radius: 0.75rem; /* rounded-xl */
+            font-size: 1.25rem; /* text-xl */
+            font-weight: 700; /* font-bold */
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 255, 0, 0.3); /* Sombra brillante */
+            display: inline-block; /* Para centrar con text-center en el padre */
+            margin-top: 1.5rem;
+            text-decoration: none; /* Quitar subrayado de enlace */
+        }
+        .action-button:hover {
+            background: linear-gradient(to right, #5CB85C, #3E986F);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 255, 0, 0.4);
+        }
+        .note {
+            font-size: 0.95rem; /* text-sm */
+            color: #A0AEC0; /* Tailwind gray-400 */
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay-card">
+        <h1>Solicitar Eliminación de Cuenta</h1>
+        <p>Entendemos que deseas eliminar tu cuenta de Win Coin y todos tus datos asociados. Para garantizar la seguridad y confirmar tu identidad, el proceso de eliminación debe ser iniciado directamente desde nuestra aplicación.</p>
+
+        <h2>Pasos para Eliminar tu Cuenta:</h2>
+        <ol>
+            <li>Abre la aplicación **Win Coin** en tu dispositivo Android.</li>
+            <li>Inicia sesión con la cuenta de Google que deseas eliminar.</li>
+            <li>Dirígete a la sección de **"Perfil"** o **"Ajustes"**.</li>
+            <li>Busca la opción **"Eliminar Cuenta"** o **"Gestión de Datos"**.</li>
+            <li>Sigue las instrucciones en pantalla para confirmar la eliminación. Este proceso puede incluir una verificación adicional de tu identidad y una confirmación final para asegurar que la acción es intencionada.</li>
+        </ol>
+
+        <p class="mb-4">Si ya tienes la aplicación instalada, puedes hacer clic en el botón de abajo para abrirla:</p>
+        
+        <!-- ESTE ENLACE INTENTARÁ ABRIR TU APLICACIÓN. 
+             NECESITARÁS CONFIGURAR UN DEEP LINK (URL Scheme) EN TU MANIFEST DE ANDROID. -->
+        <a href="https://play.google.com/store/apps/details?id=com.win_coin.app" class="action-button">Abrir Win Coin para Eliminar Cuenta</a>
+        
+        <p class="note mt-6">
+            **Nota Importante:** Una vez eliminada, toda la información de tu cuenta, incluyendo tu balance de Litoshis, historial de actividades y referencias, se eliminará permanentemente y no podrá ser recuperada. No retenemos tus datos más allá de lo estrictamente necesario para el funcionamiento del servicio y el cumplimiento legal.
+        </p>
+    </div>
+</body>
+</html>
